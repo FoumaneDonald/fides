@@ -1,4 +1,4 @@
-import 'package:fides/features/home_page/ui/widgets/program_card.dart';
+import 'package:fides/features/homePage/ui/widgets/programCard.dart';
 import 'package:flutter/material.dart';
 
 class LoyaltyProgramSection extends StatelessWidget {

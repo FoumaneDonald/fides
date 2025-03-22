@@ -14,20 +14,25 @@ class LoyalCustomersSection extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('0'),
-              Text('Loyal customers'),
-            ],
-          ),
-          FilledButton(
-            onPressed: () {},
-            child: Row(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Customer'),
-                Icon(Icons.add),
+                Text('0'),
+                Text('Loyal customers'),
               ],
+            ),
+          ),
+          Flexible(
+            child: FilledButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Customer'),
+                  Icon(Icons.add_circle),
+                ],
+              ),
             ),
           ),
         ],

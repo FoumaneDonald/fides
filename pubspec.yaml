@@ -33,4 +33,44 @@ flutter:
   assets:
     - assets/
 
+  fonts:
+    - family: Livvic
+      fonts:
+        - asset: assets/fonts/Livvic-ThinItalic.ttf
+          style: italic
+          weight: 100
+        - asset: assets/fonts/Livvic-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Livvic-ExtraLightItalic.ttf
+          style: italic
+          weight: 200
+        - asset: assets/fonts/Livvic-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Livvic-LightItalic.ttf
+          style: italic
+          weight: 300
+        - asset: assets/fonts/Livvic-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Livvic-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Livvic-MediumItalic.ttf
+          style: italic
+          weight: 500
+        - asset: assets/fonts/Livvic-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Livvic-SemiBoldItalic.ttf
+          style: italic
+          weight: 600
+        - asset: assets/fonts/Livvic-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Livvic-BoldItalic.ttf
+          style: italic
+          weight: 700
+        - asset: assets/fonts/Livvic-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Livvic-BlackItalic.ttf
+          style: italic
+          weight: 900
+        - asset: assets/fonts/Livvic-Black.ttf
+          weight: 900
 
