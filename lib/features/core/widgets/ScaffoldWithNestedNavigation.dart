@@ -9,13 +9,14 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
+    const int programsTabIndex = 1;
     navigationShell.goBranch(
       index,
       // A common pattern when using bottom navigation bars is to support
       // navigating to the initial location when tapping the item that is
       // already active. This example demonstrates how to support this behavior,
       // using the initialLocation parameter of goBranch.
-      initialLocation: index == navigationShell.currentIndex,
+      initialLocation: index == programsTabIndex || index == navigationShell.currentIndex,
     );
   }
 

@@ -1,0 +1,128 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:3401710457310357716",
+      "lastPropertyId": "10:5774164378543038065",
+      "name": "RewardModel",
+      "properties": [
+        {
+          "id": "1:7595346860182445469",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1315264941201472981",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "3:4156855547960980391",
+          "name": "discountValue",
+          "type": 6
+        },
+        {
+          "id": "4:6119365577983705815",
+          "name": "discountValueType",
+          "type": 9
+        },
+        {
+          "id": "5:7333605600765203908",
+          "name": "item",
+          "type": 9
+        },
+        {
+          "id": "6:9193741409764690578",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "7:482995528713180466",
+          "name": "rewardCost",
+          "type": 6
+        },
+        {
+          "id": "8:4538394185443530244",
+          "name": "minimumPurchase",
+          "type": 6
+        },
+        {
+          "id": "9:7190404437975898656",
+          "name": "uid",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "1:8670166263391842496"
+        },
+        {
+          "id": "10:5774164378543038065",
+          "name": "loyaltyProgramId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:5939902998660536462",
+          "relationTarget": "LoyaltyProgramModel"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:1173935753394898722",
+      "lastPropertyId": "7:2241679788063526819",
+      "name": "LoyaltyProgramModel",
+      "properties": [
+        {
+          "id": "1:6716148227055326269",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1743111344690139695",
+          "name": "uid",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "3:7454363406861329924"
+        },
+        {
+          "id": "3:165063373242491864",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:544434251751493668",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:7118891231732692149",
+          "name": "pointValue",
+          "type": 9
+        },
+        {
+          "id": "6:3007625745844823324",
+          "name": "numberHoles",
+          "type": 6
+        },
+        {
+          "id": "7:2241679788063526819",
+          "name": "winningNumbers",
+          "type": 24
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:1173935753394898722",
+  "lastIndexId": "3:7454363406861329924",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

@@ -1,20 +1,29 @@
 import 'package:flutter/material.dart';
 
 class InputTheme {
+  static DropdownMenuThemeData dropdownDecorationLightTheme = DropdownMenuThemeData(
+    menuStyle: MenuStyle(
+      backgroundColor: WidgetStatePropertyAll(Color(0xffDBDFE3)),
+    )
+  );
 
   static InputDecorationTheme inputDecorationLightTheme = InputDecorationTheme(
     // suffixStyle: MindlabTextTheme.lightTextTheme.bodySmall!.copyWith(color: Colors.grey),
-    fillColor: Colors.white,
+    fillColor: Color(0xffDBDFE3),
     filled: true,
+    labelStyle: TextStyle(fontSize: 14, fontFamily: 'Livvic', fontWeight: FontWeight.w600),
+    floatingLabelBehavior: FloatingLabelBehavior.always,
+    hintStyle: TextStyle(
+      color: Color(0xff888888),
+      fontFamily: 'Livvic',
+      fontSize: 14,
+    ),
     contentPadding: const EdgeInsets.symmetric(
-      vertical: 21.0,
+      vertical: 16.0,
       horizontal: 16.0,
     ),
     border: OutlineInputBorder(
-      borderSide: BorderSide(
-        // color: MindlabColorTheme.lightColorScheme.secondary,
-        width: 2,
-      ),
+      borderSide: BorderSide.none,
     ),
     errorBorder: OutlineInputBorder(
       borderSide: BorderSide(

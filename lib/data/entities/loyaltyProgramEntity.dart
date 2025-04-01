@@ -1,0 +1,59 @@
+import 'package:equatable/equatable.dart';
+
+import '../../domain/models/loyaltyProgramModel.dart';
+
+class LoyaltyProgramEntity extends Equatable {
+  final int? id;
+  final String? uid;
+  final String? type;
+  final String? name;
+  final String? pointValue;
+  final int? numberHoles;
+  final List<int>? winningNumbers;
+
+  const LoyaltyProgramEntity({
+    this.id,
+    this.uid,
+    this.type,
+    this.name,
+    this.pointValue,
+    this.numberHoles,
+    this.winningNumbers,
+  });
+
+  LoyaltyProgramEntity copyWith({
+    int? id,
+    String? uid,
+    String? type,
+    String? name,
+    String? pointValue,
+    int? numberHoles,
+    List<int>? winningNumbers,
+  }) {
+    return LoyaltyProgramEntity(
+      id: id ?? this.id,
+      uid: uid ?? this.uid,
+      type: type ?? this.type,
+      name: name ?? this.name,
+      pointValue: pointValue ?? this.pointValue,
+      numberHoles: numberHoles ?? this.numberHoles,
+      winningNumbers: winningNumbers ?? this.winningNumbers,
+    );
+  }
+
+  ///Convert Model to Entity
+  factory LoyaltyProgramEntity.fromModel(LoyaltyProgramModel model) {
+    return LoyaltyProgramEntity(
+      id: model.id ?? 0,
+      uid: model.uid,
+      type: model.type,
+      name: model.name,
+      pointValue: model.pointValue,
+      numberHoles: model.numberHoles,
+      winningNumbers: model.winningNumbers,
+    );
+  }
+
+  @override
+  List<Object?> get props => [id, uid, type, name, pointValue, numberHoles, winningNumbers];
+}

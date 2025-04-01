@@ -1,3 +1,4 @@
+import 'package:fides/config/theme/inputTheme.dart';
 import 'package:flutter/material.dart';
 
 import 'config/routes/routes.dart';
@@ -5,8 +6,11 @@ import 'config/theme/buttonTheme.dart';
 import 'config/theme/colorScheme.dart';
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
+import 'injection.dart' as di;
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(const MyApp());
 }
 
@@ -25,6 +29,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Livvic',
         filledButtonTheme: filledButtonThemeData,
+        inputDecorationTheme: InputTheme.inputDecorationLightTheme,
+        dropdownMenuTheme: InputTheme.dropdownDecorationLightTheme,
         // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffFFAAA2)),
         colorScheme: lightScheme(),
       ),
