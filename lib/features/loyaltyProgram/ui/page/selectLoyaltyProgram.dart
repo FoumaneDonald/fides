@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../bloc/loyalty_program_bloc.dart';
+import '../bloc/loyaltyProgramBloc.dart';
 import '../widgets/loyaltyProgramCard.dart';
 
 class SelectLoyaltyProgram extends StatelessWidget {
@@ -17,12 +17,13 @@ class SelectLoyaltyProgram extends StatelessWidget {
         ),
         body: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
           listener: (context, state) {
-            if(state.status == Status.ongoing && GoRouter.of(context).routeInformationProvider.value.uri.path == '/loyalty-program'){
+            final route = ModalRoute.of(context);
+            final isCurrentRoute = route?.isCurrent ?? false;
+            if(state.status == Status.ongoing && isCurrentRoute ){
               if(state.loyaltyProgramEntity!.type == 'Stamp') {
-                context.goNamed('stampCardProgram');
+                context.pushNamed('stampCardProgram');
               }else if(state.loyaltyProgramEntity!.type == 'Points'){
-                ///TODO: Change the route to correct one
-                context.goNamed('stampCardProgram');
+                context.pushNamed('pointsProgram');
               }
             }
           },

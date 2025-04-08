@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 class FidesTextFormField extends StatelessWidget {
   final TextEditingController? _controller;
+  final int? _maxLine;
   final String? _hintText;
   final String? _suffixText;
   final String? Function(String? value)? _validator;
@@ -15,21 +16,23 @@ class FidesTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? _inputFormatter;
   final TextCapitalization? _textCapitalization;
 
-  const FidesTextFormField(
-      {super.key,
-      TextEditingController? controller,
-      String? hintText,
-      String? suffixText,
-      String? Function(String? value)? validator,
-      void Function(String?)? onSaved,
-      void Function(String)? onFieldSubmitted,
-      Function(String)? onChanged,
-      TextInputType? textInputType,
-      Widget? prefixIcon,
-      Widget? suffixIcon,
-      List<TextInputFormatter>? inputFormatter,
-      TextCapitalization? textCapitalization})
-      : _controller = controller,
+  const FidesTextFormField({
+    super.key,
+    TextEditingController? controller,
+    int? maxLine = 1,
+    String? hintText,
+    String? suffixText,
+    String? Function(String? value)? validator,
+    void Function(String?)? onSaved,
+    void Function(String)? onFieldSubmitted,
+    Function(String)? onChanged,
+    TextInputType? textInputType,
+    Widget? prefixIcon,
+    Widget? suffixIcon,
+    List<TextInputFormatter>? inputFormatter,
+    TextCapitalization? textCapitalization,
+  })  : _controller = controller,
+        _maxLine = maxLine,
         _hintText = hintText,
         _suffixText = suffixText,
         _validator = validator,
@@ -53,6 +56,7 @@ class FidesTextFormField extends StatelessWidget {
         suffixText: _suffixText,
       ),
       keyboardType: _textInputType,
+      maxLines: _maxLine,
       textCapitalization: _textCapitalization ?? TextCapitalization.sentences,
       inputFormatters: _inputFormatter,
       validator: _validator,

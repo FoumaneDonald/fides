@@ -1,10 +1,10 @@
 import 'package:result_dart/result_dart.dart';
+import 'package:uuid/uuid.dart';
 
 import '../domain/models/loyaltyProgramModel.dart';
 import '../domain/models/rewardModel.dart';
 import '../objectbox.g.dart';
 import 'objectBox.dart';
-import 'package:uuid/uuid.dart';
 
 class LoyaltyProgramDao {
   // Inject the ObjectBox
@@ -17,8 +17,8 @@ class LoyaltyProgramDao {
   ///TODO: C(done)RUD
 
   /// Creates a new Reward with a unique ID.
-  Result<LoyaltyProgramModel> create( LoyaltyProgramModel loyaltyProgramModel, RewardModel rewardModel ){
-    try{
+  Result<LoyaltyProgramModel> create(LoyaltyProgramModel loyaltyProgramModel, RewardModel rewardModel) {
+    try {
       String rewardId = const Uuid().v4();
       String loyaltyProgramId = const Uuid().v4();
 
@@ -31,9 +31,21 @@ class LoyaltyProgramDao {
 
       _loyaltyProgramBox.put(loyaltyProgram);
       return Success(loyaltyProgram);
-    }on Exception catch(error, stackTrace){
+    } catch (error, stackTrace) {
       print('$error, $stackTrace');
       return Failure(Exception('Failed to create data'));
     }
+  }
+
+  Result<List<LoyaltyProgramModel>> getAllLoyaltyProgram() {
+    try {
+      QueryBuilder<LoyaltyProgramModel> builder = _loyaltyProgramBox.query();
+      builder.backlink(RewardModel_.loyaltyProgram);
+      Query<LoyaltyProgramModel> query = builder.build();
+      List<LoyaltyProgramModel> loyaltyPrograms = query.find();
+      return Success(loyaltyPrograms);
+    } catch (error, stackTrace) {
+      print('$error, $stackTrace');
+      return Failure(Exception('Could not retrieve data'));}
   }
 }

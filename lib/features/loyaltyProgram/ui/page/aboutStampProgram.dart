@@ -5,16 +5,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../bloc/loyalty_program_bloc.dart';
+import '../../../core/widgets/fidesTextInput.dart';
+import '../bloc/loyaltyProgramBloc.dart';
 
-class AboutStampCard extends StatefulWidget {
-  const AboutStampCard({super.key});
+class AboutStampProgram extends StatefulWidget {
+  const AboutStampProgram({super.key});
 
   @override
-  State<AboutStampCard> createState() => _AboutStampCardState();
+  State<AboutStampProgram> createState() => _AboutStampProgramState();
 }
 
-class _AboutStampCardState extends State<AboutStampCard> with ValidationMixins {
+class _AboutStampProgramState extends State<AboutStampProgram> with ValidationMixins {
   late TextEditingController _nameController;
   late TextEditingController _numberPunchHolesController;
   late List<int> _holes;
@@ -56,7 +57,7 @@ class _AboutStampCardState extends State<AboutStampCard> with ValidationMixins {
     context.read<LoyaltyProgramBloc>().add(AboutStampProgramChanged(numHoles: valueInt, deletedNumber: valueInt));
   }
 
-  _toggleSelection(int number) {
+  _toggleSelection(BuildContext context, int number) {
     context.read<LoyaltyProgramBloc>().add(AboutStampProgramChanged(winningNumbers: number));
   }
 
@@ -91,8 +92,10 @@ class _AboutStampCardState extends State<AboutStampCard> with ValidationMixins {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildNameInput(
+                              FidesTextInput(
                                 controller: _nameController,
+                                inputLabel: 'Name',
+                                hintText: 'Coffee club',
                                 onChanged: (value) => context.read<LoyaltyProgramBloc>().add(AboutStampProgramChanged(name: value)),
                               ),
                               SizedBox(height: 16),
@@ -107,7 +110,7 @@ class _AboutStampCardState extends State<AboutStampCard> with ValidationMixins {
                               _buildHoles(
                                 holes: _holes,
                                 selectedNumbers: state.loyaltyProgramEntity!.winningNumbers ?? [],
-                                onTap: (number) => _toggleSelection(number),
+                                onTap: (number) => _toggleSelection(context, number),
                               ),
                               if (state.loyaltyProgramEntity!.winningNumbers!.isEmpty)
                                 Padding(
@@ -142,32 +145,6 @@ class _AboutStampCardState extends State<AboutStampCard> with ValidationMixins {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildNameInput({
-    required TextEditingController controller,
-    Function(String? value)? onSaved,
-    Function(String)? onChanged
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Name',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        FidesTextFormField(
-          controller: controller,
-          hintText: 'Coffee club reward',
-          validator: generalValidation,
-          onSaved: onSaved,
-          onChanged: onChanged,
-        ),
-      ],
     );
   }
 

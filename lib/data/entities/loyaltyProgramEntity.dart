@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:fides/data/entities/rewardEntity.dart';
 
 import '../../domain/models/loyaltyProgramModel.dart';
 
@@ -27,8 +28,8 @@ class LoyaltyProgramEntity extends Equatable {
     String? type,
     String? name,
     String? pointValue,
-    int? numberHoles,
-    List<int>? winningNumbers,
+    Value<int?>? numberHoles,
+    Value<List<int>?>? winningNumbers,
   }) {
     return LoyaltyProgramEntity(
       id: id ?? this.id,
@@ -36,8 +37,8 @@ class LoyaltyProgramEntity extends Equatable {
       type: type ?? this.type,
       name: name ?? this.name,
       pointValue: pointValue ?? this.pointValue,
-      numberHoles: numberHoles ?? this.numberHoles,
-      winningNumbers: winningNumbers ?? this.winningNumbers,
+      numberHoles: numberHoles != null ? numberHoles.value : this.numberHoles,
+      winningNumbers: winningNumbers != null ? winningNumbers.value : this.winningNumbers,
     );
   }
 

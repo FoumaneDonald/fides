@@ -1,8 +1,14 @@
+import 'package:fides/data/entities/loyaltyProgramEntity.dart';
 import 'package:fides/features/homePage/ui/widgets/programCard.dart';
 import 'package:flutter/material.dart';
 
 class LoyaltyProgramSection extends StatelessWidget {
-  const LoyaltyProgramSection({super.key});
+  final List<LoyaltyProgramEntity> loyaltyPrograms;
+
+  const LoyaltyProgramSection({
+    super.key,
+    required this.loyaltyPrograms,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +21,25 @@ class LoyaltyProgramSection extends StatelessWidget {
             Text('see all'),
           ],
         ),
-        SizedBox(height: 8,),
+        SizedBox(
+          height: 8,
+        ),
         SizedBox(
           width: double.infinity,
           height: 200,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemCount: 2,
+            itemCount: loyaltyPrograms.isEmpty ? 1 : loyaltyPrograms.length,
             separatorBuilder: (BuildContext context, int index) => SizedBox(width: 16),
-            itemBuilder: (context, index) => SizedBox(
-              width: 140,
-              child: ProgramCard(),
-            ),
+            itemBuilder: (context, index) {
+              if( loyaltyPrograms.isEmpty){
+                return Center(child: Text('Create a program'));
+              }
+              return SizedBox(
+                width: 140,
+                child: ProgramCard(program: loyaltyPrograms[index],),
+              );
+            },
           ),
         ),
       ],

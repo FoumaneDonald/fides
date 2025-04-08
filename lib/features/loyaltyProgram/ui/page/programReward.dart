@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../injection.dart';
+import '../../../core/widgets/fidesTextInput.dart';
 import '../../../core/widgets/loader.dart';
-import '../bloc/loyalty_program_bloc.dart';
-import '../widgets/descriptionInput.dart';
+import '../../../homePage/ui/bloc/homeBloc.dart';
+import '../bloc/loyaltyProgramBloc.dart';
 import '../widgets/discountValueInput.dart';
 import '../widgets/itemInput.dart';
-import '../widgets/minimumPurchaseInput.dart';
 import '../widgets/rewardCostInput.dart';
 import '../widgets/typeOfRewardInput.dart';
 
@@ -39,14 +40,6 @@ class _ProgramRewardState extends State<ProgramReward> {
     _minPurchaseController = TextEditingController();
   }
 
-  // selectRewardType(String? selectedValue) {
-  //   if (selectedValue != null) {
-  //     setState(() {
-  //       selectedRewardType = selectedValue;
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,15 +52,21 @@ class _ProgramRewardState extends State<ProgramReward> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 40),
             child: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
-              listener: (context, state){
-                if(state.status == Status.done){
+              listener: (context, state) {
+                if (state.status == Status.success) {
+                  context.read<HomeBloc>().add(LoadLoyaltyPrograms());
+                  context.read<LoyaltyProgramBloc>().add(ResetBloc());
                   context.goNamed('home');
                 }
-                if(state.status == Status.error){
+                if (state.status == Status.error) {
                   showSnackBar(context, state.message ?? '');
                 }
               },
               builder: (context, state) {
+                ///Todo: give state value to controllers
+                _itemController.text = state.rewardEntity!.item ?? '';
+                _descriptionController.text = state.rewardEntity!.description ?? '';
+                _pointCostController.text = state.rewardEntity!.rewardCost.toString() ?? '';
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -93,7 +92,8 @@ class _ProgramRewardState extends State<ProgramReward> {
                                 DiscountValueInput(
                                   controller: _discountValueController,
                                   selectedDiscountType: state.rewardEntity!.discountType ?? 'FCFA',
-                                  inputOnChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(discountValue: int.parse(value.trim()), discountType: state.rewardEntity!.discountType)),
+                                  inputOnChanged: (value) =>
+                                      context.read<LoyaltyProgramBloc>().add(RewardChanges(discountValue: int.parse(value.trim()), discountType: state.rewardEntity!.discountType)),
                                   onChanged: (value) {
                                     if (value != null) {
                                       context.read<LoyaltyProgramBloc>().add(RewardChanges(discountType: value.trim(), discountValue: state.rewardEntity!.discountValue));
@@ -108,17 +108,20 @@ class _ProgramRewardState extends State<ProgramReward> {
                                 onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(item: value.trim())),
                               ),
                               SizedBox(height: 16),
-                              DescriptionInput(
+                              FidesTextInput(
                                 controller: _descriptionController,
+                                inputLabel: 'Description*',
+                                hintText: '1000 FCFA off your next purchase',
+                                textInputType: TextInputType.name,
+                                maxLine: 2,
                                 onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(description: value.trim())),
                               ),
                               SizedBox(height: 16),
-                              if(state.loyaltyProgramEntity!.type == 'Points')
+                              if (state.loyaltyProgramEntity!.type == 'Points')
                                 RewardCostInput(
                                   controller: _pointCostController,
                                   onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(rewardCost: int.tryParse(value.trim()))),
                                 ),
-                              SizedBox(height: 16),
                               // MinPurchaseInput(
                               //   controller: _minPurchaseController,
                               //   onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(minPurchase: int.tryParse(value.trim()))),
@@ -128,17 +131,19 @@ class _ProgramRewardState extends State<ProgramReward> {
                         ),
                       ),
                     ),
-                    state.status == Status.loading ? Loader() : FilledButton(
-                      onPressed: () {
-                        if(_formKey.currentState!.validate()){
-                          context.read<LoyaltyProgramBloc>().add(RewardChanges(submit: true));
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [Text('Add reward'), Icon(Icons.keyboard_arrow_right_rounded)],
-                      ),
-                    ),
+                    state.status == Status.loading
+                        ? Loader()
+                        : FilledButton(
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                context.read<LoyaltyProgramBloc>().add(RewardChanges(submit: true));
+                              }
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [Text('Add reward'), Icon(Icons.keyboard_arrow_right_rounded)],
+                            ),
+                          ),
                   ],
                 );
               },

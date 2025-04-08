@@ -8,13 +8,13 @@ import '../../data/repositories/LoyaltyProgramRepository.dart';
 import '../../services/loyaltyProgramDao.dart';
 
 class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
-  final LoyaltyProgramDao rewardDao;
+  final LoyaltyProgramDao loyaltyProgramDao;
 
-  LocalLoyaltyProgramRepoImpl(this.rewardDao);
+  LocalLoyaltyProgramRepoImpl(this.loyaltyProgramDao);
 
   @override
   Future<Result<LoyaltyProgramEntity>> createLoyaltyProgram({required LoyaltyProgramEntity loyaltyProgramEntity, required RewardEntity reward}) async {
-    final result = rewardDao.create(
+    final result = loyaltyProgramDao.create(
       LoyaltyProgramModel.fromEntity(loyaltyProgramEntity),
       RewardModel.fromEntity(reward),
     );
@@ -25,6 +25,20 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
       (failure) {
         return Failure(failure);
       },
+    );
+  }
+
+  @override
+  Future<Result<List<LoyaltyProgramEntity>>> getLoyaltyProgram() async{
+    final result = loyaltyProgramDao.getAllLoyaltyProgram();
+    return result.fold(
+        (programs) {
+          List<LoyaltyProgramEntity> programsModelToEntity = programs.map((program) => LoyaltyProgramEntity.fromModel(program)).toList();
+          return Success(programsModelToEntity);
+        },
+        (failure) {
+          return Failure(failure);
+        }
     );
   }
 }

@@ -1,70 +1,60 @@
-import 'package:fides/features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import 'package:fides/features/loyaltyProgram/ui/bloc/loyaltyProgramBloc.dart';
+import 'package:fides/features/loyaltyProgram/ui/page/aboutPointsProgram.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../data/repositories/LoyaltyProgramRepository.dart';
 import '../../features/core/widgets/ScaffoldWithNestedNavigation.dart';
+import '../../features/homePage/ui/bloc/homeBloc.dart';
 import '../../features/homePage/ui/pages/home.dart';
 import '../../features/loyaltyProgram/ui/page/programReward.dart';
 import '../../features/loyaltyProgram/ui/page/selectLoyaltyProgram.dart';
-import '../../features/loyaltyProgram/ui/page/stampCard/aboutStampCard.dart';
+import '../../features/loyaltyProgram/ui/page/aboutStampProgram.dart';
 import '../../injection.dart';
 
-final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
+final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
+final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
 final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
 
 class Routes {
   static final router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/home',
     navigatorKey: _rootNavigatorKey,
     routes: [
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
+      ShellRoute(
+        navigatorKey: _shellNavigatorKey,
+        builder: (context, state, child) {
           // This builder returns the "shell" - the Scaffold with the BottomNavigationBar
-          return ScaffoldWithNestedNavigation(navigationShell: navigationShell);
+          return ScaffoldWithNestedNavigation(child: child);
         },
-        branches: [
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorAKey,
-            routes: [
-              GoRoute(
-                name: 'home',
-                path: '/',
-                builder: (context, state) => const HomePage(),
-              ),
-            ],
+        routes: [
+          GoRoute(
+            name: 'home',
+            path: '/home',
+            builder: (context, state) => const HomePage(),
           ),
-          StatefulShellBranch(
-            navigatorKey: _shellNavigatorBKey,
+          GoRoute(
+            name: 'loyaltyProgram',
+            path: '/loyalty-program',
+            builder: (context, state) => SelectLoyaltyProgram(),
             routes: [
               GoRoute(
-                name: 'loyaltyProgram',
-                path: '/loyalty-program',
-                builder: (context, state) => BlocProvider(
-                  create: (context) => sl<LoyaltyProgramBloc>(),
-                  child: const SelectLoyaltyProgram(),
-                ),
-                routes: [
-                  GoRoute(
-                    name: 'stampCardProgram',
-                    path: 'stamp-card-program',
-                    builder: (context, state) => BlocProvider.value(
-                      value: sl<LoyaltyProgramBloc>(),
-                      child: const AboutStampCard(),
-                    ),
-                  ),
-                  GoRoute(
-                    name: 'programReward',
-                    path: 'program-reward',
-                    builder: (context, state) => BlocProvider.value(
-                      value: sl<LoyaltyProgramBloc>(),
-                      child: const ProgramReward(),
-                    ),
-                  ),
-                ],
+                name: 'stampCardProgram',
+                path: 'stamp-card-program',
+                builder: (context, state) => AboutStampProgram(),
+              ),
+              GoRoute(
+                name: 'pointsProgram',
+                path: 'points-program',
+                builder: (context, state) => AboutPointsProgram(),
+              ),
+              GoRoute(
+                name: 'programReward',
+                path: 'program-reward',
+                builder: (context, state) => ProgramReward(),
               ),
             ],
           ),

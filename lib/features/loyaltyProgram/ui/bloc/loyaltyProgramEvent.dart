@@ -1,4 +1,4 @@
-part of 'loyalty_program_bloc.dart';
+part of 'loyaltyProgramBloc.dart';
 
 sealed class LoyaltyProgramEvent extends Equatable {
   const LoyaltyProgramEvent();
@@ -6,6 +6,8 @@ sealed class LoyaltyProgramEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+// final class LoadLoyaltyProgram extends LoyaltyProgramEvent{}
 
 final class SelectedLoyaltyProgram extends LoyaltyProgramEvent {
   final String programName;
@@ -21,12 +23,21 @@ final class AboutStampProgramChanged extends LoyaltyProgramEvent {
   final int? numHoles;
   final int? winningNumbers;
   final int? deletedNumber;
-  final String? test;
 
-  const AboutStampProgramChanged({this.name, this.numHoles, this.winningNumbers, this.deletedNumber, this.test});
+  const AboutStampProgramChanged({this.name, this.numHoles, this.winningNumbers, this.deletedNumber});
 
   @override
   List<Object?> get props => [name, numHoles, winningNumbers, deletedNumber];
+}
+
+final class AboutPointProgramChanged extends LoyaltyProgramEvent {
+  final String? name;
+  final String? pointValue;
+
+  const AboutPointProgramChanged({this.name, this.pointValue,});
+
+  @override
+  List<Object?> get props => [name, pointValue];
 }
 
 final class RewardChanges extends LoyaltyProgramEvent {
@@ -53,3 +64,5 @@ final class RewardChanges extends LoyaltyProgramEvent {
   @override
   List<Object?> get props => [type, discountValue, discountType, item, description, rewardCost, minPurchase, submit];
 }
+
+final class ResetBloc extends LoyaltyProgramEvent{}

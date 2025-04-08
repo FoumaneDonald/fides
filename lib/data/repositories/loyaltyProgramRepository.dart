@@ -5,4 +5,5 @@ import '../entities/rewardEntity.dart';
 
 abstract class LoyaltyProgramRepository {
   Future<Result<LoyaltyProgramEntity>> createLoyaltyProgram({required LoyaltyProgramEntity loyaltyProgramEntity, required RewardEntity reward});
+  Future<Result<List<LoyaltyProgramEntity>>> getLoyaltyProgram();
 }

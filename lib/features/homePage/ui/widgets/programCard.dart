@@ -1,7 +1,13 @@
+import 'package:fides/data/entities/loyaltyProgramEntity.dart';
 import 'package:flutter/material.dart';
 
 class ProgramCard extends StatelessWidget {
-  const ProgramCard({super.key});
+  final LoyaltyProgramEntity program;
+
+  const ProgramCard({
+    super.key,
+    required this.program,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,7 @@ class ProgramCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Free book of choice'),
+                Text(program.name!),
                 SizedBox(
                   height: 8,
                 ),
