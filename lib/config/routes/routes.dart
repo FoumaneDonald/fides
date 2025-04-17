@@ -1,18 +1,16 @@
-import 'package:fides/features/loyaltyProgram/ui/bloc/loyaltyProgramBloc.dart';
-import 'package:fides/features/loyaltyProgram/ui/page/aboutPointsProgram.dart';
+import 'package:fides/features/loyaltyProgram/ui/page/about_points_program.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../data/repositories/LoyaltyProgramRepository.dart';
-import '../../features/core/widgets/ScaffoldWithNestedNavigation.dart';
-import '../../features/homePage/ui/bloc/homeBloc.dart';
+import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
 import '../../features/homePage/ui/pages/home.dart';
-import '../../features/loyaltyProgram/ui/page/programReward.dart';
-import '../../features/loyaltyProgram/ui/page/selectLoyaltyProgram.dart';
-import '../../features/loyaltyProgram/ui/page/aboutStampProgram.dart';
-import '../../injection.dart';
+import '../../features/loyaltyProgram/ui/page/about_stamp_program.dart';
+import '../../features/loyaltyProgram/ui/page/program_reward.dart';
+import '../../features/loyaltyProgram/ui/page/programs.dart';
+import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
+import '../../features/subscribeClient/ui/pages/create_customer.dart';
+import '../../services/helpers/app_route_enum.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
@@ -21,7 +19,7 @@ final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
 
 class Routes {
   static final router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: AppRoute.home.path,
     navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
@@ -32,34 +30,50 @@ class Routes {
         },
         routes: [
           GoRoute(
-            name: 'home',
-            path: '/home',
+            name: AppRoute.home.name,
+            path: AppRoute.home.path,
             builder: (context, state) => const HomePage(),
           ),
           GoRoute(
-            name: 'loyaltyProgram',
-            path: '/loyalty-program',
-            builder: (context, state) => SelectLoyaltyProgram(),
+            name: AppRoute.programs.name,
+            path: AppRoute.programs.path,
+            builder: (context, state) => const Programs(),
             routes: [
               GoRoute(
-                name: 'stampCardProgram',
-                path: 'stamp-card-program',
-                builder: (context, state) => AboutStampProgram(),
-              ),
-              GoRoute(
-                name: 'pointsProgram',
-                path: 'points-program',
-                builder: (context, state) => AboutPointsProgram(),
-              ),
-              GoRoute(
-                name: 'programReward',
-                path: 'program-reward',
-                builder: (context, state) => ProgramReward(),
+                name: AppRoute.selectLoyaltyProgram.name,
+                path: AppRoute.selectLoyaltyProgram.path,
+                builder: (context, state) => SelectLoyaltyProgram(),
+                routes: [
+                  GoRoute(
+                    name: AppRoute.stampCardProgram.name,
+                    path: AppRoute.stampCardProgram.path,
+                    builder: (context, state) => AboutStampProgram(),
+                  ),
+                  GoRoute(
+                    name: AppRoute.pointsProgram.name,
+                    path: AppRoute.pointsProgram.path,
+                    builder: (context, state) => AboutPointsProgram(),
+                  ),
+                  GoRoute(
+                    name: AppRoute.programReward.name,
+                    path: AppRoute.programReward.path,
+                    builder: (context, state) {
+                      final extra = state.extra as Map<String, String>?;
+                      return ProgramReward(source: extra?['source']);
+                    },
+                  ),
+                ],
               ),
             ],
           ),
         ],
       ),
+      GoRoute(
+        parentNavigatorKey: _rootNavigatorKey,
+        name: 'subscribeCustomer',
+        path: '/subscribe_customer',
+        builder: (context, state) => CreateCustomer(),
+      )
     ],
     errorBuilder: (context, state) => Placeholder(),
   );

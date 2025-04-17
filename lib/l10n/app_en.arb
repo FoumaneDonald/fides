@@ -1,0 +1,10 @@
+{
+  "home": "Home",
+  "@home": {
+    "description": "App bar title of the home page"
+  },
+  "loyaltyPrograms": "Loyalty programs",
+  "@loyaltyPrograms": {
+    "description": "Home section title"
+  }
+}

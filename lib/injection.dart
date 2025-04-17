@@ -1,13 +1,13 @@
-import 'package:fides/services/objectBox.dart';
-import 'package:fides/services/loyaltyProgramDao.dart';
-import 'package:fides/services/simpleBlocObserver.dart';
+import 'package:fides/services/object_box.dart';
+import 'package:fides/services/loyalty_program_dao.dart';
+import 'package:fides/services/simple_bloc_observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import 'data/repositories/LoyaltyProgramRepository.dart';
-import 'domain/repositories/localLoyaltyProgramRepoImpl.dart';
-import 'features/loyaltyProgram/ui/bloc/loyaltyProgramBloc.dart';
-import 'features/homePage/ui/bloc/homeBloc.dart';
+import 'data/repositories/local_loyalty_program_repo_impl.dart';
+import 'domain/repositories/loyalty_program_repository.dart';
+import 'features/homePage/ui/bloc/home_bloc.dart';
+import 'features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {

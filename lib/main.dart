@@ -1,17 +1,20 @@
-import 'package:fides/config/theme/inputTheme.dart';
+import 'package:fides/config/theme/input_theme.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'config/routes/routes.dart';
-import 'config/theme/buttonTheme.dart';
-import 'config/theme/colorScheme.dart';
+import 'config/theme/app_theme.dart';
+import 'config/theme/button_theme.dart';
+import 'config/theme/color_scheme.dart';
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
-import 'data/repositories/LoyaltyProgramRepository.dart';
-import 'features/homePage/ui/bloc/homeBloc.dart';
-import 'features/loyaltyProgram/ui/bloc/loyaltyProgramBloc.dart';
+import 'domain/repositories/loyalty_program_repository.dart';
+import 'features/homePage/ui/bloc/home_bloc.dart';
+import 'features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
+import 'l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,24 +34,28 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          lazy: false,
-          create: (context) => HomeBloc(loyaltyProgramRepository: sl<LoyaltyProgramRepository>())..add(InitialisingHome()),
+          create: (context) => HomeBloc(),
         ),
         BlocProvider(
-          create: (context) => sl<LoyaltyProgramBloc>(),
+          lazy: false,
+          create: (context) => sl<LoyaltyProgramBloc>()..add(LoadLoyaltyPrograms()),
         ),
       ],
       child: MaterialApp.router(
         title: 'fides',
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
-        theme: ThemeData(
-          fontFamily: 'Livvic',
-          filledButtonTheme: filledButtonThemeData,
-          inputDecorationTheme: InputTheme.inputDecorationLightTheme,
-          dropdownMenuTheme: InputTheme.dropdownDecorationLightTheme,
-          // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffFFAAA2)),
-          colorScheme: lightScheme(),
-        ),
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        // theme: ThemeData(
+        //   fontFamily: 'Livvic',
+        //   filledButtonTheme: filledButtonThemeData,
+        //   inputDecorationTheme: InputTheme.inputDecorationLightTheme,
+        //   dropdownMenuTheme: InputTheme.dropdownDecorationLightTheme,
+        //   // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffFFAAA2)),
+        //   colorScheme: lightScheme(),
+        // ),
         routerConfig: Routes.router,
       ),
     );

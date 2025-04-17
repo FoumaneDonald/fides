@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../loyaltyProgram/ui/bloc/loyaltyProgramBloc.dart';
-import '../bloc/homeBloc.dart';
-import '../widgets/latestCustomersSection.dart';
-import '../widgets/loyalCustomersSection.dart';
-import '../widgets/loyaltyProgramSection.dart';
+import '../../../../l10n/app_localizations.dart';
+import '../../../loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import '../bloc/home_bloc.dart';
+import '../widgets/latest_customers_section.dart';
+import '../widgets/loyal_customers_section.dart';
+import '../widgets/loyalty_program_section.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,7 +15,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(leading: Icon(Icons.menu), title: Text('Home')),
+        appBar: AppBar(leading: Icon(Icons.menu), title: Text(AppLocalizations.of(context)!.home)),
         body: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
             // TODO: implement listener
@@ -27,14 +28,6 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     children: [
                       LoyalCustomersSection(),
-                      SizedBox(height: 24),
-                      if (state.programStatus == ProgramStatus.loading) ...{
-                        CircularProgressIndicator(),
-                      } else if (state.programStatus == ProgramStatus.error) ...{
-                        Text(state.message!),
-                      } else ...{
-                        LoyaltyProgramSection(loyaltyPrograms: state.listOfPrograms!),
-                      },
                       SizedBox(height: 24),
                       LatestCustomersSection(),
                     ],

@@ -14,8 +14,9 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'domain/models/loyaltyProgramModel.dart';
-import 'domain/models/rewardModel.dart';
+import 'data/models/customer_model.dart';
+import 'data/models/loyalty_program_model.dart';
+import 'data/models/reward_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -130,8 +131,52 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelBacklink(
             name: 'rewards',
             srcEntity: 'RewardModel',
-            srcField: 'loyaltyProgram')
-      ])
+            srcField: 'loyaltyProgram'),
+        obx_int.ModelBacklink(
+            name: 'customers',
+            srcEntity: 'CustomerModel',
+            srcField: 'loyaltyPrograms')
+      ]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(3, 12435688903466140),
+      name: 'CustomerModel',
+      lastPropertyId: const obx_int.IdUid(5, 8073404252985355084),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 1542532643528651518),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 2340145866410014569),
+            name: 'uid',
+            type: 9,
+            flags: 2080,
+            indexId: const obx_int.IdUid(4, 5064043649769193035)),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 3524937022293858320),
+            name: 'name',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 10449065858544969),
+            name: 'phone',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 8073404252985355084),
+            name: 'email',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[
+        obx_int.ModelRelation(
+            id: const obx_int.IdUid(1, 8726568091037055140),
+            name: 'loyaltyPrograms',
+            targetId: const obx_int.IdUid(2, 1173935753394898722))
+      ],
+      backlinks: <obx_int.ModelBacklink>[])
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -169,9 +214,9 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(2, 1173935753394898722),
-      lastIndexId: const obx_int.IdUid(3, 7454363406861329924),
-      lastRelationId: const obx_int.IdUid(0, 0),
+      lastEntityId: const obx_int.IdUid(3, 12435688903466140),
+      lastIndexId: const obx_int.IdUid(4, 5064043649769193035),
+      lastRelationId: const obx_int.IdUid(1, 8726568091037055140),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
@@ -261,7 +306,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         toManyRelations: (LoyaltyProgramModel object) => {
               obx_int.RelInfo<RewardModel>.toOneBacklink(10, object.id!,
                       (RewardModel srcObject) => srcObject.loyaltyProgram):
-                  object.rewards
+                  object.rewards,
+              obx_int.RelInfo<CustomerModel>.toManyBacklink(1, object.id!):
+                  object.customers
             },
         getId: (LoyaltyProgramModel object) => object.id,
         setId: (LoyaltyProgramModel object, int id) {
@@ -322,6 +369,64 @@ obx_int.ModelDefinition getObjectBoxModel() {
               store,
               obx_int.RelInfo<RewardModel>.toOneBacklink(10, object.id!,
                   (RewardModel srcObject) => srcObject.loyaltyProgram));
+          obx_int.InternalToManyAccess.setRelInfo<LoyaltyProgramModel>(
+              object.customers,
+              store,
+              obx_int.RelInfo<CustomerModel>.toManyBacklink(1, object.id!));
+          return object;
+        }),
+    CustomerModel: obx_int.EntityDefinition<CustomerModel>(
+        model: _entities[2],
+        toOneRelations: (CustomerModel object) => [],
+        toManyRelations: (CustomerModel object) => {
+              obx_int.RelInfo<CustomerModel>.toMany(1, object.id!):
+                  object.loyaltyPrograms
+            },
+        getId: (CustomerModel object) => object.id,
+        setId: (CustomerModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CustomerModel object, fb.Builder fbb) {
+          final uidOffset =
+              object.uid == null ? null : fbb.writeString(object.uid!);
+          final nameOffset =
+              object.name == null ? null : fbb.writeString(object.name!);
+          final phoneOffset =
+              object.phone == null ? null : fbb.writeString(object.phone!);
+          final emailOffset =
+              object.email == null ? null : fbb.writeString(object.email!);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id ?? 0);
+          fbb.addOffset(1, uidOffset);
+          fbb.addOffset(2, nameOffset);
+          fbb.addOffset(3, phoneOffset);
+          fbb.addOffset(4, emailOffset);
+          fbb.finish(fbb.endTable());
+          return object.id ?? 0;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+          final idParam =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
+          final uidParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 6);
+          final nameParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 8);
+          final phoneParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 10);
+          final emailParam = const fb.StringReader(asciiOptimization: true)
+              .vTableGetNullable(buffer, rootOffset, 12);
+          final object = CustomerModel(
+              id: idParam,
+              uid: uidParam,
+              name: nameParam,
+              phone: phoneParam,
+              email: emailParam);
+          obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
+              object.loyaltyPrograms,
+              store,
+              obx_int.RelInfo<CustomerModel>.toMany(1, object.id!));
           return object;
         })
   };
@@ -408,4 +513,32 @@ class LoyaltyProgramModel_ {
   static final rewards =
       obx.QueryBacklinkToMany<RewardModel, LoyaltyProgramModel>(
           RewardModel_.loyaltyProgram);
+}
+
+/// [CustomerModel] entity fields to define ObjectBox queries.
+class CustomerModel_ {
+  /// See [CustomerModel.id].
+  static final id =
+      obx.QueryIntegerProperty<CustomerModel>(_entities[2].properties[0]);
+
+  /// See [CustomerModel.uid].
+  static final uid =
+      obx.QueryStringProperty<CustomerModel>(_entities[2].properties[1]);
+
+  /// See [CustomerModel.name].
+  static final name =
+      obx.QueryStringProperty<CustomerModel>(_entities[2].properties[2]);
+
+  /// See [CustomerModel.phone].
+  static final phone =
+      obx.QueryStringProperty<CustomerModel>(_entities[2].properties[3]);
+
+  /// See [CustomerModel.email].
+  static final email =
+      obx.QueryStringProperty<CustomerModel>(_entities[2].properties[4]);
+
+  /// see [CustomerModel.loyaltyPrograms]
+  static final loyaltyPrograms =
+      obx.QueryRelationToMany<CustomerModel, LoyaltyProgramModel>(
+          _entities[2].relations[0]);
 }

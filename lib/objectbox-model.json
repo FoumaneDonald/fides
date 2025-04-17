@@ -112,11 +112,53 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:12435688903466140",
+      "lastPropertyId": "5:8073404252985355084",
+      "name": "CustomerModel",
+      "properties": [
+        {
+          "id": "1:1542532643528651518",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2340145866410014569",
+          "name": "uid",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "4:5064043649769193035"
+        },
+        {
+          "id": "3:3524937022293858320",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:10449065858544969",
+          "name": "phone",
+          "type": 9
+        },
+        {
+          "id": "5:8073404252985355084",
+          "name": "email",
+          "type": 9
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:8726568091037055140",
+          "name": "loyaltyPrograms",
+          "targetId": "2:1173935753394898722"
+        }
+      ]
     }
   ],
-  "lastEntityId": "2:1173935753394898722",
-  "lastIndexId": "3:7454363406861329924",
-  "lastRelationId": "0:0",
+  "lastEntityId": "3:12435688903466140",
+  "lastIndexId": "4:5064043649769193035",
+  "lastRelationId": "1:8726568091037055140",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
