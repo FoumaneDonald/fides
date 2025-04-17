@@ -23,7 +23,7 @@ class LoyaltyProgramState extends Equatable {
           message: '',
           loyaltyProgramEntity: LoyaltyProgramEntity().copyWith(numberHoles: Value(4), winningNumbers: Value([3])),
           listOfPrograms: const [],
-          rewardEntity: RewardEntity().copyWith(type: 'Free', discountType: Value('FCFA')),
+          rewardEntity: RewardEntity().copyWith(type: RewardType.free, discountType: Value(DiscountType.price)),
         );
 
   LoyaltyProgramState copyWith({

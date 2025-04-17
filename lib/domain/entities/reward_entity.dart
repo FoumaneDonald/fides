@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 import '../../data/models/reward_model.dart';
+import '../../services/helpers/discount_type_enum.dart';
+import '../../services/helpers/reward_type_enum.dart';
 
 
 class Value<T> {
@@ -11,9 +13,9 @@ class Value<T> {
 class RewardEntity extends Equatable {
   final int? id;
   final String? uid;
-  final String? type;
+  final RewardType? type;
   final int? discountValue;
-  final String? discountType;
+  final DiscountType? discountType;
   final String? item;
   final String? description;
   final int? rewardCost;
@@ -34,9 +36,9 @@ class RewardEntity extends Equatable {
   RewardEntity copyWith({
     int? id,
     String? uid,
-    String? type,
+    RewardType? type,
     Value<int?>? discountValue,
-    Value<String?>? discountType,
+    Value<DiscountType?>? discountType,
     String? item,
     String? description,
     Value<int?>? rewardCost,
@@ -60,9 +62,9 @@ class RewardEntity extends Equatable {
     return RewardEntity(
       id: model.id,
       uid: model.uid,
-      type: model.type,
+      type: RewardType.from(model.type),
       discountValue: model.discountValue,
-      discountType: model.discountValueType,
+      discountType: DiscountType.from(model.discountValueType),
       item: model.item,
       description: model.description,
       rewardCost: model.rewardCost,

@@ -48,29 +48,54 @@ final class AboutPointProgramChanged extends LoyaltyProgramEvent {
   List<Object?> get props => [name, pointValue];
 }
 
-final class RewardChanges extends LoyaltyProgramEvent {
-  final String? type;
-  final int? discountValue;
-  final String? discountType;
-  final String? item;
-  final String? description;
-  final int? rewardCost;
-  final int? minPurchase;
-  final bool submit;
-
-  const RewardChanges({
-    this.type,
-    this.discountValue,
-    this.discountType,
-    this.item,
-    this.description,
-    this.rewardCost,
-    this.minPurchase,
-    this.submit = false,
-  });
+final class RewardTypeChanged extends LoyaltyProgramEvent {
+  final RewardType type;
+  const RewardTypeChanged(this.type);
 
   @override
-  List<Object?> get props => [type, discountValue, discountType, item, description, rewardCost, minPurchase, submit];
+  List<Object> get props => [type];
 }
+
+final class RewardDiscountValueChanged extends LoyaltyProgramEvent {
+  final int? discountValue;
+  const RewardDiscountValueChanged(this.discountValue);
+
+  @override
+  List<Object?> get props => [discountValue];
+}
+
+final class RewardDiscountTypeChanged extends LoyaltyProgramEvent {
+  final DiscountType? discountType;
+  const RewardDiscountTypeChanged(this.discountType);
+
+  @override
+  List<Object?> get props => [discountType];
+}
+
+final class RewardItemChanged extends LoyaltyProgramEvent {
+  final String item;
+  const RewardItemChanged(this.item);
+
+  @override
+  List<Object> get props => [item];
+}
+
+final class RewardDescriptionChanged extends LoyaltyProgramEvent {
+  final String description;
+  const RewardDescriptionChanged(this.description);
+
+  @override
+  List<Object> get props => [description];
+}
+
+final class RewardCostChanged extends LoyaltyProgramEvent {
+  final int? rewardCost;
+  const RewardCostChanged(this.rewardCost);
+
+  @override
+  List<Object?> get props => [rewardCost];
+}
+
+final class SubmitLoyaltyProgram extends LoyaltyProgramEvent {}
 
 final class ResetForms extends LoyaltyProgramEvent{}

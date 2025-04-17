@@ -1,5 +1,6 @@
 import 'package:fides/features/core/mixins/validation_mixins.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'fides_text_form_field.dart';
 
@@ -8,8 +9,10 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final String inputLabel;
   final String? hintText;
   final String? suffixText;
+  final Widget? suffix;
   final int? maxLine;
   final TextInputType? textInputType;
+  final List<TextInputFormatter>? inputFormatter;
   final Function(String? value)? onSaved;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
@@ -20,8 +23,10 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     required this.inputLabel,
     this.hintText,
     this.suffixText,
+    this.suffix,
     this.maxLine,
     this.textInputType,
+    this.inputFormatter,
     this.onSaved,
     this.onChanged,
     this.validator,
@@ -44,8 +49,10 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
           controller: controller,
           hintText: hintText,
           suffixText: suffixText,
+          suffix: suffix,
           maxLine: maxLine,
           textInputType: textInputType,
+          inputFormatter: inputFormatter,
           validator: generalValidation,
           onSaved: onSaved,
           onChanged: onChanged,

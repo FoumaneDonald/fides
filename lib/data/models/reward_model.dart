@@ -61,9 +61,9 @@ class RewardModel {
     return RewardModel(
       id: entity.id ?? 0,
       uid: entity.uid,
-      type: entity.type,
+      type: entity.type?.label,
       discountValue: entity.discountValue,
-      discountValueType: entity.discountType,
+      discountValueType: entity.discountType?.label,
       item: entity.item,
       description: entity.description,
       rewardCost: entity.rewardCost,

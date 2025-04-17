@@ -1,3 +1,4 @@
+// todo: delete
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -41,23 +42,23 @@ class DiscountValueInput extends StatelessWidget with ValidationMixins {
               onChanged: inputOnChanged,
               validator: generalValidation,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                RadioMenuButton(
-                  value: 'FCFA',
-                  groupValue: selectedDiscountType,
-                  onChanged: onChanged,
-                  child: Text('FCFA'),
-                ),
-                RadioMenuButton(
-                  value: '%',
-                  groupValue: selectedDiscountType,
-                  onChanged: onChanged,
-                  child: Text('%'),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     RadioMenuButton(
+            //       value: 'FCFA',
+            //       groupValue: selectedDiscountType,
+            //       onChanged: onChanged,
+            //       child: Text('FCFA'),
+            //     ),
+            //     RadioMenuButton(
+            //       value: '%',
+            //       groupValue: selectedDiscountType,
+            //       onChanged: onChanged,
+            //       child: Text('%'),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ],

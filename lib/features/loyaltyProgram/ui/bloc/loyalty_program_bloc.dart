@@ -4,6 +4,8 @@ import 'package:fides/domain/entities/reward_entity.dart';
 
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
+import '../../../../services/helpers/discount_type_enum.dart';
+import '../../../../services/helpers/reward_type_enum.dart';
 
 part 'loyalty_program_event.dart';
 
@@ -18,7 +20,13 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
     on<NumHolesChanged>(_onNumHolesChanged);
     on<AboutStampProgramChanged>(_onAboutStampProgramChanged);
     on<AboutPointProgramChanged>(_onAboutPointProgramChanged);
-    on<RewardChanges>(_onRewardChanges);
+    on<RewardTypeChanged>(_onRewardTypeChanged);
+    on<RewardDiscountValueChanged>(_onRewardDiscountValueChanged);
+    on<RewardDiscountTypeChanged>(_onRewardDiscountTypeChanged);
+    on<RewardItemChanged>(_onRewardItemChanged);
+    on<RewardDescriptionChanged>(_onRewardDescriptionChanged);
+    on<RewardCostChanged>(_onRewardCostChanged);
+    on<SubmitLoyaltyProgram>(_onSubmitLoyaltyProgram);
     on<ResetForms>(_onResetBloc);
   }
 
@@ -46,7 +54,7 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
       winningNumbers.removeWhere((number) => numbersToBeDeleted.contains(number));
     }
 
-    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(numberHoles: Value(event.numHoles), winningNumbers: Value(winningNumbers));
+    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(pointValue: Value(null), numberHoles: Value(event.numHoles), winningNumbers: Value(winningNumbers));
     emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedLoyaltyProgram));
   }
 
@@ -62,41 +70,67 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
       }
     }
 
-
-    ///TOdo: Urgent, event.numHoles becomes null when I select 2 values from winning numbers
-    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(name: event.name, winningNumbers: Value(winningNumbers));
+    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(name: event.name, pointValue: Value(null), winningNumbers: Value(winningNumbers));
     emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedLoyaltyProgram));
   }
 
   _onAboutPointProgramChanged(AboutPointProgramChanged event, Emitter<LoyaltyProgramState> emit) async {
-    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(name: event.name, pointValue: event.pointValue, numberHoles: Value(null), winningNumbers: Value(null));
+    final updatedLoyaltyProgram = state.loyaltyProgramEntity!.copyWith(name: event.name, pointValue: Value(event.pointValue), numberHoles: Value(null), winningNumbers: Value(null));
     emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedLoyaltyProgram));
   }
 
-  _onRewardChanges(RewardChanges event, Emitter<LoyaltyProgramState> emit) async {
+  _onRewardTypeChanged(RewardTypeChanged event, Emitter<LoyaltyProgramState> emit) {
     final updatedRewardEntity = state.rewardEntity!.copyWith(
       type: event.type,
-      discountValue: state.rewardEntity!.type == 'Free' ? Value(null) : Value(event.discountValue),
-      discountType: state.rewardEntity!.type == 'Free' ? Value(null) : Value(event.discountType),
-      item: event.item,
-      description: event.description,
-      rewardCost: state.rewardEntity!.type == 'Free' ? Value(null) : Value(event.rewardCost),
-      minimumPurchase: event.minPurchase,
     );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
 
-    if (event.submit) {
-      emit(state.copyWith(status: Status.loading));
-      final response = await loyaltyProgramRepository.createLoyaltyProgram(
-        loyaltyProgramEntity: state.loyaltyProgramEntity!,
-        reward: state.rewardEntity!,
-      );
-      response.fold(
-        (loyaltyProgram) => emit(state.copyWith(status: Status.success)),
-        (failure) => emit(state.copyWith(status: Status.error, message: failure.toString())),
-      );
-    } else {
-      emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
-    }
+  _onRewardDiscountValueChanged(RewardDiscountValueChanged event, Emitter<LoyaltyProgramState> emit) {
+    final updatedRewardEntity = state.rewardEntity!.copyWith(
+      discountValue: state.rewardEntity!.type == RewardType.free ? Value(null) : Value(event.discountValue),
+    );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
+
+  _onRewardDiscountTypeChanged(RewardDiscountTypeChanged event, Emitter<LoyaltyProgramState> emit) {
+    final updatedRewardEntity = state.rewardEntity!.copyWith(
+      discountType: state.rewardEntity!.type == RewardType.free ? Value(null) : Value(event.discountType),
+    );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
+
+  _onRewardItemChanged(RewardItemChanged event, Emitter<LoyaltyProgramState> emit) {
+    final updatedRewardEntity = state.rewardEntity!.copyWith(
+      item: event.item,
+    );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
+
+  _onRewardDescriptionChanged(RewardDescriptionChanged event, Emitter<LoyaltyProgramState> emit) {
+    final updatedRewardEntity = state.rewardEntity!.copyWith(
+      description: event.description,
+    );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
+
+  _onRewardCostChanged(RewardCostChanged event, Emitter<LoyaltyProgramState> emit) {
+    final updatedRewardEntity = state.rewardEntity!.copyWith(
+      rewardCost: state.rewardEntity!.type == RewardType.free ? Value(null) : Value(event.rewardCost),
+    );
+    emit(state.copyWith(status: Status.ongoing, rewardEntity: updatedRewardEntity));
+  }
+
+  _onSubmitLoyaltyProgram(SubmitLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
+    emit(state.copyWith(status: Status.loading));
+    final response = await loyaltyProgramRepository.createLoyaltyProgram(
+      loyaltyProgramEntity: state.loyaltyProgramEntity!,
+      reward: state.rewardEntity!,
+    );
+    response.fold(
+      (loyaltyProgram) => emit(state.copyWith(status: Status.success)),
+      (failure) => emit(state.copyWith(status: Status.error, message: failure.toString())),
+    );
   }
 
   _onResetBloc(ResetForms event, Emitter<LoyaltyProgramState> emit) {

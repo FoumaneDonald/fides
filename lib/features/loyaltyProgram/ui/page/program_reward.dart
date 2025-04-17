@@ -1,10 +1,15 @@
 import 'package:fides/features/core/widgets/fides_snack_bar.dart';
+import 'package:fides/services/helpers/reward_type_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../injection.dart';
 import '../../../../services/helpers/app_route_enum.dart';
+import '../../../../services/helpers/discount_type_enum.dart';
+import '../../../../services/helpers/program_type_enum.dart';
+import '../../../core/widgets/fides_dropdown_input.dart';
 import '../../../core/widgets/fides_text_input.dart';
 import '../../../core/widgets/loader.dart';
 import '../../../homePage/ui/bloc/home_bloc.dart';
@@ -30,7 +35,7 @@ class _ProgramRewardState extends State<ProgramReward> {
   late TextEditingController _descriptionController;
   late TextEditingController _pointCostController;
   late TextEditingController _minPurchaseController;
-  List<String> listTypeOfReward = ['Free', 'Discount'];
+  List<RewardType> listTypeOfReward = RewardType.values;
   String discountType = 'FCFA';
 
   @override
@@ -49,9 +54,9 @@ class _ProgramRewardState extends State<ProgramReward> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            if( widget.source == AppRoute.stampCardProgram.name ) {
+            if (widget.source == AppRoute.stampCardProgram.name) {
               context.goNamed(AppRoute.stampCardProgram.name);
-            } else if ( widget.source == AppRoute.pointsProgram.name){
+            } else if (widget.source == AppRoute.pointsProgram.name) {
               context.goNamed(AppRoute.pointsProgram.name);
             } else {
               context.pop();
@@ -80,9 +85,10 @@ class _ProgramRewardState extends State<ProgramReward> {
                 }
               },
               builder: (context, state) {
+                print("${state.rewardEntity!.discountType?.label} ?? ${DiscountType.price.label}");
                 _itemController.text = state.rewardEntity!.item ?? '';
                 _descriptionController.text = state.rewardEntity!.description ?? '';
-                _pointCostController.text = state.rewardEntity!.rewardCost.toString() ?? '';
+                _pointCostController.text = state.rewardEntity!.rewardCost?.toString() ?? '';
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -94,34 +100,50 @@ class _ProgramRewardState extends State<ProgramReward> {
                           key: _formKey,
                           child: Column(
                             children: [
-                              TypeOfRewardInput(
-                                listTypeReward: listTypeOfReward,
+                              FidesDropdownInput<RewardType>(
+                                inputLabel: 'Type of reward*',
+                                dropDownList: listTypeOfReward,
                                 selectedValue: state.rewardEntity!.type!,
                                 onChanged: (value) {
                                   if (value != null) {
-                                    context.read<LoyaltyProgramBloc>().add(RewardChanges(type: value.trim()));
+                                    context.read<LoyaltyProgramBloc>().add(RewardTypeChanged(value));
                                   }
+                                },
+                                itemBuilder: (RewardType type) {
+                                  return Text(type.label);
                                 },
                               ),
                               SizedBox(height: 16),
-                              if (state.rewardEntity!.type! == 'Discount') ...{
-                                DiscountValueInput(
+                              if (state.rewardEntity!.type! == RewardType.discount) ...{
+                                FidesTextInput(
                                   controller: _discountValueController,
-                                  selectedDiscountType: state.rewardEntity!.discountType ?? 'FCFA',
-                                  inputOnChanged: (value) =>
-                                      context.read<LoyaltyProgramBloc>().add(RewardChanges(discountValue: int.parse(value.trim()), discountType: state.rewardEntity!.discountType)),
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      context.read<LoyaltyProgramBloc>().add(RewardChanges(discountType: value.trim(), discountValue: state.rewardEntity!.discountValue));
-                                    }
-                                  },
+                                  inputLabel: 'Discount value*',
+                                  hintText: '100',
+                                  suffixText: state.rewardEntity!.discountType?.label ?? DiscountType.price.label,
+                                  textInputType: TextInputType.number,
+                                  inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
+                                  onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardDiscountValueChanged(int.tryParse(value))),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: DiscountType.values
+                                      .map(
+                                        (type) => RadioMenuButton<DiscountType>(
+                                          value: type,
+                                          groupValue: state.rewardEntity!.discountType ?? DiscountType.price,
+                                          onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardDiscountTypeChanged(value)),
+                                          child: Text(type.label),
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
                                 SizedBox(height: 16),
                               },
-                              ItemInput(
+                              FidesTextInput(
                                 controller: _itemController,
-                                rewardType: state.rewardEntity!.type!,
-                                onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(item: value.trim())),
+                                inputLabel: '${state.rewardEntity!.type!.label} Item*',
+                                hintText: 'Coffee',
+                                onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardItemChanged(value.trim())),
                               ),
                               SizedBox(height: 16),
                               FidesTextInput(
@@ -130,13 +152,17 @@ class _ProgramRewardState extends State<ProgramReward> {
                                 hintText: '1000 FCFA off your next purchase',
                                 textInputType: TextInputType.name,
                                 maxLine: 2,
-                                onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(description: value.trim())),
+                                onChanged: (description) => context.read<LoyaltyProgramBloc>().add(RewardDescriptionChanged(description.trim())),
                               ),
                               SizedBox(height: 16),
-                              if (state.loyaltyProgramEntity!.type == 'Points')
-                                RewardCostInput(
+                              if (state.loyaltyProgramEntity!.type == ProgramType.points.label)
+                                FidesTextInput(
                                   controller: _pointCostController,
-                                  onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardChanges(rewardCost: int.tryParse(value.trim()))),
+                                  inputLabel: 'How many point does the rewards cost*',
+                                  hintText: '100',
+                                  inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
+                                  textInputType: TextInputType.number,
+                                  onChanged: (value) => context.read<LoyaltyProgramBloc>().add(RewardCostChanged(int.tryParse(value.trim()))),
                                 ),
                               // MinPurchaseInput(
                               //   controller: _minPurchaseController,
@@ -147,12 +173,13 @@ class _ProgramRewardState extends State<ProgramReward> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 32),
                     state.status == Status.loading
                         ? Loader()
                         : FilledButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                context.read<LoyaltyProgramBloc>().add(RewardChanges(submit: true));
+                                context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
                               }
                             },
                             child: Row(

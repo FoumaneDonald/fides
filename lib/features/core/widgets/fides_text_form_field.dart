@@ -6,6 +6,7 @@ class FidesTextFormField extends StatelessWidget {
   final int? _maxLine;
   final String? _hintText;
   final String? _suffixText;
+  final Widget? _suffix;
   final String? Function(String? value)? _validator;
   final void Function(String?)? _onSaved;
   final void Function(String)? _onFieldSubmitted;
@@ -22,6 +23,7 @@ class FidesTextFormField extends StatelessWidget {
     int? maxLine = 1,
     String? hintText,
     String? suffixText,
+    Widget? suffix,
     String? Function(String? value)? validator,
     void Function(String?)? onSaved,
     void Function(String)? onFieldSubmitted,
@@ -35,6 +37,7 @@ class FidesTextFormField extends StatelessWidget {
         _maxLine = maxLine,
         _hintText = hintText,
         _suffixText = suffixText,
+        _suffix = suffix,
         _validator = validator,
         _onSaved = onSaved,
         _onFieldSubmitted = onFieldSubmitted,
@@ -54,6 +57,7 @@ class FidesTextFormField extends StatelessWidget {
         suffixIcon: _suffixIcon,
         hintText: _hintText,
         suffixText: _suffixText,
+        suffix: _suffix,
       ),
       keyboardType: _textInputType,
       maxLines: _maxLine,

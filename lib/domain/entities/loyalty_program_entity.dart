@@ -37,7 +37,7 @@ class LoyaltyProgramEntity extends Equatable {
     String? uid,
     String? type,
     String? name,
-    String? pointValue,
+    Value<String?>? pointValue,
     Value<int?>? numberHoles,
     Value<List<int>?>? winningNumbers,
   }) {
@@ -46,7 +46,7 @@ class LoyaltyProgramEntity extends Equatable {
       uid: uid ?? this.uid,
       type: type ?? this.type,
       name: name ?? this.name,
-      pointValue: pointValue ?? this.pointValue,
+      pointValue: pointValue != null ? pointValue.value : this.pointValue,
       numberHoles: numberHoles != null ? numberHoles.value : this.numberHoles,
       winningNumbers: winningNumbers != null ? winningNumbers.value : this.winningNumbers,
     );
