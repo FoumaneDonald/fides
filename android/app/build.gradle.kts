@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.eos.fides"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+//    ndkVersion = flutter.ndkVersion
+    ndkVersion = "28.1.13356709"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -35,6 +36,40 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "fides_dev"
+            )
+//            resValue = "string", "app_name", "fides_dev"
+        }
+        create("staging") {
+            dimension = "env"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-stage"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "fides_staging"
+            )
+//            resValue = "string", "app_name", "fides_staging"
+        }
+        create("prod") {
+            dimension = "env"
+            resValue(
+                type = "string",
+                name = "app_name",
+                value = "fides"
+            )
+//            resValue = "string", "app_name", "fides"
         }
     }
 }

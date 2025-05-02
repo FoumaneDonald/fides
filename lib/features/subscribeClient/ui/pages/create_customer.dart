@@ -128,6 +128,7 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                         ),
                       ),
                       PrimaryButton(
+                        text: 'Continue',
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             // context.goNamed(AppRoute.programReward.name);

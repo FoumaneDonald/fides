@@ -1,11 +1,10 @@
-import 'package:fides/features/loyaltyProgram/ui/page/about_points_program.dart';
+import 'package:fides/features/loyaltyProgram/ui/page/about_program.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
 import '../../features/homePage/ui/pages/home.dart';
-import '../../features/loyaltyProgram/ui/page/about_stamp_program.dart';
 import '../../features/loyaltyProgram/ui/page/program_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
@@ -45,28 +44,28 @@ class Routes {
                 builder: (context, state) => SelectLoyaltyProgram(),
                 routes: [
                   GoRoute(
-                    name: AppRoute.stampCardProgram.name,
-                    path: AppRoute.stampCardProgram.path,
-                    builder: (context, state) => AboutStampProgram(),
-                  ),
-                  GoRoute(
                     name: AppRoute.pointsProgram.name,
                     path: AppRoute.pointsProgram.path,
-                    builder: (context, state) => AboutPointsProgram(),
+                    builder: (context, state) => AboutProgram(),
                   ),
-                  GoRoute(
-                    name: AppRoute.programReward.name,
-                    path: AppRoute.programReward.path,
-                    builder: (context, state) {
-                      final extra = state.extra as Map<String, String>?;
-                      return ProgramReward(source: extra?['source']);
-                    },
-                  ),
+                  // GoRoute(
+                  //   name: AppRoute.programReward.name,
+                  //   path: AppRoute.programReward.path,
+                  //   builder: (context, state) {
+                  //     final extra = state.extra as Map<String, String>?;
+                  //     return ProgramReward(source: extra?['source']);
+                  //   },
+                  // ),
                 ],
               ),
             ],
           ),
         ],
+      ),
+      GoRoute(
+        name: AppRoute.programReward.name,
+        path: AppRoute.programReward.path,
+        builder: (context, state) => ProgramReward(),
       ),
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,

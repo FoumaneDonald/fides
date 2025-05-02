@@ -7,28 +7,29 @@ sealed class LoyaltyProgramEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-final class LoadLoyaltyPrograms extends LoyaltyProgramEvent{}
+final class LoadLoyaltyPrograms extends LoyaltyProgramEvent {}
 
 final class SelectedLoyaltyProgram extends LoyaltyProgramEvent {
-  final String programName;
+  final ProgramType programType;
 
-  const SelectedLoyaltyProgram(this.programName);
-
-  @override
-  List<Object?> get props => [programName];
-}
-
-final class AboutStampProgramChanged extends LoyaltyProgramEvent {
-  final String? name;
-  final int? winningNumbers;
-
-  const AboutStampProgramChanged({this.name, this.winningNumbers,});
+  const SelectedLoyaltyProgram(this.programType);
 
   @override
-  List<Object?> get props => [name, winningNumbers];
+  List<Object?> get props => [programType];
 }
 
-final class NumHolesChanged extends LoyaltyProgramEvent{
+final class WinningStampChanged extends LoyaltyProgramEvent {
+  final int winningNumbers;
+
+  const WinningStampChanged(
+    this.winningNumbers,
+  );
+
+  @override
+  List<Object?> get props => [winningNumbers];
+}
+
+final class NumHolesChanged extends LoyaltyProgramEvent {
   final int numHoles;
   final int? deletedNumber;
 
@@ -38,64 +39,48 @@ final class NumHolesChanged extends LoyaltyProgramEvent{
   List<Object?> get props => [numHoles, deletedNumber];
 }
 
-final class AboutPointProgramChanged extends LoyaltyProgramEvent {
-  final String? name;
-  final String? pointValue;
+final class NameChanged extends LoyaltyProgramEvent {
+  final String name;
 
-  const AboutPointProgramChanged({this.name, this.pointValue,});
+  const NameChanged(
+    this.name,
+  );
 
   @override
-  List<Object?> get props => [name, pointValue];
+  List<Object?> get props => [name];
 }
 
-final class RewardTypeChanged extends LoyaltyProgramEvent {
-  final RewardType type;
-  const RewardTypeChanged(this.type);
+final class PointValueChanged extends LoyaltyProgramEvent {
+  final String pointValue;
+
+  const PointValueChanged(
+    this.pointValue,
+  );
 
   @override
-  List<Object> get props => [type];
-}
-
-final class RewardDiscountValueChanged extends LoyaltyProgramEvent {
-  final int? discountValue;
-  const RewardDiscountValueChanged(this.discountValue);
-
-  @override
-  List<Object?> get props => [discountValue];
-}
-
-final class RewardDiscountTypeChanged extends LoyaltyProgramEvent {
-  final DiscountType? discountType;
-  const RewardDiscountTypeChanged(this.discountType);
-
-  @override
-  List<Object?> get props => [discountType];
-}
-
-final class RewardItemChanged extends LoyaltyProgramEvent {
-  final String item;
-  const RewardItemChanged(this.item);
-
-  @override
-  List<Object> get props => [item];
-}
-
-final class RewardDescriptionChanged extends LoyaltyProgramEvent {
-  final String description;
-  const RewardDescriptionChanged(this.description);
-
-  @override
-  List<Object> get props => [description];
-}
-
-final class RewardCostChanged extends LoyaltyProgramEvent {
-  final int? rewardCost;
-  const RewardCostChanged(this.rewardCost);
-
-  @override
-  List<Object?> get props => [rewardCost];
+  List<Object?> get props => [pointValue];
 }
 
 final class SubmitLoyaltyProgram extends LoyaltyProgramEvent {}
 
-final class ResetForms extends LoyaltyProgramEvent{}
+final class AddReward extends LoyaltyProgramEvent {
+  final RewardEntity rewardEntity;
+
+  const AddReward(
+    this.rewardEntity,
+  );
+
+  @override
+  List<Object?> get props => [rewardEntity];
+}
+
+final class ResetForms extends LoyaltyProgramEvent {}
+
+final class DeleteReward extends LoyaltyProgramEvent {
+  final RewardEntity reward;
+
+  const DeleteReward(this.reward);
+
+  @override
+  List<Object?> get props => [reward];
+}

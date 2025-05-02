@@ -1,13 +1,14 @@
 enum ProgramType {
-  unknown('Unknown', 'Unrecognized program type.', 'assets/icons/unknown.svg'),
-  stamp('Stamp', 'A classic loyalty program where customers earn a digital stamp for each qualifying purchase.', 'assets/icons/stamp.svg'),
-  points('Points', 'A flexible loyalty program where customers earn points for every money spent.', 'assets/icons/token.svg');
+  unknown('Unknown','Unknown', 'Unrecognized program type.', 'assets/icons/unknown.svg'),
+  stamp('Stamp','Stamp Program', 'A simple program where customers earn a digital stamp for each visit - perfect for rewarding repeat purchases.', 'assets/icons/stamp.svg'),
+  points('Points','Points Program', 'Customers earn points based on how much they spend - great for encouraging larger purchases and repeat visits.', 'assets/icons/token.svg');
 
   final String label;
+  final String title;
   final String description;
   final String iconPath;
 
-  const ProgramType(this.label, this.description, this.iconPath);
+  const ProgramType(this.label, this.title, this.description, this.iconPath);
 
   static ProgramType from(String? value) {
     return ProgramType.values.firstWhere(

@@ -1,5 +1,4 @@
-enum RewardType{
-  unknown('Unknown'),
+enum RewardType {
   free('Free'),
   discount('Discount');
 
@@ -9,8 +8,8 @@ enum RewardType{
 
   static RewardType from(String? value) {
     return RewardType.values.firstWhere(
-          (e) => e.label.toLowerCase() == value?.toLowerCase(),
-      orElse: () => RewardType.unknown,
+      (e) => e.label.toLowerCase() == value?.toLowerCase(),
+      orElse: () => RewardType.free,
     );
   }
 }

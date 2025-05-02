@@ -22,7 +22,7 @@ enum AppRoute {
       case AppRoute.pointsProgram:
         return 'points-program';
       case AppRoute.programReward:
-        return 'program-reward';
+        return '/program-reward';
       case AppRoute.subscribeCustomer:
         return '/subscribe_customer';
     }

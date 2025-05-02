@@ -18,10 +18,11 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
   List<LoyaltyProgramEntity> get existingPrograms => _existingPrograms;
 
   @override
-  Future<Result<LoyaltyProgramEntity>> createLoyaltyProgram({required LoyaltyProgramEntity loyaltyProgramEntity, required RewardEntity reward}) async {
+  Future<Result<LoyaltyProgramEntity>> createLoyaltyProgram({required LoyaltyProgramEntity loyaltyProgramEntity, required List<RewardEntity> rewardList}) async {
+    final List<RewardModel> rewardsToModel = rewardList.map((reward) => RewardModel.fromEntity(reward)).toList();
     final result = loyaltyProgramDao.create(
       LoyaltyProgramModel.fromEntity(loyaltyProgramEntity),
-      RewardModel.fromEntity(reward),
+      rewardsToModel,
     );
     return result.fold(
       (loyaltyProgram) {

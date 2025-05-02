@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'app_config.dart';
 import 'config/routes/routes.dart';
 import 'config/theme/app_theme.dart';
 import 'config/theme/button_theme.dart';
@@ -19,6 +20,19 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
+  // await SentryFlutter.init(
+  //   (options) {
+  //     options.dsn = 'https://ed7a2311327540d6eac5a6f4431c1cf2@o4509253067079680.ingest.de.sentry.io/4509253070815312';
+  //     // Adds request headers and IP for users,
+  //     // visit: https://docs.sentry.io/platforms/dart/data-management/data-collected/ for more info
+  //     options.sendDefaultPii = true;
+  //   },
+  //   appRunner: () => runApp(
+  //     SentryWidget(
+  //       child: MyApp(),
+  //     ),
+  //   ),
+  // );
   runApp(const MyApp());
 }
 
@@ -43,6 +57,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         title: 'fides',
+        debugShowCheckedModeBanner: sl<AppConfig>().env != Environment.prod,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         // theme: brightness == Brightness.light ? theme.light() : theme.dark(),

@@ -14,7 +14,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Loyalty program'),
+        title: Text('Choose your loyalty program'),
       ),
       body: SafeArea(
         child: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
@@ -22,14 +22,8 @@ class SelectLoyaltyProgram extends StatelessWidget {
             final route = ModalRoute.of(context);
             final isCurrentRoute = route?.isCurrent ?? false;
 
-            if(state.status == Status.ongoing && isCurrentRoute ){
-              final type = state.loyaltyProgramEntity?.programType;
-
-              if(type == ProgramType.stamp) {
-                context.pushNamed(AppRoute.stampCardProgram.name);
-              }else if(type == ProgramType.points){
-                context.pushNamed(AppRoute.pointsProgram.name);
-              }
+            if (state.status == Status.ongoing && isCurrentRoute) {
+              context.pushNamed(AppRoute.pointsProgram.name);
             }
           },
           builder: (context, state) {
@@ -42,23 +36,23 @@ class SelectLoyaltyProgram extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Select loyalty program'),
+                          Text('Pick the type of program that best fits your business - simple stamps or flexible points. You can customize the details in the next step.'),
                           SizedBox(height: 24),
                           Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              LoyaltyProgramCard(
-                                programName: 'Stamp-based program',
+                              LoyaltyProgramCardSelection(
+                                programName: ProgramType.stamp.title,
                                 programDescription: ProgramType.stamp.description,
                                 programImage: ProgramType.stamp.iconPath,
-                                onPressed: () => context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.stamp.label)),
+                                onPressed: () => context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.stamp)),
                               ),
                               SizedBox(height: 16),
-                              LoyaltyProgramCard(
-                                programName: 'Points-based program',
+                              LoyaltyProgramCardSelection(
+                                programName: ProgramType.points.title,
                                 programDescription: ProgramType.points.description,
                                 programImage: ProgramType.points.iconPath,
-                                onPressed: () => context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.points.label)),
+                                onPressed: () => context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.points)),
                               ),
                             ],
                           ),

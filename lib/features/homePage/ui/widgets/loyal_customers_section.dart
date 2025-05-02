@@ -1,3 +1,4 @@
+import 'package:fides/features/core/widgets/fides_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -26,7 +27,8 @@ class LoyalCustomersSection extends StatelessWidget {
             Flexible(
               child: FilledButton(
                 onPressed: () {
-                  context.pushNamed(AppRoute.subscribeCustomer.name);
+                  // context.pushNamed(AppRoute.subscribeCustomer.name);
+                  showSnackBar(context, 'Coming soon');
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

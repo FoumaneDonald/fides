@@ -4,13 +4,12 @@ import 'package:flutter/services.dart';
 
 import 'fides_text_form_field.dart';
 
-class FidesTextInput extends StatelessWidget with ValidationMixins {
+class FidesTextInputSelection<T> extends StatelessWidget {
   final FocusNode? focusNode;
-  final TextInputAction? textInputAction;
+  final FocusNode? focusNodeDropdown;
   final TextEditingController controller;
   final String inputLabel;
   final String? hintText;
-  final TextAlign? textAlign;
   final String? suffixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -26,14 +25,20 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
 
-  const FidesTextInput({
+  //Dropdown
+  final List<T> dropDownList;
+  final T selectedValue;
+  final Function(T? newValue)? onChangedDropdown;
+  final Function(T? value)? onSavedDropdown;
+  final Widget Function(T item) itemBuilder;
+
+  const FidesTextInputSelection({
     super.key,
     this.focusNode,
-    this.textInputAction,
+    this.focusNodeDropdown,
     required this.controller,
     required this.inputLabel,
     this.hintText,
-    this.textAlign,
     this.suffixText,
     this.prefixIcon,
     this.suffixIcon,
@@ -48,12 +53,18 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.onChanged,
     this.onFieldSubmitted,
     this.validator,
+
+    //dropdown
+    required this.dropDownList,
+    required this.selectedValue,
+    this.onChangedDropdown,
+    this.onSavedDropdown,
+    required this.itemBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
@@ -63,20 +74,42 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
             fontWeight: FontWeight.w600,
           ),
         ),
+        const SizedBox(height: 4),
         TextFormField(
           focusNode: focusNode,
-          textInputAction: textInputAction,
           controller: controller,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DropdownButton<T>(
+                    focusNode: focusNodeDropdown,
+                    value: selectedValue,
+                    underline: SizedBox(),
+                    // autovalidateMode: AutovalidateMode.onUnfocus,
+                    items: dropDownList
+                        .map(
+                          (item) => DropdownMenuItem<T>(
+                            value: item,
+                            child: itemBuilder(item),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: onChangedDropdown,
+                    // onSaved: onSavedDropdown,
+                  ),
+                ],
+              ),
+            ),
             hintText: hintText,
             suffixText: suffixText,
             suffix: suffix,
             helper: helper,
           ),
           keyboardType: textInputType,
-          textAlign: textAlign ?? TextAlign.start,
           autovalidateMode: autoValidateMode,
           maxLines: maxLine,
           textCapitalization: textCapitalization ?? TextCapitalization.sentences,

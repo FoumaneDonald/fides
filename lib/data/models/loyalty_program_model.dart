@@ -56,7 +56,7 @@ class LoyaltyProgramModel {
     return LoyaltyProgramModel(
       id: entity.id ?? 0,
       uid: entity.uid,
-      type: entity.type,
+      type: entity.type?.label,
       name: entity.name,
       pointValue: entity.pointValue,
       numberHoles: entity.numberHoles,

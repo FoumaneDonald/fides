@@ -8,7 +8,7 @@ import '../../services/helpers/program_type_enum.dart';
 class LoyaltyProgramEntity extends Equatable {
   final int? id;
   final String? uid;
-  final String? type;
+  final ProgramType? type;
   final String? name;
   final String? pointValue;
   final int? numberHoles;
@@ -24,18 +24,10 @@ class LoyaltyProgramEntity extends Equatable {
     this.winningNumbers,
   });
 
-  // Use enum in the UI logic
-  ProgramType get programType => ProgramType.from(type);
-
-  // Optional: If you ever need to build an updated entity using the enum
-  LoyaltyProgramEntity copyWithProgramType(ProgramType value) {
-    return copyWith(type: value.label);
-  }
-
   LoyaltyProgramEntity copyWith({
     int? id,
     String? uid,
-    String? type,
+    ProgramType? type,
     String? name,
     Value<String?>? pointValue,
     Value<int?>? numberHoles,
@@ -57,7 +49,7 @@ class LoyaltyProgramEntity extends Equatable {
     return LoyaltyProgramEntity(
       id: model.id ?? 0,
       uid: model.uid,
-      type: model.type,
+      type: ProgramType.from(model.type),
       name: model.name,
       pointValue: model.pointValue,
       numberHoles: model.numberHoles,

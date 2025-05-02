@@ -4,6 +4,7 @@ import 'package:fides/services/simple_bloc_observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import 'app_config.dart';
 import 'data/repositories/local_loyalty_program_repo_impl.dart';
 import 'domain/repositories/loyalty_program_repository.dart';
 import 'features/homePage/ui/bloc/home_bloc.dart';
@@ -17,8 +18,10 @@ Future<void> init() async {
 }
 
 Future<void> _initExternal() async {
+  final appConfig = await AppConfig.load();
+  sl.registerLazySingleton(() => appConfig);
   Bloc.observer = SimpleBlocObserver();
-  final objectBox = await ObjectBox.create();
+  final objectBox = await ObjectBox.create(sl<AppConfig>().localDatabaseName);
   sl.registerLazySingleton<ObjectBox>(() => objectBox);
 
 }

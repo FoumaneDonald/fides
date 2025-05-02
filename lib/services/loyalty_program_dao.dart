@@ -17,17 +17,16 @@ class LoyaltyProgramDao {
   ///TODO: C(done)RUD
 
   /// Creates a new Reward with a unique ID.
-  Result<LoyaltyProgramModel> create(LoyaltyProgramModel loyaltyProgramModel, RewardModel rewardModel) {
+  Result<LoyaltyProgramModel> create(LoyaltyProgramModel loyaltyProgramModel, List<RewardModel> rewardModelList) {
     try {
-      String rewardId = const Uuid().v4();
       String loyaltyProgramId = const Uuid().v4();
 
       // add a unique id to reward and program
       final loyaltyProgram = loyaltyProgramModel.copyWith(uid: loyaltyProgramId);
-      final reward = rewardModel.copyWith(uid: rewardId);
+      final List<RewardModel> rewards = rewardModelList.map((reward) => reward.copyWith(uid: Uuid().v4())).toList();
 
       // add related reward of the program in order to create relation in the database
-      loyaltyProgram.rewards.add(reward);
+      loyaltyProgram.rewards.addAll(rewards);
 
       _loyaltyProgramBox.put(loyaltyProgram);
       return Success(loyaltyProgram);

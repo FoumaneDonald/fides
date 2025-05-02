@@ -14,11 +14,10 @@ class ProgramCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final programType = ProgramType.from(program.type);
     return SizedBox(
-      width: MediaQuery.of(context).size.width * .2,
+      // width: MediaQuery.of(context).size.width * .46,
       child: Card(
-        // elevation: 8,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
@@ -27,41 +26,82 @@ class ProgramCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                height: MediaQuery.of(context).size.height * .07,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * .12,
+                    // height: MediaQuery.of(context).size.height * .06,
+                    padding: EdgeInsets.all(20),
+                    // width: 48,
+                    // height: 48,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                    ),
+                    child: Center(
+                      child: SvgPicture.asset(
+                        program.type!.iconPath,
+                        semanticsLabel: 'Program icon',
+                        width: 24,
+                        height: 24,
+                        colorFilter: ColorFilter.srgbToLinearGamma(),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    program.type!.label.toLowerCase(),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
+                  ),
+                  Text(
+                    program.name!,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Flexible(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SvgPicture.asset(
-                      programType.iconPath,
-                      semanticsLabel: 'Program icon',
-                      width: 24,
-                      height: 24,
-                      colorFilter: ColorFilter.srgbToLinearGamma(),
+                    if (program.type == ProgramType.stamp) ...{
+                      Text("Number of holes: ${program.numberHoles?.toString() ?? ''}"),
+                      ...?program.winningNumbers?.map((number) => Text("Winning numbers: ${number.toString()}")),
+                    },
+                    if (program.type == ProgramType.points) ...{
+                      Text("value of a point: ${program.pointValue ?? ''}"),
+                    },
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Details',
+                      style: Theme.of(context).textButtonTheme.style?.textStyle?.resolve({})?.copyWith(fontSize: 14),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 8,),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(program.name!),
-                  Text('40 customers'),
-                ],
-              ),
-              Text("id: ${program.id.toString()}"),
-              Text("uid: ${program.uid!}"),
-              Text("type: ${program.type!}"),
-              Text("name: ${program.name!}"),
-              Text("value of a point: ${program.pointValue ?? ''}"),
-              Text("number of holes: ${program.numberHoles?.toString() ?? ''}"),
-              Text("Winning numbers:"),
-              ...?program.winningNumbers?.map((number) => Text(number.toString()))
             ],
           ),
         ),

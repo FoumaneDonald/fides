@@ -3,13 +3,13 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../../services/helpers/program_type_enum.dart';
 
-class LoyaltyProgramCard extends StatelessWidget {
+class LoyaltyProgramCardSelection extends StatelessWidget {
   final String _programName;
   final String _programDescription;
   final String _programImage;
   final Function()? _onPressed;
 
-  const LoyaltyProgramCard({
+  const LoyaltyProgramCardSelection({
     super.key,
     required String programName,
     required String programDescription,
@@ -30,47 +30,53 @@ class LoyaltyProgramCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width * .15,
-                height: MediaQuery.of(context).size.height * .07,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryFixedDim,
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-                child: Center(
-                  child: SvgPicture.asset(
-                    _programImage,
-                    semanticsLabel: 'Program icon',
-                    width: 24,
-                    height: 24,
-                    colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onPrimaryFixedVariant, BlendMode.srcIn),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 16,
-              ),
               Expanded(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      _programName,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                    Container(
+                      width: MediaQuery.of(context).size.width * .14,
+                      height: MediaQuery.of(context).size.height * .06,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                      ),
+                      child: Center(
+                        child: SvgPicture.asset(
+                          _programImage,
+                          semanticsLabel: 'Program icon',
+                          width: 16,
+                          height: 24,
+                          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceDim, BlendMode.srcIn),
+                        ),
                       ),
                     ),
                     SizedBox(
-                      height: 4,
+                      height: 16,
                     ),
-                    Text(
-                      _programDescription,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          _programName,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text(
+                          _programDescription,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
