@@ -13,6 +13,7 @@ import '../../../core/utilities/dismiss_keyboard.dart';
 import '../../../core/widgets/fides_snack_bar.dart';
 import '../../../core/widgets/fides_text_input.dart';
 import '../../../core/widgets/number_in_square.dart';
+import '../../../core/widgets/required_field_text.dart';
 import '../../../core/widgets/reward_card.dart';
 import '../bloc/loyalty_program_bloc.dart';
 
@@ -129,7 +130,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                     spacing: 8,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Fields with ( * ) are required'),
+                      RequiredFieldText(),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Form(

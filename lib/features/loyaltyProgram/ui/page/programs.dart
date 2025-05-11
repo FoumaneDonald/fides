@@ -54,7 +54,7 @@ class Programs extends StatelessWidget {
                       columns = 2; // Mobile
                     }
                     return LayoutGrid(
-                      columnSizes: List.generate(columns, (_) => 1.fr),
+                      columnSizes: List.generate(columns, (_) => auto),
                       rowSizes: List<TrackSize>.generate((state.listOfPrograms!.length / 2).ceil(), (_) => auto),
                       columnGap: 8,
                       rowGap: 8,

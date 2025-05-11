@@ -21,16 +21,18 @@ class HomePage extends StatelessWidget {
             // TODO: implement listener
           },
           builder: (context, state) {
-            return SingleChildScrollView(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      LoyalCustomersSection(),
-                      SizedBox(height: 24),
-                      LatestCustomersSection(),
-                    ],
+            return SafeArea(
+              child: SingleChildScrollView(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        LoyalCustomersSection(),
+                        SizedBox(height: 24),
+                        LatestCustomersSection(),
+                      ],
+                    ),
                   ),
                 ),
               ),

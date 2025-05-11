@@ -26,10 +26,7 @@ class LoyalCustomersSection extends StatelessWidget {
             ),
             Flexible(
               child: FilledButton(
-                onPressed: () {
-                  // context.pushNamed(AppRoute.subscribeCustomer.name);
-                  showSnackBar(context, 'Coming soon');
-                },
+                onPressed: () => context.pushNamed(AppRoute.subscribeCustomer.name),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

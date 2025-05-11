@@ -3,7 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'app_config.dart';
+import 'config/app_config.dart';
 import 'config/routes/routes.dart';
 import 'config/theme/app_theme.dart';
 import 'config/theme/button_theme.dart';

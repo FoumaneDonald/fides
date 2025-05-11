@@ -14,6 +14,7 @@ import '../../../core/widgets/fides_dropdown_input.dart';
 import '../../../core/widgets/fides_text_input.dart';
 import '../../../core/widgets/fides_text_input_selection.dart';
 import '../../../core/widgets/loader.dart';
+import '../../../core/widgets/required_field_text.dart';
 import '../bloc/loyalty_program_bloc.dart';
 
 class ProgramReward extends StatefulWidget {
@@ -67,7 +68,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Fields with ( * ) are required'),
+                      RequiredFieldText(),
                       SizedBox(height: 8),
                       Expanded(
                         child: SingleChildScrollView(
@@ -96,7 +97,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     autoValidateMode: AutovalidateMode.onUnfocus,
                                     inputLabel: 'Discount amount*',
                                     hintText: '100',
-                                    suffixText: selectedDiscountType.label,
+                                    prefixText: selectedDiscountType.label,
                                     textInputType: TextInputType.number,
                                     inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
                                     dropDownList: DiscountType.values,
@@ -113,7 +114,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                 FidesTextInput(
                                   focusNode: _itemFocus,
                                   controller: _itemController,
-                                  inputLabel: '${state.rewardEntity!.type!.label} Item*',
+                                  inputLabel: '$selectedRewardType Item*',
                                   hintText: 'Coffee',
                                   validator: generalValidation,
                                   autoValidateMode: AutovalidateMode.onUnfocus,

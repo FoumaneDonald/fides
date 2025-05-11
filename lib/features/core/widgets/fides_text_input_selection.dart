@@ -2,7 +2,6 @@ import 'package:fides/features/core/mixins/validation_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'fides_text_form_field.dart';
 
 class FidesTextInputSelection<T> extends StatelessWidget {
   final FocusNode? focusNode;
@@ -11,6 +10,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
   final String inputLabel;
   final String? hintText;
   final String? suffixText;
+  final String? prefixText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Widget? suffix;
@@ -40,6 +40,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
     required this.inputLabel,
     this.hintText,
     this.suffixText,
+    this.prefixText,
     this.prefixIcon,
     this.suffixIcon,
     this.suffix,
@@ -106,6 +107,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
             ),
             hintText: hintText,
             suffixText: suffixText,
+            prefixText: prefixText,
             suffix: suffix,
             helper: helper,
           ),

@@ -14,37 +14,37 @@ class ProgramCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      // width: MediaQuery.of(context).size.width * .46,
-      child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          spacing: 16,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Flexible(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * .12,
-                    // height: MediaQuery.of(context).size.height * .06,
-                    padding: EdgeInsets.all(20),
-                    // width: 48,
-                    // height: 48,
+                    height: MediaQuery.of(context).size.height * .05,
+                    alignment: Alignment.center,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(4),
                       color: Theme.of(context).colorScheme.secondaryContainer,
                     ),
-                    child: Center(
+                    child: FractionallySizedBox(
+                      widthFactor: 0.5,
                       child: SvgPicture.asset(
                         program.type!.iconPath,
                         semanticsLabel: 'Program icon',
-                        width: 24,
-                        height: 24,
+                        // width: 24,
+                        // height: 24,
                         colorFilter: ColorFilter.srgbToLinearGamma(),
                       ),
                     ),
@@ -69,41 +69,36 @@ class ProgramCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 16,
+            ),
+            Flexible(
+              child: Column(
+                spacing: 6,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (program.type == ProgramType.stamp) ...{
+                    Text("Number of holes: ${program.numberHoles?.toString() ?? ''}"),
+                    ...?program.winningNumbers?.map((number) => Text("Winning numbers: ${number.toString()}")),
+                  },
+                  if (program.type == ProgramType.points) ...{
+                    Text("value of a point: ${program.pointValue ?? ''}"),
+                  },
+                ],
               ),
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (program.type == ProgramType.stamp) ...{
-                      Text("Number of holes: ${program.numberHoles?.toString() ?? ''}"),
-                      ...?program.winningNumbers?.map((number) => Text("Winning numbers: ${number.toString()}")),
-                    },
-                    if (program.type == ProgramType.points) ...{
-                      Text("value of a point: ${program.pointValue ?? ''}"),
-                    },
-                  ],
-                ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Details',
+                    style: Theme.of(context).textButtonTheme.style?.textStyle?.resolve({})?.copyWith(fontSize: 14),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 16,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Details',
-                      style: Theme.of(context).textButtonTheme.style?.textStyle?.resolve({})?.copyWith(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

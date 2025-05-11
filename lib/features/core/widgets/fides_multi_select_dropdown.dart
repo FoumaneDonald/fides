@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 
 /// A widget that allows the user to select multiple options from a bottom sheet with checkboxes.
 class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
@@ -8,10 +9,10 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
   final void Function(List<T>) onSelectionChanged;
 
   /// How to display the items in the dropdown
-  final Widget Function(T) itemLabelBuilder;
+  final Widget Function(T) itemChipsLabelBuilder;
 
   /// How to display the items in the bottom sheet
-  final Widget Function(T) itemDisplayBuilder;
+  final Widget Function(T, [bool isSelected, VoidCallback? onTap]) itemDisplayBuilder;
 
   const FidesMultiSelectBottomSheet({
     super.key,
@@ -19,28 +20,27 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
     required this.options,
     required this.selectedValues,
     required this.onSelectionChanged,
-    required this.itemLabelBuilder,
+    required this.itemChipsLabelBuilder,
     required this.itemDisplayBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 4,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           inputLabel,
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
-        const SizedBox(height: 4),
         GestureDetector(
           onTap: () async {
             // Show bottom sheet when tapped
-            final result = await showModalBottomSheet<List<T>>(
+            final List<T>? result = await showModalBottomSheet<List<T>>(
               context: context,
               isScrollControlled: true,
               // Allows content to control the height
-              backgroundColor: Colors.white,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
@@ -60,9 +60,10 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
             }
           },
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            height: 56,
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade400),
+              color: Theme.of(context).colorScheme.onInverseSurface,
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
@@ -82,7 +83,7 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
                                 .map((item) => Padding(
                                       padding: const EdgeInsets.only(right: 8.0),
                                       child: Chip(
-                                        label: itemLabelBuilder(item),
+                                        label: itemChipsLabelBuilder(item),
                                         onDeleted: () {
                                           // Remove the selected item when its chip is deleted
                                           final updated = List<T>.from(selectedValues)..remove(item);
@@ -108,7 +109,7 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
 class _BottomSheetSelector<T> extends StatefulWidget {
   final List<T> options;
   final List<T> initialSelected;
-  final Widget Function(T) itemDisplayBuilder;
+  final Widget Function(T, [bool isSelected, VoidCallback? onTap]) itemDisplayBuilder;
 
   const _BottomSheetSelector({
     required this.options,
@@ -154,23 +155,46 @@ class _BottomSheetSelectorState<T> extends State<_BottomSheetSelector<T>> {
               const SizedBox(height: 16),
               Expanded(
                 child: SingleChildScrollView(
-                  child: Wrap(
-                    spacing: 8,
-                    runSpacing: 12,
-                    children: widget.options.map((item) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            if (_selected.contains(item)) {
-                              _selected.remove(item);
-                            } else {
-                              _selected.add(item);
-                            }
-                          });
-                        },
-                        child: widget.itemDisplayBuilder(item),
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      // Determine column count based on available width
+                      final double width = constraints.maxWidth;
+                      int columns;
+
+                      if (width >= 1024) {
+                        columns = 4; // Desktop
+                      } else if (width >= 600) {
+                        columns = 3; // Tablet
+                      } else {
+                        columns = 2; // Mobile
+                      }
+                      return LayoutGrid(
+                        columnSizes: List.generate(columns, (_) => auto),
+                        rowSizes: List<TrackSize>.generate((widget.options.length / 2).ceil(), (_) => auto),
+                        columnGap: 8,
+                        rowGap: 8,
+                        autoPlacement: AutoPlacement.rowSparse,
+                        children: widget.options.map(
+                          (item) {
+                            return widget.itemDisplayBuilder(
+                              item,
+                              _selected.contains(item),
+                              () {
+                                setState(
+                                  () {
+                                    if (_selected.contains(item)) {
+                                      _selected.remove(item);
+                                    } else {
+                                      _selected.add(item);
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ).toList(),
                       );
-                    }).toList(),
+                    },
                   ),
                 ),
               ),

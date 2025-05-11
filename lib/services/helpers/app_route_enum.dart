@@ -3,7 +3,7 @@ enum AppRoute {
   programs,
   selectLoyaltyProgram,
   stampCardProgram,
-  pointsProgram,
+  aboutProgram,
   programReward,
   subscribeCustomer;
 
@@ -19,7 +19,7 @@ enum AppRoute {
         return 'select-loyalty-program';
       case AppRoute.stampCardProgram:
         return 'stamp-card-program';
-      case AppRoute.pointsProgram:
+      case AppRoute.aboutProgram:
         return 'points-program';
       case AppRoute.programReward:
         return '/program-reward';

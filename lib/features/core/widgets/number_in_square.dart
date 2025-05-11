@@ -2,7 +2,6 @@ import 'package:fides/features/core/mixins/validation_mixins.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'fides_text_form_field.dart';
 
 class NumberInSquare extends StatelessWidget {
   final bool isSelected;

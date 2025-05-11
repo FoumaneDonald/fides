@@ -44,18 +44,10 @@ class Routes {
                 builder: (context, state) => SelectLoyaltyProgram(),
                 routes: [
                   GoRoute(
-                    name: AppRoute.pointsProgram.name,
-                    path: AppRoute.pointsProgram.path,
+                    name: AppRoute.aboutProgram.name,
+                    path: AppRoute.aboutProgram.path,
                     builder: (context, state) => AboutProgram(),
                   ),
-                  // GoRoute(
-                  //   name: AppRoute.programReward.name,
-                  //   path: AppRoute.programReward.path,
-                  //   builder: (context, state) {
-                  //     final extra = state.extra as Map<String, String>?;
-                  //     return ProgramReward(source: extra?['source']);
-                  //   },
-                  // ),
                 ],
               ),
             ],
@@ -69,8 +61,8 @@ class Routes {
       ),
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,
-        name: 'subscribeCustomer',
-        path: '/subscribe_customer',
+        name: AppRoute.subscribeCustomer.name,
+        path: AppRoute.subscribeCustomer.path,
         builder: (context, state) => CreateCustomer(),
       )
     ],

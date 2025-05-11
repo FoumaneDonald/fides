@@ -23,7 +23,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
             final isCurrentRoute = route?.isCurrent ?? false;
 
             if (state.status == Status.ongoing && isCurrentRoute) {
-              context.pushNamed(AppRoute.pointsProgram.name);
+              context.pushNamed(AppRoute.aboutProgram.name);
             }
           },
           builder: (context, state) {
