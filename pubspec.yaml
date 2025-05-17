@@ -25,6 +25,7 @@ dependencies:
   wolt_modal_sheet: ^0.11.0
   sentry_flutter: ^8.14.2
   flutter_dotenv: ^5.2.1
+  currency_picker: ^2.0.21
 
   cupertino_icons: ^1.0.8
   flutter_localizations:

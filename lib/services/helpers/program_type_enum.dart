@@ -1,5 +1,5 @@
 enum ProgramType {
-  unknown('Unknown','Unknown', 'Unrecognized program type.', 'assets/icons/unknown.svg'),
+  unknown('Unknown','Unknown', 'Unrecognized program type.', 'assets/icons/interrogation.svg'),
   stamp('Stamp','Stamp Program', 'A simple program where customers earn a digital stamp for each visit - perfect for rewarding repeat purchases.', 'assets/icons/stamp.svg'),
   points('Points','Points Program', 'Customers earn points based on how much they spend - great for encouraging larger purchases and repeat visits.', 'assets/icons/token.svg');
 

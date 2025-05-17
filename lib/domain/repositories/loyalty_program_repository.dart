@@ -1,11 +1,18 @@
 import 'package:result_dart/result_dart.dart';
 
+import '../../services/helpers/program_type_enum.dart';
 import '../entities/loyalty_program_entity.dart';
+import '../entities/points_entity.dart';
 import '../entities/reward_entity.dart';
-
+import '../entities/stamp_entity.dart';
 
 abstract class LoyaltyProgramRepository {
-  Future<Result<LoyaltyProgramEntity>> createLoyaltyProgram({required LoyaltyProgramEntity loyaltyProgramEntity, required List<RewardEntity> rewardList});
-  Future<Result<List<LoyaltyProgramEntity>>> getLoyaltyProgram();
-  List<LoyaltyProgramEntity> get existingPrograms;
+
+  Future<Result<PointsEntity>> createPointsProgram({required PointsEntity pointsEntity, required List<RewardEntity> rewardList});
+
+  Future<Result<StampEntity>> createStampProgram({required StampEntity stampEntity, required List<RewardEntity> rewardList});
+
+  Future<Result<Map<ProgramType, List<Object>>>> getLoyaltyProgram();
+
+  Map<ProgramType, List<Object>> get existingPrograms;
 }

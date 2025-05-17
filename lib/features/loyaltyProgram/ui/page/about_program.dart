@@ -1,9 +1,12 @@
+import 'package:currency_picker/currency_picker.dart';
+import 'package:fides/domain/entities/points_entity.dart';
 import 'package:fides/features/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../domain/entities/stamp_entity.dart';
 import '../../../../injection.dart';
 import '../../../../services/helpers/app_route_enum.dart';
 import '../../../../services/helpers/program_type_enum.dart';
@@ -29,33 +32,38 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
   final FocusNode _nameFocus = FocusNode();
   final FocusNode _pointValueFocus = FocusNode();
   final FocusNode _stampNumberFocus = FocusNode();
+  final FocusNode _minimumPurchaseFocus = FocusNode();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _stampNumberController = TextEditingController();
   final TextEditingController _pointValueController = TextEditingController();
+  final TextEditingController _minimumPurchaseController = TextEditingController();
   List<int> _holes = [];
   int initialStampNumber = 0;
 
   @override
   void initState() {
+    super.initState();
     final state = context.read<LoyaltyProgramBloc>().state;
 
-    /* Assign value and biding bloc event to respective input */
-    _nameController.text = state.loyaltyProgramEntity!.name ?? '';
-    _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
 
-    if (state.loyaltyProgramEntity!.type == ProgramType.points) {
-      _pointValueController.text = state.loyaltyProgramEntity!.pointValue ?? '';
-      _pointValueController.addListener(() => context.read<LoyaltyProgramBloc>().add(PointValueChanged(_pointValueController.text)));
-    } else if (state.loyaltyProgramEntity!.type == ProgramType.stamp) {
-      _stampNumberController.text = state.loyaltyProgramEntity!.numberHoles?.toString() ?? initialStampNumber.toString();
-      _createHoles(state.loyaltyProgramEntity!.numberHoles ?? initialStampNumber);
+    /* Assign value and biding bloc event to respective input */
+
+    if (state.selectedProgramType == ProgramType.stamp) {
+      _nameController.text = state.stampEntity!.name ?? '';
+      _stampNumberController.text = state.stampEntity!.numberHoles?.toString() ?? initialStampNumber.toString();
+      _createHoles(state.stampEntity!.numberHoles ?? initialStampNumber);
       _stampNumberController.addListener(() {
         final valueInt = int.parse(_stampNumberController.text.trim());
-        context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedNumber: valueInt+1));
+        context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedNumber: valueInt + 1));
       });
+    } else if (state.selectedProgramType == ProgramType.points) {
+      _nameController.text = state.pointsEntity!.name ?? '';
+      _minimumPurchaseController.text = state.pointsEntity!.minimumSpent?.toString() ?? '';
+      _minimumPurchaseController.addListener(() => context.read<LoyaltyProgramBloc>().add(MinimumPurchaseChanged(double.parse(_minimumPurchaseController.text))));
+      _pointValueController.text = state.pointsEntity!.points?.toString() ?? '';
+      _pointValueController.addListener(() => context.read<LoyaltyProgramBloc>().add(PointValueChanged(double.parse(_pointValueController.text))));
     }
-
-    super.initState();
+    _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
   }
 
   @override
@@ -93,112 +101,231 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
 
   @override
   Widget build(BuildContext context) {
-    return DismissKeyboard(
-      child: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
-        listener: (context, state) {
-          final route = ModalRoute.of(context);
-          final isCurrentRoute = route?.isCurrent ?? false;
+    return BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
+      listener: (context, state) {
+        final route = ModalRoute.of(context);
+        final isCurrentRoute = route?.isCurrent ?? false;
 
-          if (_stampNumberController.text.trim() != state.loyaltyProgramEntity!.numberHoles.toString()) {
-            _stampNumberController.text = state.loyaltyProgramEntity!.numberHoles.toString();
-            _createHoles(state.loyaltyProgramEntity!.numberHoles ?? initialStampNumber);
-          }
+        if (_stampNumberController.text.trim() != state.stampEntity!.numberHoles.toString()) {
+          _stampNumberController.text = state.stampEntity!.numberHoles.toString();
+          _createHoles(state.stampEntity!.numberHoles ?? initialStampNumber);
+        }
 
-          if( state.status == Status.error ){
-            showSnackBar(context, state.message!);
-          }
+        if (state.status == Status.error) {
+          showSnackBar(context, state.message!);
+        }
 
-          if (state.status == Status.success && isCurrentRoute) {
-            context.read<LoyaltyProgramBloc>().add(ResetForms());
-            context.read<LoyaltyProgramBloc>().add(LoadLoyaltyPrograms());
-            context.goNamed(AppRoute.programs.name);
-          }
-
-        },
-        builder: (context, state) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              leading: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.arrow_back_rounded)),
-              title: Text('Set up your ${state.loyaltyProgramEntity!.type?.label.toLowerCase() ?? ''} program'),
-            ),
-            body: SafeArea(
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(
-                    spacing: 8,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      RequiredFieldText(),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                _buildInputs(
-                                  context: context,
-                                  programType: state.loyaltyProgramEntity!.type,
-                                  nameFocus: _nameFocus,
-                                  pointValueFocus: _pointValueFocus,
-                                  stampNumberFocus: _stampNumberFocus,
-                                  nameController: _nameController,
-                                  pointValueController: _pointValueController,
-                                  stampNumberController: _stampNumberController,
-                                  holes: _holes,
-                                  selectedNumbers: state.loyaltyProgramEntity!.winningNumbers ?? [],
-                                  validator: generalValidation,
-                                  remove: () => _updateHoles(context, -1),
-                                  add: () => _updateHoles(context, 1),
-                                  onTap: (number) => _toggleSelection(context, number),
-                                ),
-                                SizedBox(height: 40),
-                                Text('Set your rewards'),
-                                TextButton(
-                                  onPressed: () => context.pushNamed(AppRoute.programReward.name),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [Text('Add Reward'), SizedBox(width: 8), Icon(Icons.add_rounded)],
+        if (state.status == Status.success && isCurrentRoute) {
+          context.read<LoyaltyProgramBloc>().add(ResetForms());
+          context.read<LoyaltyProgramBloc>().add(LoadLoyaltyPrograms());
+          context.goNamed(AppRoute.programs.name);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: AppBar(
+            leading: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.arrow_back_rounded)),
+            title: Text('Set up your ${state.selectedProgramType?.label.toLowerCase() ?? ''} program'),
+          ),
+          body: SafeArea(
+            child: Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Column(
+                  spacing: 8,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RequiredFieldText(),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            spacing: 40,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // _buildInputs(
+                              //   context: context,
+                              //   programType: state.loyaltyProgramEntity!.type,
+                              //   nameFocus: _nameFocus,
+                              //   pointValueFocus: _pointValueFocus,
+                              //   stampNumberFocus: _stampNumberFocus,
+                              //   nameController: _nameController,
+                              //   pointValueController: _pointValueController,
+                              //   stampNumberController: _stampNumberController,
+                              //   holes: _holes,
+                              //   selectedNumbers: state.loyaltyProgramEntity!.winningNumbers ?? [],
+                              //   validator: generalValidation,
+                              //   remove: () => _updateHoles(context, -1),
+                              //   add: () => _updateHoles(context, 1),
+                              //   onTap: (number) => _toggleSelection(context, number),
+                              // ),
+                              Column(
+                                spacing: 16,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  FidesTextInput(
+                                    focusNode: _nameFocus,
+                                    controller: _nameController,
+                                    textInputType: TextInputType.text,
+                                    textInputAction: TextInputAction.next,
+                                    inputLabel: 'Name*',
+                                    hintText: 'Book worm',
+                                    validator: generalValidation,
+                                    autoValidateMode: AutovalidateMode.onUnfocus,
+                                    onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(state.selectedProgramType! == ProgramType.stamp ? _stampNumberFocus : _pointValueFocus),
                                   ),
-                                ),
-                                Column(
-                                  spacing: 8,
-                                  children: state.rewardEntityList!.map((reward) {
-                                    return RewardCard(
-                                      reward: reward,
-                                      programType: state.loyaltyProgramEntity!.type!,
-                                      onDelete: () => context.read<LoyaltyProgramBloc>().add(DeleteReward(reward)),
-                                    );
-                                  }).toList(),
-                                )
-                              ],
-                            ),
+                                  if (state.selectedProgramType == ProgramType.points) ...{
+                                    FidesTextInput(
+                                      focusNode: _pointValueFocus,
+                                      controller: _pointValueController,
+                                      inputLabel: 'Points Earned*',
+                                      hintText: '10',
+                                      helper: Text('How many points a customers receive.'),
+                                      textInputType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
+                                      inputFormatter: [
+                                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                                      ],
+                                      validator: generalValidation,
+                                      autoValidateMode: AutovalidateMode.onUnfocus,
+                                      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+                                    ),
+                                    FidesTextInput(
+                                      focusNode: _minimumPurchaseFocus,
+                                      controller: _minimumPurchaseController,
+                                      inputLabel: 'For Every Amount Spent*',
+                                      hintText: '500',
+                                      helper: Text('The spending required to earn the points above.'),
+                                      textInputType: TextInputType.number,
+                                      suffixIcon: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(state.pointsEntity!.currencyCode ?? 'XAF'),
+                                          IconButton(
+                                            onPressed: () {
+                                              showCurrencyPicker(
+                                                context: context,
+                                                favorite: ['XAF'],
+                                                onSelect: (Currency currency) => context.read<LoyaltyProgramBloc>().add(CurrencyChanged(currency.code)),
+                                              );
+                                            },
+                                            icon: Icon(Icons.arrow_drop_down_rounded),
+                                          ),
+                                        ],
+                                      ),
+                                      textInputAction: TextInputAction.next,
+                                      validator: generalValidation,
+                                      autoValidateMode: AutovalidateMode.onUnfocus,
+                                      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+                                    ),
+                                  },
+                                  if (state.selectedProgramType == ProgramType.stamp) ...{
+                                    FidesTextInput(
+                                      focusNode: _stampNumberFocus,
+                                      controller: _stampNumberController,
+                                      inputLabel: 'Number of stamps needed*',
+                                      hintText: '0',
+                                      textAlign: TextAlign.center,
+                                      textInputType: TextInputType.number,
+                                      textInputAction: TextInputAction.next,
+                                      inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
+                                      prefixIcon: IconButton(
+                                        onPressed: () => _updateHoles(context, -1),
+                                        icon: Icon(Icons.remove),
+                                      ),
+                                      suffixIcon: IconButton(
+                                        onPressed: () => _updateHoles(context, 1),
+                                        icon: Icon(Icons.add),
+                                      ),
+                                      validator: generalValidation,
+                                      autoValidateMode: AutovalidateMode.onUnfocus,
+                                      onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+                                    ),
+                                    Column(
+                                      spacing: 4,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Choose stamp numbers that unlock a reward*',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        if (_holes.isEmpty) ...{
+                                          Text('Try adding one by tapping on the + button'),
+                                        } else ...{
+                                          Wrap(
+                                            spacing: 10,
+                                            runSpacing: 12,
+                                            children: _holes.map(
+                                              (number) {
+                                                final bool isSelected = state.stampEntity!.winningNumbers?.contains(number) ?? false;
+                                                return NumberInSquare(
+                                                  isSelected: isSelected,
+                                                  number: number,
+                                                  onTap: (number) => _toggleSelection(context, number),
+                                                );
+                                              },
+                                            ).toList(),
+                                          ),
+                                        },
+                                      ],
+                                    ),
+                                  },
+                                ],
+                              ),
+                              Column(
+                                spacing: 16,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Set your rewards'),
+                                  TextButton(
+                                    onPressed: () => context.pushNamed(AppRoute.programReward.name),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [Text('Add Reward'), SizedBox(width: 8), Icon(Icons.add_rounded)],
+                                    ),
+                                  ),
+                                  Column(
+                                    spacing: 8,
+                                    children: state.rewardEntityList!.map((reward) {
+                                      return RewardCard(
+                                        reward: reward,
+                                        programType: state.selectedProgramType!,
+                                        onDelete: () => context.read<LoyaltyProgramBloc>().add(DeleteReward(reward)),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      PrimaryButton(
-                        loading: state.status == Status.loading,
-                        text: 'Create program',
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate() && state.rewardEntityList!.isNotEmpty) {
-                            if( state.loyaltyProgramEntity!.type == ProgramType.stamp && (state.loyaltyProgramEntity!.winningNumbers != null && state.loyaltyProgramEntity!.winningNumbers!.isNotEmpty)){
-                              context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
-                            }else{
-                              context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
-                            }
+                    ),
+                    PrimaryButton(
+                      loading: state.status == Status.loading,
+                      text: 'Create program',
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate() && state.rewardEntityList!.isNotEmpty) {
+                          if (state.selectedProgramType! == ProgramType.stamp && (state.stampEntity!.winningNumbers != null && state.stampEntity!.winningNumbers!.isNotEmpty)) {
+                            context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
+                          } else {
+                            context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
                           }
-                        },
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
@@ -235,16 +362,54 @@ Widget _buildInputs({
         onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(programType == ProgramType.stamp ? stampNumberFocus : pointValueFocus),
       ),
       if (programType == ProgramType.points)
-        FidesTextInput(
-          focusNode: pointValueFocus,
-          controller: pointValueController,
-          inputLabel: 'Value of a point*',
-          hintText: '10',
-          textInputType: TextInputType.number,
-          textInputAction: TextInputAction.next,
-          validator: validator,
-          autoValidateMode: AutovalidateMode.onUnfocus,
-          onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+        Row(
+          spacing: 16,
+          children: [
+            Expanded(
+              child: FidesTextInput(
+                focusNode: pointValueFocus,
+                controller: pointValueController,
+                inputLabel: 'Points Earned*',
+                hintText: '10',
+                helper: Text('How many points a customers receive.'),
+                textInputType: TextInputType.number,
+                textInputAction: TextInputAction.next,
+                validator: validator,
+                autoValidateMode: AutovalidateMode.onUnfocus,
+                onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+              ),
+            ),
+            Expanded(
+              child: FidesTextInput(
+                focusNode: pointValueFocus,
+                controller: pointValueController,
+                inputLabel: 'For Every Amount Spent',
+                hintText: '500',
+                helper: Text('The spending required to earn the points above.'),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Currency'),
+                    IconButton(
+                      onPressed: () {
+                        showCurrencyPicker(
+                          context: context,
+                          favorite: ['XAF'],
+                          onSelect: (Currency currency) => context.read<LoyaltyProgramBloc>().add(CurrencyChanged(currency.name)),
+                        );
+                      },
+                      icon: Icon(Icons.arrow_drop_down_rounded),
+                    ),
+                  ],
+                ),
+                textInputType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                validator: validator,
+                autoValidateMode: AutovalidateMode.onUnfocus,
+                onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
+              ),
+            ),
+          ],
         ),
       if (programType == ProgramType.stamp) ...{
         FidesTextInput(

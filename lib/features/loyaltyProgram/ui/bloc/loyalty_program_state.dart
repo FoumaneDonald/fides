@@ -8,18 +8,26 @@ class LoyaltyProgramState extends Equatable {
   final Status? status;
   final RewardStatus? rewardStatus;
   final String? message;
-  final LoyaltyProgramEntity? loyaltyProgramEntity;
-  final List<LoyaltyProgramEntity>? listOfPrograms;
-  final RewardEntity? rewardEntity;
+  final ProgramType? selectedProgramType;
+  final ProgramType? selectedFilterProgram;
+  final bool? allFilter;
+  final PointsEntity? pointsEntity;
+  final StampEntity? stampEntity;
+  final Map<ProgramType, List<Object>>? listOfPrograms;
+  final List<Object>? listOfSelectedProgram;
   final List<RewardEntity>? rewardEntityList;
 
   const LoyaltyProgramState._({
     this.status,
     this.rewardStatus,
     this.message,
-    this.loyaltyProgramEntity,
+    this.selectedProgramType,
+    this.selectedFilterProgram,
+    this.allFilter,
+    this.pointsEntity,
+    this.stampEntity,
     this.listOfPrograms,
-    this.rewardEntity,
+    this.listOfSelectedProgram,
     this.rewardEntityList,
   });
 
@@ -28,31 +36,43 @@ class LoyaltyProgramState extends Equatable {
           status: Status.initial,
           rewardStatus: RewardStatus.initial,
           message: '',
-          loyaltyProgramEntity: LoyaltyProgramEntity().copyWith(numberHoles: Value(4), winningNumbers: Value([3])),
-          listOfPrograms: const [],
-          rewardEntity: RewardEntity().copyWith(type: RewardType.free, discountType: Value(DiscountType.price)),
-          rewardEntityList: const [],
+          selectedProgramType: null,
+          selectedFilterProgram: null,
+          allFilter: true,
+          pointsEntity: PointsEntity(currencyCode: 'XAF'),
+          stampEntity: StampEntity(numberHoles: 4, winningNumbers: [3]),
+          listOfPrograms: {},
+          listOfSelectedProgram: [],
+          rewardEntityList: [],
         );
 
   LoyaltyProgramState copyWith({
     Status? status,
     RewardStatus? rewardStatus,
     String? message,
-    LoyaltyProgramEntity? loyaltyProgramEntity,
-    List<LoyaltyProgramEntity>? listOfPrograms,
-    RewardEntity? rewardEntity,
+    ProgramType? selectedProgramType,
+    ProgramType? selectedFilterProgram,
+    bool? allFilter,
+    PointsEntity? pointsEntity,
+    StampEntity? stampEntity,
+    Map<ProgramType, List<Object>>? listOfPrograms,
+    List<Object>? listOfSelectedProgram,
     List<RewardEntity>? rewardEntityList,
   }) {
     return LoyaltyProgramState._(
         status: status ?? this.status,
         rewardStatus: rewardStatus ?? this.rewardStatus,
         message: message ?? this.message,
-        loyaltyProgramEntity: loyaltyProgramEntity ?? this.loyaltyProgramEntity,
+        selectedProgramType: selectedProgramType ?? this.selectedProgramType,
+        selectedFilterProgram: selectedFilterProgram ?? this.selectedFilterProgram,
+        allFilter: allFilter ?? this.allFilter,
+        pointsEntity: pointsEntity ?? this.pointsEntity,
+        stampEntity: stampEntity ?? this.stampEntity,
         listOfPrograms: listOfPrograms ?? this.listOfPrograms,
-        rewardEntity: rewardEntity ?? this.rewardEntity,
+        listOfSelectedProgram: listOfSelectedProgram ?? this.listOfSelectedProgram,
         rewardEntityList: rewardEntityList ?? this.rewardEntityList);
   }
 
   @override
-  List<Object?> get props => [status, rewardStatus, message, loyaltyProgramEntity, rewardEntity, rewardEntityList];
+  List<Object?> get props => [status, rewardStatus, message, selectedProgramType, selectedFilterProgram, allFilter, pointsEntity, stampEntity, listOfPrograms, listOfSelectedProgram, rewardEntityList];
 }

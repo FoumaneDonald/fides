@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:fides/data/models/points_model.dart';
+import 'package:fides/data/models/stamp_model.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../domain/entities/customer_entity.dart';
@@ -14,7 +16,8 @@ class CustomerModel extends Equatable {
   String? phone;
   String? email;
 
-  final loyaltyPrograms = ToMany<LoyaltyProgramModel>();
+  final pointsPrograms = ToMany<PointsModel>();
+  final stampPrograms = ToMany<StampModel>();
 
   CustomerModel({
     required this.id,

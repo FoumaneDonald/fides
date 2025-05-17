@@ -93,18 +93,18 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                                     textInputType: TextInputType.emailAddress,
                                     onChanged: (value) {},
                                   ),
-                                  FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
-                                    inputLabel: 'Add to program*',
-                                    options: state.programStatus == ProgramStatus.loading ? [LoyaltyProgramEntity(name: 'Loading...')] : state.loyaltyPrograms!,
-                                    selectedValues: state.selectedPrograms!,
-                                    onSelectionChanged: (selected) => context.read<CustomerBloc>().add(OnSelectProgram(selected)),
-                                    itemChipsLabelBuilder: (program) {
-                                      return Text(program.name!); // This is for chips in the dropdown.
-                                    },
-                                    itemDisplayBuilder: (program, [isSelected = false, onTap]) {
-                                      return SelectableProgramCard(program: program, isSelected: isSelected, onTap: onTap);
-                                    },
-                                  )
+                                  // FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
+                                  //   inputLabel: 'Add to program*',
+                                  //   options: state.programStatus == ProgramStatus.loading ? [LoyaltyProgramEntity(name: 'Loading...')] : state.loyaltyPrograms!,
+                                  //   selectedValues: state.selectedPrograms!,
+                                  //   onSelectionChanged: (selected) => context.read<CustomerBloc>().add(OnSelectProgram(selected)),
+                                  //   itemChipsLabelBuilder: (program) {
+                                  //     return Text(program.name!); // This is for chips in the dropdown.
+                                  //   },
+                                  //   itemDisplayBuilder: (program, [isSelected = false, onTap]) {
+                                  //     return SelectableProgramCard(program: program, isSelected: isSelected, onTap: onTap);
+                                  //   },
+                                  // )
                                 ],
                               ),
                             ),

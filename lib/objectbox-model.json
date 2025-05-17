@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:3401710457310357716",
-      "lastPropertyId": "10:5774164378543038065",
+      "lastPropertyId": "12:5095615782389340426",
       "name": "RewardModel",
       "properties": [
         {
@@ -57,58 +57,20 @@
           "indexId": "1:8670166263391842496"
         },
         {
-          "id": "10:5774164378543038065",
-          "name": "loyaltyProgramId",
+          "id": "11:9111147930762667052",
+          "name": "pointsProgramId",
           "type": 11,
           "flags": 520,
-          "indexId": "2:5939902998660536462",
-          "relationTarget": "LoyaltyProgramModel"
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "2:1173935753394898722",
-      "lastPropertyId": "7:2241679788063526819",
-      "name": "LoyaltyProgramModel",
-      "properties": [
-        {
-          "id": "1:6716148227055326269",
-          "name": "id",
-          "type": 6,
-          "flags": 1
+          "indexId": "7:3842039719501598814",
+          "relationTarget": "PointsModel"
         },
         {
-          "id": "2:1743111344690139695",
-          "name": "uid",
-          "type": 9,
-          "flags": 2080,
-          "indexId": "3:7454363406861329924"
-        },
-        {
-          "id": "3:165063373242491864",
-          "name": "type",
-          "type": 9
-        },
-        {
-          "id": "4:544434251751493668",
-          "name": "name",
-          "type": 9
-        },
-        {
-          "id": "5:7118891231732692149",
-          "name": "pointValue",
-          "type": 9
-        },
-        {
-          "id": "6:3007625745844823324",
-          "name": "numberHoles",
-          "type": 6
-        },
-        {
-          "id": "7:2241679788063526819",
-          "name": "winningNumbers",
-          "type": 24
+          "id": "12:5095615782389340426",
+          "name": "stampProgramId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "8:4043233121981302571",
+          "relationTarget": "StampModel"
         }
       ],
       "relations": []
@@ -149,22 +111,129 @@
       ],
       "relations": [
         {
-          "id": "1:8726568091037055140",
-          "name": "loyaltyPrograms",
-          "targetId": "2:1173935753394898722"
+          "id": "2:7940335822263021417",
+          "name": "pointsPrograms",
+          "targetId": "4:7344921886123381777"
+        },
+        {
+          "id": "3:5371440725444001829",
+          "name": "stampPrograms",
+          "targetId": "5:6685464445707830496"
         }
       ]
+    },
+    {
+      "id": "4:7344921886123381777",
+      "lastPropertyId": "7:8399627070114772951",
+      "name": "PointsModel",
+      "properties": [
+        {
+          "id": "1:8156887839954770586",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5157720441148261386",
+          "name": "uid",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "5:6691712950610642240"
+        },
+        {
+          "id": "3:1495667634021040905",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:38712837054418215",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:2297099000378969825",
+          "name": "points",
+          "type": 8
+        },
+        {
+          "id": "6:1840965130373951759",
+          "name": "minimumSpent",
+          "type": 8
+        },
+        {
+          "id": "7:8399627070114772951",
+          "name": "currencyCode",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:6685464445707830496",
+      "lastPropertyId": "6:2898450460488718427",
+      "name": "StampModel",
+      "properties": [
+        {
+          "id": "1:1894107812119558610",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5038353275190053216",
+          "name": "uid",
+          "type": 9,
+          "flags": 2080,
+          "indexId": "6:78064764068026973"
+        },
+        {
+          "id": "3:1883586170591108454",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "4:6837325332857488867",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "5:882232257323069456",
+          "name": "numberHoles",
+          "type": 6
+        },
+        {
+          "id": "6:2898450460488718427",
+          "name": "winningNumbers",
+          "type": 24
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "3:12435688903466140",
-  "lastIndexId": "4:5064043649769193035",
-  "lastRelationId": "1:8726568091037055140",
+  "lastEntityId": "5:6685464445707830496",
+  "lastIndexId": "8:4043233121981302571",
+  "lastRelationId": "3:5371440725444001829",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredEntityUids": [
+    1173935753394898722
+  ],
+  "retiredIndexUids": [
+    5939902998660536462
+  ],
+  "retiredPropertyUids": [
+    5774164378543038065,
+    6716148227055326269,
+    1743111344690139695,
+    165063373242491864,
+    544434251751493668,
+    7118891231732692149,
+    3007625745844823324,
+    2241679788063526819
+  ],
+  "retiredRelationUids": [
+    8726568091037055140
+  ],
   "version": 1
 }

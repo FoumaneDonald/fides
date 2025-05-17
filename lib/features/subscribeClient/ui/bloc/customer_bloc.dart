@@ -16,9 +16,9 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<SubscribeCustomer>(_onSubscribeCustomer);
   }
   _onInit(Init event, Emitter<CustomerState> emit) {
-    emit(state.copyWith(programStatus: ProgramStatus.loading));
-    List<LoyaltyProgramEntity> programs = loyaltyProgramRepository.existingPrograms;
-    emit(state.copyWith(programStatus: ProgramStatus.loaded, loyaltyPrograms: programs));
+    // emit(state.copyWith(programStatus: ProgramStatus.loading));
+    // List<LoyaltyProgramEntity> programs = loyaltyProgramRepository.existingPrograms;
+    // emit(state.copyWith(programStatus: ProgramStatus.loaded, loyaltyPrograms: programs));
   }
 
   _onSelectProgram(OnSelectProgram event, Emitter<CustomerState> emit) {

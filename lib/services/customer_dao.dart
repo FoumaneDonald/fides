@@ -21,7 +21,7 @@ class CustomerDao {
 
       final customer = customerModel.copyWith(uid: customerUid);
 
-      customer.loyaltyPrograms.add(loyaltyProgramModel);
+      // customer.loyaltyPrograms.add(loyaltyProgramModel);
 
       _customerBox.put(customer);
       return customer;

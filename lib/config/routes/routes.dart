@@ -36,7 +36,7 @@ class Routes {
           GoRoute(
             name: AppRoute.programs.name,
             path: AppRoute.programs.path,
-            builder: (context, state) => const Programs(),
+            builder: (context, state) => Programs(),
             routes: [
               GoRoute(
                 name: AppRoute.selectLoyaltyProgram.name,

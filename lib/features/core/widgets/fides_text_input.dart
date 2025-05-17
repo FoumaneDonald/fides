@@ -14,6 +14,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Widget? suffix;
+  final Widget? prefix;
   final Widget? helper;
   final int? maxLine;
   final TextInputType? textInputType;
@@ -21,6 +22,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final TextCapitalization? textCapitalization;
   final List<TextInputFormatter>? inputFormatter;
   final Function(String? value)? onSaved;
+  final Function(PointerDownEvent)? onTapOutside;
   final Function(String?)? onChanged;
   final Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
@@ -37,6 +39,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.prefixIcon,
     this.suffixIcon,
     this.suffix,
+    this.prefix,
     this.helper,
     this.maxLine,
     this.textInputType,
@@ -44,6 +47,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.textCapitalization,
     this.inputFormatter,
     this.onSaved,
+    this.onTapOutside,
     this.onChanged,
     this.onFieldSubmitted,
     this.validator,
@@ -67,6 +71,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
           textInputAction: textInputAction,
           controller: controller,
           decoration: InputDecoration(
+            prefix: prefix,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             hintText: hintText,
@@ -82,6 +87,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
           inputFormatters: inputFormatter,
           validator: validator,
           onSaved: onSaved,
+          onTapOutside: onTapOutside ?? (event) => focusNode?.unfocus(),
           onFieldSubmitted: onFieldSubmitted,
           onChanged: onChanged,
         ),

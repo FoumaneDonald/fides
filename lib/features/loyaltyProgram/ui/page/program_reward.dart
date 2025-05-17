@@ -1,10 +1,10 @@
-import 'package:fides/features/core/widgets/fides_snack_bar.dart';
-import 'package:fides/services/helpers/reward_type_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/widgets/fides_snack_bar.dart';
+import '../../../../services/helpers/reward_type_enum.dart';
 import '../../../../domain/entities/reward_entity.dart';
 import '../../../../services/helpers/discount_type_enum.dart';
 import '../../../../services/helpers/program_type_enum.dart';
@@ -114,14 +114,14 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                 FidesTextInput(
                                   focusNode: _itemFocus,
                                   controller: _itemController,
-                                  inputLabel: '$selectedRewardType Item*',
+                                  inputLabel: '${selectedRewardType.label} Item*',
                                   hintText: 'Coffee',
                                   validator: generalValidation,
                                   autoValidateMode: AutovalidateMode.onUnfocus,
                                   onSaved: (value) => _itemController.text = value!.trim(),
                                 ),
                                 SizedBox(height: 16),
-                                if (state.loyaltyProgramEntity!.type == ProgramType.points)
+                                if (state.selectedProgramType! == ProgramType.points)
                                   FidesTextInput(
                                     focusNode: _pointsFocus,
                                     controller: _pointCostController,
@@ -163,7 +163,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     discountType: selectedRewardType == RewardType.discount ? selectedDiscountType : null,
                                     item: _itemController.text.trim(),
                                     description: _descriptionController.text.trim(),
-                                    rewardCost: state.loyaltyProgramEntity!.type == ProgramType.points ? int.parse(_pointCostController.text.trim()) : null,
+                                    rewardCost: state.selectedProgramType! == ProgramType.points ? int.parse(_pointCostController.text.trim()) : null,
                                   );
 
                                   context.read<LoyaltyProgramBloc>().add(AddReward(rewardEntity));

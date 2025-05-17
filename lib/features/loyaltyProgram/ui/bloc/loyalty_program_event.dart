@@ -9,6 +9,17 @@ sealed class LoyaltyProgramEvent extends Equatable {
 
 final class LoadLoyaltyPrograms extends LoyaltyProgramEvent {}
 
+final class AllPrograms extends LoyaltyProgramEvent {}
+
+final class FilterProgram extends LoyaltyProgramEvent {
+  final ProgramType program;
+
+  const FilterProgram(this.program);
+
+  @override
+  List<Object?> get props => [program];
+}
+
 final class SelectedLoyaltyProgram extends LoyaltyProgramEvent {
   final ProgramType programType;
 
@@ -51,14 +62,29 @@ final class NameChanged extends LoyaltyProgramEvent {
 }
 
 final class PointValueChanged extends LoyaltyProgramEvent {
-  final String pointValue;
+  final double pointValue;
 
   const PointValueChanged(
     this.pointValue,
   );
+}
+
+final class MinimumPurchaseChanged extends LoyaltyProgramEvent {
+  final double minimumPurchase;
+
+  const MinimumPurchaseChanged(this.minimumPurchase,);
 
   @override
-  List<Object?> get props => [pointValue];
+  List<Object?> get props => [minimumPurchase];
+}
+
+final class CurrencyChanged extends LoyaltyProgramEvent {
+  final String currency;
+
+  const CurrencyChanged(this.currency,);
+
+  @override
+  List<Object?> get props => [currency];
 }
 
 final class SubmitLoyaltyProgram extends LoyaltyProgramEvent {}

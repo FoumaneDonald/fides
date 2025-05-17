@@ -1,4 +1,6 @@
 import 'package:fides/data/models/loyalty_program_model.dart';
+import 'package:fides/data/models/points_model.dart';
+import 'package:fides/data/models/stamp_model.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../domain/entities/reward_entity.dart';
@@ -18,7 +20,8 @@ class RewardModel {
   int? rewardCost;
   int? minimumPurchase;
 
-  final loyaltyProgram = ToOne<LoyaltyProgramModel>();
+  final pointsProgram = ToOne<PointsModel>();
+  final stampProgram = ToOne<StampModel>();
 
   RewardModel({
     required this.id,
