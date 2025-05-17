@@ -6,28 +6,26 @@ import '../../services/helpers/program_type_enum.dart';
 import 'loyalty_program_entity.dart';
 
 //Todo: add the relation between [RewardEntity] and [StampEntity]
-class StampEntity extends Equatable implements LoyaltyProgramEntity {
+class StampEntity extends LoyaltyProgramEntity {
   final int? id;
-  final String? uid;
   @override
   final String? name;
   @override
-  final ProgramType? type;
-  final int? numberHoles;
-  final List<int>? winningNumbers;
+  final ProgramType type;
+  final int numberHoles;
+  final List<int> winningNumbers;
 
-  const StampEntity({
+  StampEntity({
     this.id,
-    this.uid,
-    this.type,
+    required this.type,
     this.name,
-    this.numberHoles,
-    this.winningNumbers,
+    required this.numberHoles,
+    required this.winningNumbers,
   });
 
+  @override
   StampEntity copyWith({
     int? id,
-    String? uid,
     ProgramType? type,
     String? name,
     int? numberHoles,
@@ -35,7 +33,6 @@ class StampEntity extends Equatable implements LoyaltyProgramEntity {
   }) {
     return StampEntity(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
       name: name ?? this.name,
       numberHoles: numberHoles ?? this.numberHoles,
@@ -47,7 +44,6 @@ class StampEntity extends Equatable implements LoyaltyProgramEntity {
   factory StampEntity.fromModel(StampModel model) {
     return StampEntity(
       id: model.id ?? 0,
-      uid: model.uid,
       type: ProgramType.from(model.type),
       name: model.name,
       numberHoles: model.numberHoles,
@@ -56,5 +52,5 @@ class StampEntity extends Equatable implements LoyaltyProgramEntity {
   }
 
   @override
-  List<Object?> get props => [id, uid, type, name, numberHoles, winningNumbers];
+  List<Object?> get props => [id, type, name, numberHoles, winningNumbers];
 }

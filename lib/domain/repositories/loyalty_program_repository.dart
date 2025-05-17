@@ -12,7 +12,7 @@ abstract class LoyaltyProgramRepository {
 
   Future<Result<StampEntity>> createStampProgram({required StampEntity stampEntity, required List<RewardEntity> rewardList});
 
-  Future<Result<Map<ProgramType, List<Object>>>> getLoyaltyProgram();
+  Future<Result<Map<ProgramType, List<LoyaltyProgramEntity>>>> getLoyaltyProgram();
 
   Map<ProgramType, List<Object>> get existingPrograms;
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:currency_picker/currency_picker.dart';
 import 'package:fides/domain/entities/points_entity.dart';
 import 'package:fides/features/core/widgets/primary_button.dart';
@@ -35,35 +37,52 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
   final FocusNode _minimumPurchaseFocus = FocusNode();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _stampNumberController = TextEditingController();
-  final TextEditingController _pointValueController = TextEditingController();
-  final TextEditingController _minimumPurchaseController = TextEditingController();
+  final TextEditingController _pointsController = TextEditingController();
+  final TextEditingController _minimumSpentController = TextEditingController();
   List<int> _holes = [];
   int initialStampNumber = 0;
+  PointsEntity? statePointsEntity;
+  StampEntity? stateStampEntity;
 
   @override
   void initState() {
     super.initState();
     final state = context.read<LoyaltyProgramBloc>().state;
 
-
     /* Assign value and biding bloc event to respective input */
+    _nameController.text = state.loyaltyProgramEntity!.name ?? '';
+    _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
 
-    if (state.selectedProgramType == ProgramType.stamp) {
-      _nameController.text = state.stampEntity!.name ?? '';
-      _stampNumberController.text = state.stampEntity!.numberHoles?.toString() ?? initialStampNumber.toString();
-      _createHoles(state.stampEntity!.numberHoles ?? initialStampNumber);
+    if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
+      stateStampEntity = state.loyaltyProgramEntity! as StampEntity;
+
+      _stampNumberController.text = stateStampEntity!.numberHoles?.toString() ?? initialStampNumber.toString();
+
+      _createHoles(stateStampEntity!.numberHoles ?? initialStampNumber);
+
       _stampNumberController.addListener(() {
         final valueInt = int.parse(_stampNumberController.text.trim());
         context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedNumber: valueInt + 1));
       });
     } else if (state.selectedProgramType == ProgramType.points) {
-      _nameController.text = state.pointsEntity!.name ?? '';
-      _minimumPurchaseController.text = state.pointsEntity!.minimumSpent?.toString() ?? '';
-      _minimumPurchaseController.addListener(() => context.read<LoyaltyProgramBloc>().add(MinimumPurchaseChanged(double.parse(_minimumPurchaseController.text))));
-      _pointValueController.text = state.pointsEntity!.points?.toString() ?? '';
-      _pointValueController.addListener(() => context.read<LoyaltyProgramBloc>().add(PointValueChanged(double.parse(_pointValueController.text))));
+      statePointsEntity = state.loyaltyProgramEntity! as PointsEntity;
+
+      _minimumSpentController.text = statePointsEntity!.minimumSpent?.toString() ?? '';
+
+      _minimumSpentController.addListener(() {
+        if (_minimumSpentController.text.isNotEmpty) {
+          context.read<LoyaltyProgramBloc>().add(MinimumSpentChanged(double.parse(_minimumSpentController.text)));
+        }
+      });
+
+      _pointsController.text = statePointsEntity!.points?.toString() ?? '';
+
+      _pointsController.addListener(() {
+        if (_pointsController.text.isNotEmpty) {
+          context.read<LoyaltyProgramBloc>().add(PointsChanged(double.parse(_pointsController.text)));
+        }
+      });
     }
-    _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
   }
 
   @override
@@ -72,7 +91,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
     _pointValueFocus.dispose();
     _stampNumberFocus.dispose();
     _nameController.dispose();
-    _pointValueController.dispose();
+    _pointsController.dispose();
     _stampNumberController.dispose();
     super.dispose();
   }
@@ -106,9 +125,11 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
         final route = ModalRoute.of(context);
         final isCurrentRoute = route?.isCurrent ?? false;
 
-        if (_stampNumberController.text.trim() != state.stampEntity!.numberHoles.toString()) {
-          _stampNumberController.text = state.stampEntity!.numberHoles.toString();
-          _createHoles(state.stampEntity!.numberHoles ?? initialStampNumber);
+        // If the controller value is different from the state's number of holes,
+        // update the controller and regenerate the UI (e.g. stamp placeholders)
+        if (_stampNumberController.text.trim() != (stateStampEntity?.numberHoles.toString() ?? '')) {
+          _stampNumberController.text = stateStampEntity!.numberHoles.toString();
+          _createHoles(stateStampEntity!.numberHoles ?? initialStampNumber);
         }
 
         if (state.status == Status.error) {
@@ -179,7 +200,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                   if (state.selectedProgramType == ProgramType.points) ...{
                                     FidesTextInput(
                                       focusNode: _pointValueFocus,
-                                      controller: _pointValueController,
+                                      controller: _pointsController,
                                       inputLabel: 'Points Earned*',
                                       hintText: '10',
                                       helper: Text('How many points a customers receive.'),
@@ -194,7 +215,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                     ),
                                     FidesTextInput(
                                       focusNode: _minimumPurchaseFocus,
-                                      controller: _minimumPurchaseController,
+                                      controller: _minimumSpentController,
                                       inputLabel: 'For Every Amount Spent*',
                                       hintText: '500',
                                       helper: Text('The spending required to earn the points above.'),
@@ -202,7 +223,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                       suffixIcon: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(state.pointsEntity!.currencyCode ?? 'XAF'),
+                                          Text(statePointsEntity!.currencyCode ?? 'XAF'),
                                           IconButton(
                                             onPressed: () {
                                               showCurrencyPicker(
@@ -262,7 +283,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                             runSpacing: 12,
                                             children: _holes.map(
                                               (number) {
-                                                final bool isSelected = state.stampEntity!.winningNumbers?.contains(number) ?? false;
+                                                final bool isSelected = stateStampEntity!.winningNumbers?.contains(number) ?? false;
                                                 return NumberInSquare(
                                                   isSelected: isSelected,
                                                   number: number,
@@ -311,7 +332,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                       text: 'Create program',
                       onPressed: () async {
                         if (_formKey.currentState!.validate() && state.rewardEntityList!.isNotEmpty) {
-                          if (state.selectedProgramType! == ProgramType.stamp && (state.stampEntity!.winningNumbers != null && state.stampEntity!.winningNumbers!.isNotEmpty)) {
+                          if (state.selectedProgramType! == ProgramType.stamp && (stateStampEntity!.winningNumbers != null && stateStampEntity!.winningNumbers!.isNotEmpty)) {
                             context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
                           } else {
                             context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());

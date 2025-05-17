@@ -61,21 +61,21 @@ final class NameChanged extends LoyaltyProgramEvent {
   List<Object?> get props => [name];
 }
 
-final class PointValueChanged extends LoyaltyProgramEvent {
+final class PointsChanged extends LoyaltyProgramEvent {
   final double pointValue;
 
-  const PointValueChanged(
+  const PointsChanged(
     this.pointValue,
   );
 }
 
-final class MinimumPurchaseChanged extends LoyaltyProgramEvent {
-  final double minimumPurchase;
+final class MinimumSpentChanged extends LoyaltyProgramEvent {
+  final double minimumSpent;
 
-  const MinimumPurchaseChanged(this.minimumPurchase,);
+  const MinimumSpentChanged(this.minimumSpent,);
 
   @override
-  List<Object?> get props => [minimumPurchase];
+  List<Object?> get props => [minimumSpent];
 }
 
 final class CurrencyChanged extends LoyaltyProgramEvent {

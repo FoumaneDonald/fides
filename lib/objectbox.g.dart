@@ -69,12 +69,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(9, 7190404437975898656),
-            name: 'uid',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(1, 8670166263391842496)),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(11, 9111147930762667052),
             name: 'pointsProgramId',
             type: 11,
@@ -147,16 +141,11 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5157720441148261386),
-            name: 'uid',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(5, 6691712950610642240)),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 1495667634021040905),
             name: 'type',
             type: 9,
-            flags: 0),
+            flags: 2080,
+            indexId: const obx_int.IdUid(9, 2627159397715658803)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 38712837054418215),
             name: 'name',
@@ -200,12 +189,6 @@ final _entities = <obx_int.ModelEntity>[
             name: 'id',
             type: 6,
             flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 5038353275190053216),
-            name: 'uid',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(6, 78064764068026973)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 1883586170591108454),
             name: 'type',
@@ -276,11 +259,16 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
       lastEntityId: const obx_int.IdUid(5, 6685464445707830496),
-      lastIndexId: const obx_int.IdUid(8, 4043233121981302571),
+      lastIndexId: const obx_int.IdUid(9, 2627159397715658803),
       lastRelationId: const obx_int.IdUid(3, 5371440725444001829),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [1173935753394898722],
-      retiredIndexUids: const [5939902998660536462],
+      retiredIndexUids: const [
+        5939902998660536462,
+        6691712950610642240,
+        8670166263391842496,
+        78064764068026973
+      ],
       retiredPropertyUids: const [
         5774164378543038065,
         6716148227055326269,
@@ -289,7 +277,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         544434251751493668,
         7118891231732692149,
         3007625745844823324,
-        2241679788063526819
+        2241679788063526819,
+        5157720441148261386,
+        7190404437975898656,
+        5038353275190053216
       ],
       retiredRelationUids: const [8726568091037055140],
       modelVersion: 5,
@@ -317,8 +308,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final descriptionOffset = object.description == null
               ? null
               : fbb.writeString(object.description!);
-          final uidOffset =
-              object.uid == null ? null : fbb.writeString(object.uid!);
           fbb.startTable(13);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, typeOffset);
@@ -328,7 +317,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addOffset(5, descriptionOffset);
           fbb.addInt64(6, object.rewardCost);
           fbb.addInt64(7, object.minimumPurchase);
-          fbb.addOffset(8, uidOffset);
           fbb.addInt64(10, object.pointsProgram.targetId);
           fbb.addInt64(11, object.stampProgram.targetId);
           fbb.finish(fbb.endTable());
@@ -339,8 +327,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final uidParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 20);
           final typeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 6);
           final discountValueParam =
@@ -359,7 +345,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 18);
           final object = RewardModel(
               id: idParam,
-              uid: uidParam,
               type: typeParam,
               discountValue: discountValueParam,
               discountValueType: discountValueTypeParam,
@@ -450,14 +435,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (PointsModel object, fb.Builder fbb) {
-          final uidOffset =
-              object.uid == null ? null : fbb.writeString(object.uid!);
           final typeOffset = fbb.writeString(object.type);
           final nameOffset = fbb.writeString(object.name);
           final currencyCodeOffset = fbb.writeString(object.currencyCode);
           fbb.startTable(8);
           fbb.addInt64(0, object.id ?? 0);
-          fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, typeOffset);
           fbb.addOffset(3, nameOffset);
           fbb.addFloat64(4, object.points);
@@ -471,8 +453,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final uidParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
           final typeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGet(buffer, rootOffset, 8, '');
           final nameParam = const fb.StringReader(asciiOptimization: true)
@@ -486,7 +466,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 16, '');
           final object = PointsModel(
               id: idParam,
-              uid: uidParam,
               type: typeParam,
               name: nameParam,
               points: pointsParam,
@@ -518,18 +497,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (StampModel object, fb.Builder fbb) {
-          final uidOffset =
-              object.uid == null ? null : fbb.writeString(object.uid!);
-          final typeOffset =
-              object.type == null ? null : fbb.writeString(object.type!);
-          final nameOffset =
-              object.name == null ? null : fbb.writeString(object.name!);
-          final winningNumbersOffset = object.winningNumbers == null
-              ? null
-              : fbb.writeListInt16(object.winningNumbers!);
+          final typeOffset = fbb.writeString(object.type);
+          final nameOffset = fbb.writeString(object.name);
+          final winningNumbersOffset =
+              fbb.writeListInt16(object.winningNumbers);
           fbb.startTable(7);
           fbb.addInt64(0, object.id ?? 0);
-          fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, typeOffset);
           fbb.addOffset(3, nameOffset);
           fbb.addInt64(4, object.numberHoles);
@@ -542,20 +515,17 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final uidParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
           final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 8);
+              .vTableGet(buffer, rootOffset, 8, '');
           final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 10);
+              .vTableGet(buffer, rootOffset, 10, '');
           final numberHolesParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 12);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
           final winningNumbersParam =
               const fb.ListReader<int>(fb.Int16Reader(), lazy: false)
-                  .vTableGetNullable(buffer, rootOffset, 14);
+                  .vTableGet(buffer, rootOffset, 14, []);
           final object = StampModel(
               id: idParam,
-              uid: uidParam,
               type: typeParam,
               name: nameParam,
               numberHoles: numberHolesParam,
@@ -610,17 +580,13 @@ class RewardModel_ {
   static final minimumPurchase =
       obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[7]);
 
-  /// See [RewardModel.uid].
-  static final uid =
-      obx.QueryStringProperty<RewardModel>(_entities[0].properties[8]);
-
   /// See [RewardModel.pointsProgram].
   static final pointsProgram = obx.QueryRelationToOne<RewardModel, PointsModel>(
-      _entities[0].properties[9]);
+      _entities[0].properties[8]);
 
   /// See [RewardModel.stampProgram].
   static final stampProgram = obx.QueryRelationToOne<RewardModel, StampModel>(
-      _entities[0].properties[10]);
+      _entities[0].properties[9]);
 }
 
 /// [CustomerModel] entity fields to define ObjectBox queries.
@@ -662,29 +628,25 @@ class PointsModel_ {
   static final id =
       obx.QueryIntegerProperty<PointsModel>(_entities[2].properties[0]);
 
-  /// See [PointsModel.uid].
-  static final uid =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[1]);
-
   /// See [PointsModel.type].
   static final type =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[2]);
+      obx.QueryStringProperty<PointsModel>(_entities[2].properties[1]);
 
   /// See [PointsModel.name].
   static final name =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[3]);
+      obx.QueryStringProperty<PointsModel>(_entities[2].properties[2]);
 
   /// See [PointsModel.points].
   static final points =
-      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[4]);
+      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[3]);
 
   /// See [PointsModel.minimumSpent].
   static final minimumSpent =
-      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[5]);
+      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[4]);
 
   /// See [PointsModel.currencyCode].
   static final currencyCode =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[6]);
+      obx.QueryStringProperty<PointsModel>(_entities[2].properties[5]);
 
   /// see [PointsModel.rewards]
   static final rewards = obx.QueryBacklinkToMany<RewardModel, PointsModel>(
@@ -697,25 +659,21 @@ class StampModel_ {
   static final id =
       obx.QueryIntegerProperty<StampModel>(_entities[3].properties[0]);
 
-  /// See [StampModel.uid].
-  static final uid =
-      obx.QueryStringProperty<StampModel>(_entities[3].properties[1]);
-
   /// See [StampModel.type].
   static final type =
-      obx.QueryStringProperty<StampModel>(_entities[3].properties[2]);
+      obx.QueryStringProperty<StampModel>(_entities[3].properties[1]);
 
   /// See [StampModel.name].
   static final name =
-      obx.QueryStringProperty<StampModel>(_entities[3].properties[3]);
+      obx.QueryStringProperty<StampModel>(_entities[3].properties[2]);
 
   /// See [StampModel.numberHoles].
   static final numberHoles =
-      obx.QueryIntegerProperty<StampModel>(_entities[3].properties[4]);
+      obx.QueryIntegerProperty<StampModel>(_entities[3].properties[3]);
 
   /// See [StampModel.winningNumbers].
   static final winningNumbers =
-      obx.QueryIntegerVectorProperty<StampModel>(_entities[3].properties[5]);
+      obx.QueryIntegerVectorProperty<StampModel>(_entities[3].properties[4]);
 
   /// see [StampModel.rewards]
   static final rewards = obx.QueryBacklinkToMany<RewardModel, StampModel>(

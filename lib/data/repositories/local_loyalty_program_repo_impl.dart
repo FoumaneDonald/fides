@@ -17,7 +17,7 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
 
   LocalLoyaltyProgramRepoImpl(LoyaltyProgramDao loyaltyProgramDao) : _loyaltyProgramDao = loyaltyProgramDao;
 
-  final Map<ProgramType, List<Object>> _existingPrograms = {};
+  final Map<ProgramType, List<LoyaltyProgramEntity>> _existingPrograms = {};
 
   @override
   Map<ProgramType, List<Object>> get existingPrograms => _existingPrograms;
@@ -51,7 +51,7 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
   }
 
   @override
-  Future<Result<Map<ProgramType, List<Object>>>> getLoyaltyProgram() async {
+  Future<Result<Map<ProgramType, List<LoyaltyProgramEntity>>>> getLoyaltyProgram() async {
     final ResultDart<Map<ProgramType, List<Object>>, Exception> result = _loyaltyProgramDao.getAllLoyaltyProgram();
     return result.fold(
       (programModels) {

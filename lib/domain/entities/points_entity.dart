@@ -6,30 +6,28 @@ import '../../services/helpers/program_type_enum.dart';
 import 'loyalty_program_entity.dart';
 
 //Todo: add the relation between [RewardEntity] and [PointsEntity]
-class PointsEntity extends Equatable implements LoyaltyProgramEntity {
+class PointsEntity extends LoyaltyProgramEntity {
   final int? id;
-  final String? uid;
   @override
   final String? name;
   @override
-  final ProgramType? type;
+  final ProgramType type;
   final double? points;
   final double? minimumSpent;
-  final String? currencyCode;
+  final String currencyCode;
 
-  const PointsEntity({
+  PointsEntity({
     this.id,
-    this.uid,
-    this.type,
+    required this.type,
     this.name,
     this.points,
     this.minimumSpent,
-    this.currencyCode,
+    required this.currencyCode,
   });
 
+  @override
   PointsEntity copyWith({
     int? id,
-    String? uid,
     ProgramType? type,
     String? name,
     double? points,
@@ -38,7 +36,6 @@ class PointsEntity extends Equatable implements LoyaltyProgramEntity {
   }) {
     return PointsEntity(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
       name: name ?? this.name,
       points: points ?? this.points,
@@ -51,7 +48,6 @@ class PointsEntity extends Equatable implements LoyaltyProgramEntity {
   factory PointsEntity.fromModel(PointsModel model) {
     return PointsEntity(
       id: model.id ?? 0,
-      uid: model.uid,
       type: ProgramType.from(model.type),
       name: model.name,
       points: model.points,
@@ -61,5 +57,5 @@ class PointsEntity extends Equatable implements LoyaltyProgramEntity {
   }
 
   @override
-  List<Object?> get props => [id, uid, type, name, points, minimumSpent, currencyCode];
+  List<Object?> get props => super.props + [id, points, minimumSpent, currencyCode];
 }

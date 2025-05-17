@@ -11,10 +11,12 @@ class LoyaltyProgramState extends Equatable {
   final ProgramType? selectedProgramType;
   final ProgramType? selectedFilterProgram;
   final bool? allFilter;
-  final PointsEntity? pointsEntity;
-  final StampEntity? stampEntity;
-  final Map<ProgramType, List<Object>>? listOfPrograms;
-  final List<Object>? listOfSelectedProgram;
+  final LoyaltyProgramEntity? loyaltyProgramEntity;
+
+  // final PointsEntity? pointsEntity;
+  // final StampEntity? stampEntity;
+  final Map<ProgramType, List<LoyaltyProgramEntity>>? listOfPrograms;
+  final List<LoyaltyProgramEntity>? listOfSelectedProgram;
   final List<RewardEntity>? rewardEntityList;
 
   const LoyaltyProgramState._({
@@ -24,8 +26,9 @@ class LoyaltyProgramState extends Equatable {
     this.selectedProgramType,
     this.selectedFilterProgram,
     this.allFilter,
-    this.pointsEntity,
-    this.stampEntity,
+    this.loyaltyProgramEntity,
+    // this.pointsEntity,
+    // this.stampEntity,
     this.listOfPrograms,
     this.listOfSelectedProgram,
     this.rewardEntityList,
@@ -39,8 +42,9 @@ class LoyaltyProgramState extends Equatable {
           selectedProgramType: null,
           selectedFilterProgram: null,
           allFilter: true,
-          pointsEntity: PointsEntity(currencyCode: 'XAF'),
-          stampEntity: StampEntity(numberHoles: 4, winningNumbers: [3]),
+          loyaltyProgramEntity: null,
+          // pointsEntity: PointsEntity(currencyCode: 'XAF'),
+          // stampEntity: StampEntity(numberHoles: 4, winningNumbers: [3]),
           listOfPrograms: {},
           listOfSelectedProgram: [],
           rewardEntityList: [],
@@ -53,10 +57,11 @@ class LoyaltyProgramState extends Equatable {
     ProgramType? selectedProgramType,
     ProgramType? selectedFilterProgram,
     bool? allFilter,
-    PointsEntity? pointsEntity,
-    StampEntity? stampEntity,
-    Map<ProgramType, List<Object>>? listOfPrograms,
-    List<Object>? listOfSelectedProgram,
+    LoyaltyProgramEntity? loyaltyProgramEntity,
+    // PointsEntity? pointsEntity,
+    // StampEntity? stampEntity,
+    Map<ProgramType, List<LoyaltyProgramEntity>>? listOfPrograms,
+    List<LoyaltyProgramEntity>? listOfSelectedProgram,
     List<RewardEntity>? rewardEntityList,
   }) {
     return LoyaltyProgramState._(
@@ -66,13 +71,27 @@ class LoyaltyProgramState extends Equatable {
         selectedProgramType: selectedProgramType ?? this.selectedProgramType,
         selectedFilterProgram: selectedFilterProgram ?? this.selectedFilterProgram,
         allFilter: allFilter ?? this.allFilter,
-        pointsEntity: pointsEntity ?? this.pointsEntity,
-        stampEntity: stampEntity ?? this.stampEntity,
+        loyaltyProgramEntity: loyaltyProgramEntity ?? this.loyaltyProgramEntity,
+        // pointsEntity: pointsEntity ?? this.pointsEntity,
+        // stampEntity: stampEntity ?? this.stampEntity,
         listOfPrograms: listOfPrograms ?? this.listOfPrograms,
         listOfSelectedProgram: listOfSelectedProgram ?? this.listOfSelectedProgram,
         rewardEntityList: rewardEntityList ?? this.rewardEntityList);
   }
 
   @override
-  List<Object?> get props => [status, rewardStatus, message, selectedProgramType, selectedFilterProgram, allFilter, pointsEntity, stampEntity, listOfPrograms, listOfSelectedProgram, rewardEntityList];
+  List<Object?> get props => [
+        status,
+        rewardStatus,
+        message,
+        selectedProgramType,
+        selectedFilterProgram,
+        allFilter,
+        loyaltyProgramEntity,
+        // pointsEntity,
+        // stampEntity,
+        listOfPrograms,
+        listOfSelectedProgram,
+        rewardEntityList,
+      ];
 }

@@ -27,7 +27,7 @@ class Programs extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final List<Object> allPrograms = state.listOfSelectedProgram!;
+          final List<LoyaltyProgramEntity> allPrograms = state.listOfSelectedProgram!;
           return SafeArea(
             child: CustomScrollView(
               slivers: [
@@ -79,45 +79,49 @@ class Programs extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (state.listOfPrograms!.values.isEmpty) ...{
-                  SliverToBoxAdapter(
-                    child: Center(
-                      child: Text('Tap on the + button top left to create a program'),
+                if (state.listOfSelectedProgram!.isEmpty) ...{
+                  SliverPadding(
+                    padding: EdgeInsets.all(16.0),
+                    sliver: SliverToBoxAdapter(
+                      child: Center(
+                        child: Text('Tap on the + button top left to create a program'),
+                      ),
+                    ),
+                  ),
+                } else ...{
+                  SliverPadding(
+                    padding: EdgeInsets.all(16.0),
+                    sliver: SliverToBoxAdapter(
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double width = constraints.maxWidth;
+                          int columns;
+
+                          if (width >= 1024) {
+                            columns = 4; // Desktop
+                          } else if (width >= 600) {
+                            columns = 3; // Tablet
+                          } else {
+                            columns = 2; // Mobile
+                          }
+
+                          if (state.status == Status.loading) {
+                            return Center(child: Loader());
+                          }
+
+                          return LayoutGrid(
+                            columnSizes: List.generate(columns, (_) => 1.fr),
+                            rowSizes: List<TrackSize>.generate((allPrograms.length / columns).ceil(), (_) => auto),
+                            columnGap: 8,
+                            rowGap: 8,
+                            autoPlacement: AutoPlacement.rowSparse,
+                            children: allPrograms.map((program) => ProgramCard(program: program)).toList(),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 },
-                SliverPadding(
-                  padding: EdgeInsets.all(16.0),
-                  sliver: SliverToBoxAdapter(
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final double width = constraints.maxWidth;
-                        int columns;
-
-                        if (width >= 1024) {
-                          columns = 4; // Desktop
-                        } else if (width >= 600) {
-                          columns = 3; // Tablet
-                        } else {
-                          columns = 2; // Mobile
-                        }
-
-                        if (state.status == Status.loading) {
-                          return Center(child: Loader());
-                        }
-
-                        return LayoutGrid(
-                          columnSizes: List.generate(columns, (_) => auto),
-                          rowSizes: List<TrackSize>.generate((allPrograms.length / columns).ceil(), (_) => auto),
-                          columnGap: 8,
-                          rowGap: 8,
-                          autoPlacement: AutoPlacement.rowSparse,
-                          children: allPrograms.map((program) => ProgramCard(program: program)).toList(),
-                        );
-                      },
-                    ),
-                  ),
-                ),
               ],
             ),
           );

@@ -8,13 +8,11 @@ import 'customer_model.dart';
 class StampModel {
   @Id()
   int? id = 0;
-  @Unique()
-  String? uid;
-  String? type;
-  String? name;
-  int? numberHoles;
+  String type;
+  String name;
+  int numberHoles;
   @Property(type: PropertyType.shortVector)
-  List<int>? winningNumbers;
+  List<int> winningNumbers;
 
   @Backlink('stampProgram')
   final rewards = ToMany<RewardModel>();
@@ -23,16 +21,14 @@ class StampModel {
 
   StampModel({
     required this.id,
-    this.uid,
-    this.type,
-    this.name,
-    this.numberHoles,
-    this.winningNumbers,
+    required this.type,
+    required this.name,
+    required this.numberHoles,
+    required this.winningNumbers,
   });
 
   StampModel copyWith({
     int? id = 0,
-    String? uid,
     String? type,
     String? name,
     int? numberHoles,
@@ -40,7 +36,6 @@ class StampModel {
   }) {
     return StampModel(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
       name: name ?? this.name,
       numberHoles: numberHoles ?? this.numberHoles,
@@ -52,9 +47,8 @@ class StampModel {
   factory StampModel.fromEntity(StampEntity entity) {
     return StampModel(
       id: entity.id ?? 0,
-      uid: entity.uid,
-      type: entity.type?.label,
-      name: entity.name,
+      type: entity.type.label,
+      name: entity.name!,
       numberHoles: entity.numberHoles,
       winningNumbers: entity.winningNumbers,
     );

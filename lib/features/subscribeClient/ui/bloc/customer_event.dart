@@ -10,7 +10,7 @@ sealed class CustomerEvent extends Equatable {
 final class Init extends CustomerEvent {}
 
 final class OnSelectProgram extends CustomerEvent {
-  final List<LoyaltyProgramEntity> programs;
+  final List<Object> programs;
 
   const OnSelectProgram(this.programs);
 

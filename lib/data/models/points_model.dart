@@ -9,7 +9,6 @@ class PointsModel {
   @Id()
   int? id = 0;
   @Unique()
-  String? uid;
   String type;
   String name;
   double points;
@@ -23,7 +22,6 @@ class PointsModel {
 
   PointsModel({
     required this.id,
-    this.uid,
     required this.type,
     required this.name,
     required this.points,
@@ -33,7 +31,6 @@ class PointsModel {
 
   PointsModel copyWith({
     int? id = 0,
-    String? uid,
     String? type,
     String? name,
     double? points,
@@ -42,7 +39,6 @@ class PointsModel {
   }) {
     return PointsModel(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
       name: name ?? this.name,
       points: points ?? this.points,
@@ -55,12 +51,11 @@ class PointsModel {
   factory PointsModel.fromEntity(PointsEntity entity) {
     return PointsModel(
       id: entity.id ?? 0,
-      uid: entity.uid,
-      type: entity.type!.label,
+      type: entity.type.label,
       name: entity.name!,
       points: entity.points!,
       minimumSpent: entity.minimumSpent!,
-      currencyCode: entity.currencyCode!,
+      currencyCode: entity.currencyCode,
     );
   }
 }

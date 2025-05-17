@@ -66,26 +66,26 @@ class LoyaltyProgramDao {
   Result<T> createProgram<T extends Object>({
     required T programModel,
     required List<RewardModel> programRewards,
-    required T Function(String uid) copyProgramWithUid,
+    // required T Function(String uid) copyProgramWithUid,
     required void Function(T program) putToBox,
     required void Function(T program, List<RewardModel> rewards) attachRewards,
   }) {
     try {
-      // Generate a unique ID for the program.
-      final uid = const Uuid().v4();
-      final program = copyProgramWithUid(uid);
-
-      // Generate unique IDs for each reward and create new instances.
-      final List<RewardModel> rewards = programRewards.map((reward) => reward.copyWith(uid: const Uuid().v4())).toList();
+      // // Generate a unique ID for the program.
+      // final uid = const Uuid().v4();
+      // final program = copyProgramWithUid(uid);
+      //
+      // // Generate unique IDs for each reward and create new instances.
+      // final List<RewardModel> rewards = programRewards.map((reward) => reward.copyWith(uid: const Uuid().v4())).toList();
 
       // Associate the rewards with the program.
-      attachRewards(program, rewards);
+      attachRewards(programModel, programRewards);
 
       // Save the program to the appropriate storage.
-      putToBox(program);
+      putToBox(programModel);
 
       // Return a successful result with the fully built program.
-      return Success(program);
+      return Success(programModel);
     } catch (error, stackTrace) {
       // Log the error for debugging purposes and return a failure.
       print('$error, $stackTrace');
@@ -98,7 +98,7 @@ class LoyaltyProgramDao {
     return createProgram<PointsModel>(
       programModel: model,
       programRewards: rewards,
-      copyProgramWithUid: (uid) => model.copyWith(uid: uid),
+      // copyProgramWithUid: (uid) => model.copyWith(uid: uid),
       attachRewards: (program, rewards) => program.rewards.addAll(rewards),
       putToBox: (program) => _pointsProgramBox.put(program),
     );
@@ -109,7 +109,7 @@ class LoyaltyProgramDao {
     return createProgram<StampModel>(
       programModel: model,
       programRewards: rewards,
-      copyProgramWithUid: (uid) => model.copyWith(uid: uid),
+      // copyProgramWithUid: (uid) => model.copyWith(uid: uid),
       attachRewards: (program, rewards) => program.rewards.addAll(rewards),
       putToBox: (program) => _stampProgramBox.put(program),
     );

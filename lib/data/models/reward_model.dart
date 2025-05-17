@@ -10,8 +10,6 @@ import '../../domain/entities/reward_entity.dart';
 class RewardModel {
   @Id()
   int id = 0;
-  @Unique()
-  String? uid;
   String? type;
   int? discountValue;
   String? discountValueType;
@@ -25,7 +23,6 @@ class RewardModel {
 
   RewardModel({
     required this.id,
-    this.uid,
     this.type,
     this.discountValue,
     this.discountValueType,
@@ -37,7 +34,6 @@ class RewardModel {
 
   RewardModel copyWith({
     int? id,
-    String? uid,
     String? type,
     int? discountValue,
     String? discountValueType,
@@ -48,7 +44,6 @@ class RewardModel {
   }) {
     return RewardModel(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
       discountValue: discountValue ?? this.discountValue,
       discountValueType: discountValueType ?? this.discountValueType,
@@ -63,7 +58,6 @@ class RewardModel {
   factory RewardModel.fromEntity(RewardEntity entity) {
     return RewardModel(
       id: entity.id ?? 0,
-      uid: entity.uid,
       type: entity.type?.label,
       discountValue: entity.discountValue,
       discountValueType: entity.discountType?.label,

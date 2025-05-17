@@ -4,15 +4,8 @@ import '../../data/models/reward_model.dart';
 import '../../services/helpers/discount_type_enum.dart';
 import '../../services/helpers/reward_type_enum.dart';
 
-
-class Value<T> {
-  final T value;
-  const Value(this.value);
-}
-
 class RewardEntity extends Equatable {
   final int? id;
-  final String? uid;
   final RewardType? type;
   final int? discountValue;
   final DiscountType? discountType;
@@ -23,7 +16,6 @@ class RewardEntity extends Equatable {
 
   const RewardEntity({
     this.id,
-    this.uid,
     this.type,
     this.discountValue,
     this.discountType,
@@ -35,24 +27,22 @@ class RewardEntity extends Equatable {
 
   RewardEntity copyWith({
     int? id,
-    String? uid,
     RewardType? type,
-    Value<int?>? discountValue,
-    Value<DiscountType?>? discountType,
+    int? discountValue,
+    DiscountType? discountType,
     String? item,
     String? description,
-    Value<int?>? rewardCost,
+    int? rewardCost,
     int? minimumPurchase,
   }) {
     return RewardEntity(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       type: type ?? this.type,
-      discountValue: discountValue != null ? discountValue.value : this.discountValue,
-      discountType: discountType != null ? discountType.value : this.discountType,
+      discountValue: discountValue ?? this.discountValue,
+      discountType: discountType ?? this.discountType,
       item: item ?? this.item,
       description: description ?? this.description,
-      rewardCost: rewardCost != null ? rewardCost.value : this.rewardCost,
+      rewardCost: rewardCost ?? this.rewardCost,
       minimumPurchase: minimumPurchase ?? this.minimumPurchase,
     );
   }
@@ -61,7 +51,6 @@ class RewardEntity extends Equatable {
   factory RewardEntity.fromModel(RewardModel model) {
     return RewardEntity(
       id: model.id,
-      uid: model.uid,
       type: RewardType.from(model.type),
       discountValue: model.discountValue,
       discountType: DiscountType.from(model.discountValueType),
@@ -73,5 +62,5 @@ class RewardEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, uid, type, discountValue, discountType, item, description, rewardCost, minimumPurchase];
+  List<Object?> get props => [id, type, discountValue, discountType, item, description, rewardCost, minimumPurchase];
 }
