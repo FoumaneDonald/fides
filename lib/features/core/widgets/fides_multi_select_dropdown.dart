@@ -6,7 +6,11 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
   final String inputLabel;
   final List<T> options;
   final List<T> selectedValues;
+  final String? errorText;
+  final bool? hasError;
+  final FocusNode focusNode;
   final void Function(List<T>) onSelectionChanged;
+  final void Function(bool)? onFocusChange;
 
   /// How to display the items in the dropdown
   final Widget Function(T) itemChipsLabelBuilder;
@@ -18,10 +22,14 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
     super.key,
     required this.inputLabel,
     required this.options,
+    required this.focusNode,
     required this.selectedValues,
     required this.onSelectionChanged,
     required this.itemChipsLabelBuilder,
     required this.itemDisplayBuilder,
+    this.onFocusChange,
+    this.errorText,
+    this.hasError,
   });
 
   @override
@@ -34,72 +42,85 @@ class FidesMultiSelectBottomSheet<T> extends StatelessWidget {
           inputLabel,
           style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
         ),
-        GestureDetector(
-          onTap: () async {
-            // Show bottom sheet when tapped
-            final List<T>? result = await showModalBottomSheet<List<T>>(
-              context: context,
-              isScrollControlled: true,
-              // Allows content to control the height
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              ),
-              builder: (context) {
-                // Open bottom sheet with list of checkboxes
-                return _BottomSheetSelector<T>(
-                  options: options,
-                  initialSelected: selectedValues,
-                  itemDisplayBuilder: itemDisplayBuilder,
-                );
-              },
-            );
-
-            // Update selected values if the user made any changes
-            if (result != null) {
-              onSelectionChanged(result);
-            }
-          },
-          child: Container(
-            height: 56,
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onInverseSurface,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Row(
-              children: [
-                // Display selected values as chips, or a placeholder if none selected
-                Expanded(
-                  child: selectedValues.isEmpty
-                      ? const Text(
-                          'Select options',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        )
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            // For each selected item, display a chip
-                            children: selectedValues
-                                .map((item) => Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
-                                      child: Chip(
-                                        label: itemChipsLabelBuilder(item),
-                                        onDeleted: () {
-                                          // Remove the selected item when its chip is deleted
-                                          final updated = List<T>.from(selectedValues)..remove(item);
-                                          onSelectionChanged(updated);
-                                        },
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                        ),
+        Focus(
+          focusNode: focusNode,
+          onFocusChange: onFocusChange,
+          child: GestureDetector(
+            onTap: () async {
+              focusNode.requestFocus();
+              // Show bottom sheet when tapped
+              final List<T>? result = await showModalBottomSheet<List<T>>(
+                context: context,
+                isScrollControlled: true,
+                // Allows content to control the height
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
-                const Icon(Icons.arrow_drop_down),
-              ],
+                builder: (context) {
+                  // Open bottom sheet with list of checkboxes
+                  return _BottomSheetSelector<T>(
+                    options: options,
+                    initialSelected: selectedValues,
+                    itemDisplayBuilder: itemDisplayBuilder,
+                  );
+                },
+              );
+
+              // Update selected values if the user made any changes
+              if (result != null) {
+                onSelectionChanged(result);
+              }
+            },
+            child: Container(
+              height: 56,
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onInverseSurface,
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                children: [
+                  // Display selected values as chips, or a placeholder if none selected
+                  Expanded(
+                    child: selectedValues.isEmpty
+                        ? const Text(
+                            'Select options',
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          )
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              // For each selected item, display a chip
+                              children: selectedValues
+                                  .map((item) => Padding(
+                                        padding: const EdgeInsets.only(right: 8.0),
+                                        child: Chip(
+                                          label: itemChipsLabelBuilder(item),
+                                          onDeleted: () {
+                                            // Remove the selected item when its chip is deleted
+                                            final updated = List<T>.from(selectedValues)..remove(item);
+                                            onSelectionChanged(updated);
+                                          },
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                          ),
+                  ),
+                  const Icon(Icons.arrow_drop_down),
+                ],
+              ),
             ),
           ),
         ),
+        if (hasError ?? false)
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 12.0),
+            child: Text(
+              errorText!,
+              style: TextStyle(color: Theme.of(context).colorScheme.error, fontSize: 12),
+            ),
+          ),
       ],
     );
   }

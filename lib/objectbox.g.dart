@@ -97,12 +97,6 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 2340145866410014569),
-            name: 'uid',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(4, 5064043649769193035)),
-        obx_int.ModelProperty(
             id: const obx_int.IdUid(3, 3524937022293858320),
             name: 'name',
             type: 9,
@@ -267,7 +261,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         5939902998660536462,
         6691712950610642240,
         8670166263391842496,
-        78064764068026973
+        78064764068026973,
+        5064043649769193035
       ],
       retiredPropertyUids: const [
         5774164378543038065,
@@ -280,7 +275,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         2241679788063526819,
         5157720441148261386,
         7190404437975898656,
-        5038353275190053216
+        5038353275190053216,
+        2340145866410014569
       ],
       retiredRelationUids: const [8726568091037055140],
       modelVersion: 5,
@@ -374,8 +370,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (CustomerModel object, fb.Builder fbb) {
-          final uidOffset =
-              object.uid == null ? null : fbb.writeString(object.uid!);
           final nameOffset =
               object.name == null ? null : fbb.writeString(object.name!);
           final phoneOffset =
@@ -384,7 +378,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               object.email == null ? null : fbb.writeString(object.email!);
           fbb.startTable(6);
           fbb.addInt64(0, object.id ?? 0);
-          fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, nameOffset);
           fbb.addOffset(3, phoneOffset);
           fbb.addOffset(4, emailOffset);
@@ -396,8 +389,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
           final idParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final uidParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
           final nameParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 8);
           final phoneParam = const fb.StringReader(asciiOptimization: true)
@@ -406,7 +397,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
               .vTableGetNullable(buffer, rootOffset, 12);
           final object = CustomerModel(
               id: idParam,
-              uid: uidParam,
               name: nameParam,
               phone: phoneParam,
               email: emailParam);
@@ -595,21 +585,17 @@ class CustomerModel_ {
   static final id =
       obx.QueryIntegerProperty<CustomerModel>(_entities[1].properties[0]);
 
-  /// See [CustomerModel.uid].
-  static final uid =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[1]);
-
   /// See [CustomerModel.name].
   static final name =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[2]);
+      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[1]);
 
   /// See [CustomerModel.phone].
   static final phone =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[3]);
+      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[2]);
 
   /// See [CustomerModel.email].
   static final email =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[4]);
+      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[3]);
 
   /// see [CustomerModel.pointsPrograms]
   static final pointsPrograms =

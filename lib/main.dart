@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => HomeBloc(),
+          create: (context) => sl<HomeBloc>()..add(LatestCustomer()),
         ),
         BlocProvider(
           lazy: false,

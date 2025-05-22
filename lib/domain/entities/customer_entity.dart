@@ -1,4 +1,6 @@
 import 'package:equatable/equatable.dart';
+import 'package:fides/domain/entities/points_entity.dart';
+import 'package:fides/domain/entities/stamp_entity.dart';
 
 import '../../data/models/customer_model.dart';
 import 'loyalty_program_entity.dart';
@@ -6,7 +8,6 @@ import 'loyalty_program_entity.dart';
 //Todo: Add the relation between [LoyaltyProgramEntity] and [CustomerEntity]
 class CustomerEntity extends Equatable {
   final int? id;
-  final String? uid;
   final String? name;
   final String? phone;
   final String? email;
@@ -14,7 +15,6 @@ class CustomerEntity extends Equatable {
 
   const CustomerEntity({
     this.id,
-    this.uid,
     this.name,
     this.phone,
     this.email,
@@ -23,7 +23,6 @@ class CustomerEntity extends Equatable {
 
   CustomerEntity copyWith({
     int? id,
-    String? uid,
     String? name,
     String? phone,
     String? email,
@@ -31,7 +30,6 @@ class CustomerEntity extends Equatable {
   }) {
     return CustomerEntity(
       id: id ?? this.id,
-      uid: uid ?? this.uid,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       email: email ?? this.email,
@@ -41,15 +39,24 @@ class CustomerEntity extends Equatable {
 
   /// Convert [CustomerModel] to [CustomerEntity]
   factory CustomerEntity.fromModel(CustomerModel model) {
+    final List<LoyaltyProgramEntity> programs = [
+      ...model.stampPrograms.map((stamp) => StampEntity.fromModel(stamp)),
+      ...model.pointsPrograms.map((point) => PointsEntity.fromModel(point)),
+    ];
+
     return CustomerEntity(
       id: model.id,
-      uid: model.uid,
       name: model.name,
       phone: model.phone,
       email: model.email,
+      loyaltyPrograms: programs,
     );
   }
 
+  static List<CustomerEntity> fromModelList(List<CustomerModel> models) {
+    return models.map((model) => CustomerEntity.fromModel(model)).toList();
+  }
+
   @override
-  List<Object?> get props => [id, uid, name, phone, email, loyaltyPrograms];
+  List<Object?> get props => [id, name, phone, email, loyaltyPrograms];
 }

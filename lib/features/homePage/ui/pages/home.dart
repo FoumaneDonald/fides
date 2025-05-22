@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/entities/customer_entity.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
 import '../bloc/home_bloc.dart';
@@ -13,32 +14,97 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(leading: Icon(Icons.menu), title: Text(AppLocalizations.of(context)!.home)),
-        body: BlocConsumer<HomeBloc, HomeState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
-          builder: (context, state) {
-            return SafeArea(
-              child: SingleChildScrollView(
-                child: Center(
+    return Scaffold(
+      body: BlocConsumer<HomeBloc, HomeState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  pinned: true,
+                  leading: Icon(Icons.menu),
+                  flexibleSpace: FlexibleSpaceBar(
+                    title: Text(AppLocalizations.of(context)!.home),
+                  ),
+                ),
+
+                SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+                    padding: const EdgeInsets.all(16),
+                    child: LoyalCustomersSection(),
+                  ),
+                ),
+
+                // "Latest customers" heading
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        LoyalCustomersSection(),
-                        SizedBox(height: 24),
-                        LatestCustomersSection(),
+                        Text('Latest customers'),
+                        Text('see all'),
                       ],
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        ),
+
+                // "Today" text
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text('Today'),
+                  ),
+                ),
+
+                if (state.listOfCustomers?.isEmpty ?? true) ...{
+                  SliverToBoxAdapter(
+                    child: Center(
+                      child: Text('No customer'),
+                    ),
+                  )
+                } else ...{
+                  SliverList.separated(
+                    itemCount: state.listOfCustomers!.length,
+                    separatorBuilder: (context, index) => SizedBox(height: 8),
+                    itemBuilder: (context, index) {
+                      final CustomerEntity customer = state.listOfCustomers![index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              spacing: 16,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(height: 32, width: 32, child: Placeholder()),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(customer.name!),
+                                      Text(customer.phone ?? ''),
+                                      Text(customer.email ?? ''),
+                                    ],
+                                  ),
+                                ),
+                                Icon(Icons.arrow_right_outlined),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                }
+              ],
+            ),
+          );
+        },
       ),
     );
   }

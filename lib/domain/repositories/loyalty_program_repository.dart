@@ -14,5 +14,5 @@ abstract class LoyaltyProgramRepository {
 
   Future<Result<Map<ProgramType, List<LoyaltyProgramEntity>>>> getLoyaltyProgram();
 
-  Map<ProgramType, List<Object>> get existingPrograms;
+  Map<ProgramType, List<LoyaltyProgramEntity>> get existingPrograms;
 }

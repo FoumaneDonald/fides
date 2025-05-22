@@ -26,6 +26,7 @@ dependencies:
   sentry_flutter: ^8.14.2
   flutter_dotenv: ^5.2.1
   currency_picker: ^2.0.21
+  phone_form_field: ^10.0.2
 
   cupertino_icons: ^1.0.8
   flutter_localizations:

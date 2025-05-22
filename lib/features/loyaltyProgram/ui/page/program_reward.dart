@@ -61,7 +61,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                   if (state.rewardStatus == RewardStatus.added) {
                     context.pop();
                   } else if (state.rewardStatus == RewardStatus.error) {
-                    showSnackBar(context, state.message!);
+                    MindLabSnackBar.error(context, state.message!);
                   }
                 },
                 builder: (context, state) {
@@ -116,7 +116,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                   controller: _itemController,
                                   inputLabel: '${selectedRewardType.label} Item*',
                                   hintText: 'Coffee',
-                                  validator: generalValidation,
+                                  validator: requiredField,
                                   autoValidateMode: AutovalidateMode.onUnfocus,
                                   onSaved: (value) => _itemController.text = value!.trim(),
                                 ),
@@ -127,7 +127,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     controller: _pointCostController,
                                     inputLabel: 'Points required to unlock reward*',
                                     hintText: '100',
-                                    validator: generalValidation,
+                                    validator: requiredField,
                                     inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
                                     textInputType: TextInputType.number,
                                     autoValidateMode: AutovalidateMode.onUnfocus,
@@ -141,7 +141,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                   hintText: 'Help your customers understand what this reward is for.',
                                   textInputType: TextInputType.name,
                                   maxLine: 6,
-                                  validator: generalValidation,
+                                  validator: requiredField,
                                   autoValidateMode: AutovalidateMode.onUnfocus,
                                   onSaved: (value) => _descriptionController.text = value!.trim(),
                                 ),

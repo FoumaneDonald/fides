@@ -1,15 +1,20 @@
 import 'package:fides/features/core/mixins/validation_mixins.dart';
 import 'package:fides/features/core/utilities/dismiss_keyboard.dart';
+import 'package:fides/features/core/widgets/fides_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:phone_form_field/phone_form_field.dart';
 
+import '../../../../domain/entities/customer_entity.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
 import '../../../../injection.dart';
 import '../../../core/widgets/fides_dropdown_input.dart';
 import '../../../core/widgets/fides_multi_select_dropdown.dart';
+import '../../../core/widgets/fides_phone_input.dart';
 import '../../../core/widgets/fides_text_input.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/required_field_text.dart';
@@ -28,101 +33,161 @@ class CreateCustomer extends StatefulWidget {
 class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final PhoneController _phoneController = PhoneController(initialValue: const PhoneNumber(isoCode: IsoCode.CM, nsn: ''));
   final TextEditingController _emailController = TextEditingController();
+  final FocusNode _nameFocusNode = FocusNode();
+  final FocusNode _phoneFocusNode = FocusNode();
+  final FocusNode _emailFocusNode = FocusNode();
+  final FocusNode _programsFocusNode = FocusNode();
   List<LoyaltyProgramEntity> selectedProgram = [];
 
   @override
   void initState() {
     super.initState();
-    // _nameController = ;
-    // _phoneController = ;
-    // _emailController = ;
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       lazy: false,
-      create: (context) => CustomerBloc(loyaltyProgramRepository: sl<LoyaltyProgramRepository>())..add(Init()),
-      child: DismissKeyboard(
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Add a Customer'),
-            leading: IconButton(
-                onPressed: () {
-                  context.pop();
+      create: (context) => sl<CustomerBloc>()..add(Init()),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Add a Customer'),
+          leading: IconButton(
+              onPressed: () {
+                context.pop();
+              },
+              icon: Icon(Icons.arrow_back_outlined)),
+        ),
+        body: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: BlocConsumer<CustomerBloc, CustomerState>(
+                listener: (context, state){
+                  if(state.status == CustomerStatus.success){
+                    MindLabSnackBar.success(context, state.message!);
+                    context.pop();
+                  } else if (state.status == CustomerStatus.error) {
+                    MindLabSnackBar.error(context, state.message!);
+                  }
                 },
-                icon: Icon(Icons.arrow_back_outlined)),
-          ),
-          body: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                child: BlocBuilder<CustomerBloc, CustomerState>(
-                  builder: (context, state) {
-                    return Column(
-                      spacing: 8,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        RequiredFieldText(),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: Form(
-                              key: _formKey,
-                              child: Column(
-                                spacing: 16,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  FidesTextInput(
-                                    controller: _nameController,
-                                    inputLabel: 'Name*',
-                                    validator: generalValidation,
-                                    onChanged: (value) {},
-                                  ),
-                                  FidesTextInput(
-                                    controller: _phoneController,
-                                    inputLabel: 'Phone number',
-                                    textInputType: TextInputType.number,
-                                    onChanged: (value) {},
-                                  ),
-                                  FidesTextInput(
-                                    controller: _emailController,
-                                    inputLabel: 'email',
-                                    validator: emailValidation,
-                                    textInputType: TextInputType.emailAddress,
-                                    onChanged: (value) {},
-                                  ),
-                                  // FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
-                                  //   inputLabel: 'Add to program*',
-                                  //   options: state.programStatus == ProgramStatus.loading ? [LoyaltyProgramEntity(name: 'Loading...')] : state.loyaltyPrograms!,
-                                  //   selectedValues: state.selectedPrograms!,
-                                  //   onSelectionChanged: (selected) => context.read<CustomerBloc>().add(OnSelectProgram(selected)),
-                                  //   itemChipsLabelBuilder: (program) {
-                                  //     return Text(program.name!); // This is for chips in the dropdown.
-                                  //   },
-                                  //   itemDisplayBuilder: (program, [isSelected = false, onTap]) {
-                                  //     return SelectableProgramCard(program: program, isSelected: isSelected, onTap: onTap);
-                                  //   },
-                                  // )
-                                ],
-                              ),
+                builder: (context, state) {
+                  return Column(
+                    spacing: 8,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RequiredFieldText(),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              spacing: 16,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                FidesTextInput(
+                                  controller: _nameController,
+                                  focusNode: _nameFocusNode,
+                                  inputLabel: 'Name*',
+                                  textInputAction: TextInputAction.next,
+                                  autoValidateMode: AutovalidateMode.onUnfocus,
+                                  onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_phoneFocusNode),
+                                  validator: composeValidators<String>([requiredField]),
+                                  onSaved: (value) {
+                                    _nameController.text = value ?? '';
+                                  },
+                                ),
+                                FidesPhoneInput(
+                                  controller: _phoneController,
+                                  focusNode: _phoneFocusNode,
+                                  inputLabel: 'Phone number',
+                                  textInputType: TextInputType.number,
+                                  autoValidateMode: AutovalidateMode.onUnfocus,
+                                  onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_emailFocusNode),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                                  ],
+                                  textInputAction: TextInputAction.next,
+                                  validator: PhoneValidator.compose([
+                                    PhoneValidator.validMobile(context),
+                                    PhoneValidator.validType(context, PhoneNumberType.mobile),
+                                    PhoneValidator.validCountry(context, IsoCode.values),
+                                  ]),
+                                  onSaved: (phone) {
+                                    _phoneController.value = phone ?? const PhoneNumber(isoCode: IsoCode.CM, nsn: '');
+                                  },
+                                ),
+                                FidesTextInput(
+                                  controller: _emailController,
+                                  focusNode: _emailFocusNode,
+                                  inputLabel: 'Email',
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_programsFocusNode),
+                                  autoValidateMode: AutovalidateMode.onUnfocus,
+                                  validator: composeValidators<String>([emailValidation]),
+                                  textInputType: TextInputType.emailAddress,
+                                  onSaved: (value) {
+                                    _emailController.text = value ?? '';
+                                  },
+                                ),
+                                FormField<LoyaltyProgramEntity>(
+                                  validator: composeValidators<LoyaltyProgramEntity>([validateDropdown]),
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  builder: (FormFieldState<dynamic> field) {
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
+                                          focusNode: _programsFocusNode,
+                                          inputLabel: 'Add to program*',
+                                          options: state.programStatus == ProgramStatus.loading ? [] : state.loyaltyPrograms!,
+                                          selectedValues: state.customerEntity!.loyaltyPrograms ?? [],
+                                          errorText: field.errorText,
+                                          hasError: field.hasError,
+                                          onSelectionChanged: (selected) {
+                                            field.didChange(selected.isEmpty ? null : selected.first);
+                                            context.read<CustomerBloc>().add(OnSelectProgram(selected));
+                                            _programsFocusNode.unfocus();
+                                          },
+                                          itemChipsLabelBuilder: (program) {
+                                            return Text(program.name!); // This is for chips in the dropdown.
+                                          },
+                                          itemDisplayBuilder: (program, [isSelected = false, onTap]) {
+                                            return SelectableProgramCard(program: program, isSelected: isSelected, onTap: onTap);
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                )
+                              ],
                             ),
                           ),
                         ),
-                        PrimaryButton(
-                          text: 'Add Customer',
-                          icon: Icons.add_rounded,
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              // context.goNamed(AppRoute.programReward.name);
-                            }
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                      ),
+                      PrimaryButton(
+                        text: 'Add Customer',
+                        icon: Icons.add_rounded,
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                            final newCustomer = CustomerEntity(
+                              name: _nameController.text.trim(),
+                              phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
+                              email: _emailController.text.trim(),
+                              loyaltyPrograms: state.customerEntity!.loyaltyPrograms!,
+                            );
+
+                            context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
+                            // context.goNamed(AppRoute.programReward.name);
+                          }
+                        },
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -137,12 +202,7 @@ class SelectableProgramCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback? onTap;
 
-  const SelectableProgramCard({
-    super.key,
-    required this.program,
-    this.isSelected = false,
-    required this.onTap
-  });
+  const SelectableProgramCard({super.key, required this.program, this.isSelected = false, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

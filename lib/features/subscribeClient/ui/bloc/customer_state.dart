@@ -1,15 +1,31 @@
 part of 'customer_bloc.dart';
 
-enum CustomerStateStatus { initial, loading, error, success }
+enum CustomerStatus {
+  initial(message: 'Initialisation'),
+  loading(message: 'Creating a customer'),
+  error(message: 'Error: '),
+  success(message: 'Successfully created a customer');
 
-enum ProgramStatus { loading, error, loaded }
+  const CustomerStatus({required this.message});
+
+  final String message;
+}
+
+enum ProgramStatus {
+  loading(message: 'Loading programs'),
+  error(message: 'Error: '),
+  loaded(message: 'Programs loaded');
+
+  const ProgramStatus({required this.message});
+
+  final String message;
+}
 
 final class CustomerState extends Equatable {
-  final CustomerStateStatus? status;
+  final CustomerStatus? status;
   final ProgramStatus? programStatus;
   final String? message;
   final List<LoyaltyProgramEntity>? loyaltyPrograms;
-  final List<LoyaltyProgramEntity>? selectedPrograms;
   final CustomerEntity? customerEntity;
 
   const CustomerState({
@@ -17,25 +33,22 @@ final class CustomerState extends Equatable {
     this.programStatus,
     this.message,
     this.loyaltyPrograms,
-    this.selectedPrograms,
     this.customerEntity,
   });
 
   factory CustomerState.initial() => CustomerState(
-        status: CustomerStateStatus.initial,
+        status: CustomerStatus.initial,
         programStatus: ProgramStatus.loading,
-        message: '',
+        message: CustomerStatus.initial.message,
         loyaltyPrograms: const [],
-        selectedPrograms: const [],
         customerEntity: const CustomerEntity(loyaltyPrograms: []),
       );
 
   CustomerState copyWith({
-    CustomerStateStatus? status,
+    CustomerStatus? status,
     ProgramStatus? programStatus,
     String? message,
     List<LoyaltyProgramEntity>? loyaltyPrograms,
-    List<LoyaltyProgramEntity>? selectedPrograms,
     CustomerEntity? customerEntity,
   }) {
     return CustomerState(
@@ -43,11 +56,10 @@ final class CustomerState extends Equatable {
       programStatus: programStatus ?? this.programStatus,
       message: message ?? this.message,
       loyaltyPrograms: loyaltyPrograms ?? this.loyaltyPrograms,
-      selectedPrograms: selectedPrograms ?? this.selectedPrograms,
       customerEntity: customerEntity ?? this.customerEntity,
     );
   }
 
   @override
-  List<Object?> get props => [status, programStatus, message, 'loyaltyPrograms', selectedPrograms, customerEntity];
+  List<Object?> get props => [status, programStatus, message, 'loyaltyPrograms', customerEntity];
 }

@@ -133,7 +133,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
         }
 
         if (state.status == Status.error) {
-          showSnackBar(context, state.message!);
+          MindLabSnackBar.error(context, state.message!);
         }
 
         if (state.status == Status.success && isCurrentRoute) {
@@ -193,7 +193,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                     textInputAction: TextInputAction.next,
                                     inputLabel: 'Name*',
                                     hintText: 'Book worm',
-                                    validator: generalValidation,
+                                    validator: requiredField,
                                     autoValidateMode: AutovalidateMode.onUnfocus,
                                     onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(state.selectedProgramType! == ProgramType.stamp ? _stampNumberFocus : _pointValueFocus),
                                   ),
@@ -209,7 +209,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                       inputFormatter: [
                                         FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
                                       ],
-                                      validator: generalValidation,
+                                      validator: requiredField,
                                       autoValidateMode: AutovalidateMode.onUnfocus,
                                       onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                                     ),
@@ -237,7 +237,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                         ],
                                       ),
                                       textInputAction: TextInputAction.next,
-                                      validator: generalValidation,
+                                      validator: requiredField,
                                       autoValidateMode: AutovalidateMode.onUnfocus,
                                       onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                                     ),
@@ -260,7 +260,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                         onPressed: () => _updateHoles(context, 1),
                                         icon: Icon(Icons.add),
                                       ),
-                                      validator: generalValidation,
+                                      validator: requiredField,
                                       autoValidateMode: AutovalidateMode.onUnfocus,
                                       onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
                                     ),

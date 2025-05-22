@@ -1,30 +1,45 @@
 part of 'home_bloc.dart';
 
-enum HomeStatus { initial, loading, error, success }
+enum HomeStatus {
+  initial(message: 'Initialisation'),
+  loading(message: 'Loading'),
+  error(message: 'Error: '),
+  success(message: 'Data loaded');
+
+  const HomeStatus({required this.message});
+
+  final String message;
+}
 
 class HomeState extends Equatable {
-  final HomeStatus? homeStatus;
+  final HomeStatus? status;
   final String? message;
-  final List<LoyaltyProgramEntity>? listOfPrograms;
+  final List<CustomerEntity>? listOfCustomers;
 
-  const HomeState({
-    this.homeStatus = HomeStatus.initial,
+  const HomeState._({
+    this.status,
     this.message,
-    this.listOfPrograms = const [],
+    this.listOfCustomers,
   });
 
+  factory HomeState.initial() => HomeState._(
+        status: HomeStatus.initial,
+        message: HomeStatus.initial.message,
+        listOfCustomers: const [],
+      );
+
   HomeState copyWith({
-    HomeStatus? homeStatus,
+    HomeStatus? status,
     String? message,
-    List<LoyaltyProgramEntity>? listOfPrograms,
+    List<CustomerEntity>? listOfCustomers,
   }) {
-    return HomeState(
-      homeStatus: homeStatus ?? this.homeStatus,
+    return HomeState._(
+      status: status ?? this.status,
       message: message ?? this.message,
-      listOfPrograms: listOfPrograms ?? this.listOfPrograms,
+      listOfCustomers: listOfCustomers ?? this.listOfCustomers,
     );
   }
 
   @override
-  List<Object?> get props => [homeStatus, message, listOfPrograms];
+  List<Object?> get props => [status, message, listOfCustomers];
 }

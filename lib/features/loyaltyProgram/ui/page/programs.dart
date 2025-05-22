@@ -23,7 +23,7 @@ class Programs extends StatelessWidget {
       body: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
         listener: (context, state) {
           if (state.status == Status.error) {
-            return showSnackBar(context, state.message!);
+            return MindLabSnackBar.error(context, state.message!);
           }
         },
         builder: (context, state) {

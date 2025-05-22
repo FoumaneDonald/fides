@@ -20,7 +20,7 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
   final Map<ProgramType, List<LoyaltyProgramEntity>> _existingPrograms = {};
 
   @override
-  Map<ProgramType, List<Object>> get existingPrograms => _existingPrograms;
+  Map<ProgramType, List<LoyaltyProgramEntity>> get existingPrograms => _existingPrograms;
 
   @override
   Future<Result<PointsEntity>> createPointsProgram({required PointsEntity pointsEntity, required List<RewardEntity> rewardList}) async {

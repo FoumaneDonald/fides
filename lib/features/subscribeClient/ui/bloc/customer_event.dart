@@ -19,16 +19,10 @@ final class OnSelectProgram extends CustomerEvent {
 }
 
 final class SubscribeCustomer extends CustomerEvent {
-  final String? name;
-  final String? phone;
-  final String? email;
+  final CustomerEntity customer;
 
-  const SubscribeCustomer({
-    this.name,
-    this.phone,
-    this.email,
-  });
+  const SubscribeCustomer(this.customer);
 
   @override
-  List<Object?> get props => [name, phone, email];
+  List<Object?> get props => [customer];
 }
