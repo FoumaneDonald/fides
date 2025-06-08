@@ -30,24 +30,24 @@ final class SelectedLoyaltyProgram extends LoyaltyProgramEvent {
 }
 
 final class WinningStampChanged extends LoyaltyProgramEvent {
-  final int winningNumbers;
+  final int winningNumber;
 
   const WinningStampChanged(
-    this.winningNumbers,
+    this.winningNumber,
   );
 
   @override
-  List<Object?> get props => [winningNumbers];
+  List<Object?> get props => [winningNumber];
 }
 
 final class NumHolesChanged extends LoyaltyProgramEvent {
   final int numHoles;
-  final int? deletedNumber;
+  final int? deletedFromHereOn;
 
-  const NumHolesChanged({required this.numHoles, this.deletedNumber});
+  const NumHolesChanged({required this.numHoles, this.deletedFromHereOn});
 
   @override
-  List<Object?> get props => [numHoles, deletedNumber];
+  List<Object?> get props => [numHoles, deletedFromHereOn];
 }
 
 final class StampRewardChanged extends LoyaltyProgramEvent {
