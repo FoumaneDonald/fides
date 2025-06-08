@@ -34,16 +34,13 @@ class AppConfig {
   /// 3. Loads the corresponding `.env` file (e.g., `.env.dev`, `.env.staging`, `.env.prod`).
   /// 4. Builds and returns an [AppConfig] instance using values from the `.env` file.
   static Future<AppConfig> load() async {
-    // Read environment from --dart-define=ENV=dev (fallback to dev)
-    String envName = String.fromEnvironment('ENV', defaultValue: Environment.dev.label);
+    // Read environment from --dart-define-from-file=lib/.dev.env (fallback to dev)
+    String envName = String.fromEnvironment('FLAVOR', defaultValue: Environment.dev.label);
     final env = Environment.fromString(envName);
-
-    // Load corresponding .env file: .env.dev, .env.staging, .env.prod
-    await dotenv.load(fileName: 'lib/.$envName.env');
 
     return AppConfig(
       env: env,
-      localDatabaseName: dotenv.get('LOCAL_DATABASE_NAME', fallback: 'fides_dev'),
+      localDatabaseName: const String.fromEnvironment('LOCAL_DATABASE_NAME'),
     );
   }
 }
