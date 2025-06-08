@@ -70,8 +70,11 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
       _createHoles(stateStampEntity!.numberHoles);
 
       _stampNumberController.addListener(() {
-        final valueInt = int.parse(_stampNumberController.text.trim());
-        context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedNumber: valueInt + 1));
+        final int? valueInt = int.tryParse(_stampNumberController.text.trim());
+        if (valueInt != null) {
+          context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedFromHereOn: valueInt + 1));
+          _createHoles(valueInt);
+        }
       });
     }
     // If current program is a points-based one
@@ -115,7 +118,7 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
     // Prevent negative holes
     if (updatedNumber >= 0) {
       if (change < 0) {
-        context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: updatedNumber, deletedNumber: currentNumber));
+        context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: updatedNumber, deletedFromHereOn: currentNumber));
       } else {
         context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: updatedNumber));
       }
@@ -139,11 +142,21 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
         final route = ModalRoute.of(context);
         final isCurrentRoute = route?.isCurrent ?? false;
 
-        // If the controller value is different from the state's number of holes,
-        // update the controller and regenerate the UI (e.g. stamp placeholders)
-        if (_stampNumberController.text.trim() != (stateStampEntity?.numberHoles.toString() ?? '')) {
-          _stampNumberController.text = stateStampEntity!.numberHoles.toString();
-          _createHoles(stateStampEntity!.numberHoles);
+        switch (state.selectedProgramType) {
+          case ProgramType.points:
+            break;
+          case ProgramType.stamp:
+            // If the controller value is different from the state's number of holes,
+            // update the controller and regenerate the UI (e.g. stamp placeholders)
+            if (_stampNumberController.text.trim() != ((state.loyaltyProgramEntity as StampEntity).numberHoles.toString() ?? '')) {
+              _stampNumberController.text = (state.loyaltyProgramEntity as StampEntity).numberHoles.toString();
+              _createHoles(int.parse(_stampNumberController.text));
+            }
+            break;
+          case ProgramType.unknown:
+            break;
+          case null:
+            break;
         }
 
         if (state.status == Status.error) {
@@ -265,27 +278,29 @@ class _AboutProgramState extends State<AboutProgram> with ValidationMixins {
                                           children: [
                                             if ((state.loyaltyProgramEntity as StampEntity).winningNumbers.isNotEmpty) ...{
                                               Text('Select one to create its reward', style: Theme.of(context).textTheme.bodyMedium),
+                                              Row(
+                                                spacing: 8,
+                                                children: winningNumbers.map(
+                                                      (number) {
+                                                    return ChoiceChip(
+                                                      label: Row(
+                                                        spacing: 8,
+                                                        children: [
+                                                          AppIcon.stamp(color: Theme.of(context).colorScheme.onSurfaceVariant, size: 18.0),
+                                                          Text(
+                                                            number.toString(),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      selected: (state.stampReward ?? -1) == number,
+                                                      onSelected: (bool value) => context.read<LoyaltyProgramBloc>().add(StampRewardChanged(number)),
+                                                    );
+                                                  },
+                                                ).toList(),
+                                              ),
+                                            } else ...{
+                                              Center(child: Text('Please choose a stamp number to create rewards')),
                                             },
-                                            Row(
-                                              spacing: 8,
-                                              children: winningNumbers.map(
-                                                (number) {
-                                                  return ChoiceChip(
-                                                    label: Row(
-                                                      spacing: 8,
-                                                      children: [
-                                                        AppIcon.stamp(color: Theme.of(context).colorScheme.onSurfaceVariant, size: 18.0),
-                                                        Text(
-                                                          number.toString(),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    selected: (state.stampReward ?? -1) == number,
-                                                    onSelected: (bool value) => context.read<LoyaltyProgramBloc>().add(StampRewardChanged(number)),
-                                                  );
-                                                },
-                                              ).toList(),
-                                            ),
                                             if (state.stampReward != null) ...{
                                               TextButton(
                                                 onPressed: () => context.pushNamed(AppRoute.programReward.name),

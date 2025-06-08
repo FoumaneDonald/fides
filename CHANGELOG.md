@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/FoumaneDonald/fides/compare/v1.0.1...v1.0.2) (2025-06-08)
+
+
+### Bug Fixes
+
+* **rewards:** delete reward associated to winning number ([4731973](https://github.com/FoumaneDonald/fides/commit/4731973902b0bc847ea37de011be15fb9fa273f8))
+* **stamp_program:** 'number of stamps needed' input was not updating to new value ([4731973](https://github.com/FoumaneDonald/fides/commit/4731973902b0bc847ea37de011be15fb9fa273f8))
+
 ## [1.0.1](https://github.com/FoumaneDonald/fides/compare/v1.0.0...v1.0.1) (2025-06-08)
 
 

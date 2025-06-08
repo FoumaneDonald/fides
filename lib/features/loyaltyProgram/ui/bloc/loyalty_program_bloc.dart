@@ -10,7 +10,9 @@ import '../../../../domain/repositories/loyalty_program_repository.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 
 part 'loyalty_program_event.dart';
+
 part 'loyalty_program_state.dart';
+
 part 'loyalty_program_bloc.freezed.dart';
 
 class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> {
@@ -58,8 +60,6 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
   }
 
   _onSelectedLoyaltyProgram(SelectedLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
-    emit(state.copyWith(status: Status.loading));
-
     switch (event.programType) {
       case ProgramType.stamp:
         emit(state.copyWith(
@@ -80,18 +80,28 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
 
   _onNumHolesChanged(NumHolesChanged event, Emitter<LoyaltyProgramState> emit) {
     if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
-      final StampEntity stampProgram = state.loyaltyProgramEntity as StampEntity;
+      final StampEntity stampEntity = state.loyaltyProgramEntity as StampEntity;
+      int? selectedStampReward = state.stampReward;
 
-      final List<int> winningNumbers = List.from(stampProgram.winningNumbers ?? []);
+      // Get the current winning numbers
+      final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
 
       // Removed a number from winning number list when user reduced the number of holes and the number was in the winning number list
-      if (event.deletedNumber != null) {
-        final List<int> numbersToBeDeleted = winningNumbers.where((number) => number >= event.deletedNumber!.toInt()).toList();
-        winningNumbers.removeWhere((number) => numbersToBeDeleted.contains(number));
+      if (event.deletedFromHereOn != null) {
+        winningNumbers.removeWhere((number) => number >= event.deletedFromHereOn!);
+
+        final rewardsToDelete = stampEntity.rewards.where((reward) => reward.stampNumber != null && reward.stampNumber! >= event.deletedFromHereOn!).toList();
+
+        for (final reward in rewardsToDelete) {
+          add(DeleteReward(reward));
+        }
+
+        // Change the selected winning stamp chip to the first one in the list if there is
+        selectedStampReward = winningNumbers.contains(state.stampReward) ? state.stampReward : winningNumbers.firstOrNull;
       }
 
-      final updatedStampProgram = stampProgram.copyWith(numberHoles: event.numHoles, winningNumbers: winningNumbers);
-      emit(state.copyWith(status: Status.ongoing, message: 'Stamp changed', loyaltyProgramEntity: updatedStampProgram));
+      final updatedStampProgram = stampEntity.copyWith(numberHoles: event.numHoles, winningNumbers: winningNumbers);
+      emit(state.copyWith(status: Status.ongoing, message: 'Stamp changed', loyaltyProgramEntity: updatedStampProgram, stampReward: selectedStampReward));
     } else {
       emit(state.copyWith(status: Status.error, message: 'Wrong program'));
     }
@@ -99,25 +109,27 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
 
   _onWinningStampChanged(WinningStampChanged event, Emitter<LoyaltyProgramState> emit) async {
     if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
-      final StampEntity stampProgram = state.loyaltyProgramEntity as StampEntity;
+      final StampEntity stampEntity = state.loyaltyProgramEntity as StampEntity;
       int? selectedStampReward = state.stampReward;
 
-      final List<int> winningNumbers = List.from(stampProgram.winningNumbers);
+      // get the current winning numbers
+      final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
 
       // Add a new number or remove already present one
-      if (winningNumbers.contains(event.winningNumbers)) {
-        winningNumbers.remove(event.winningNumbers);
+      if (winningNumbers.contains(event.winningNumber)) {
+        winningNumbers.remove(event.winningNumber);
 
-        final RewardEntity rewardToDelete = stampProgram.rewards.firstWhere((reward) => reward.stampNumber == event.winningNumbers, orElse: ()=> RewardEntity.empty());
+        // Delete associated reward to the winning number
+        final RewardEntity rewardToDelete = stampEntity.rewards.firstWhere((reward) => reward.stampNumber == event.winningNumber, orElse: () => RewardEntity.empty());
         add(DeleteReward(rewardToDelete));
 
-        selectedStampReward = state.stampReward == event.winningNumbers ? winningNumbers.first : state.stampReward;
-
+        // Change the selected winning stamp chip to the first one in the list if there is
+        selectedStampReward = state.stampReward == event.winningNumber ? winningNumbers.firstOrNull : state.stampReward;
       } else {
-        winningNumbers.add(event.winningNumbers);
+        winningNumbers.add(event.winningNumber);
       }
 
-      final updatedStampProgram = stampProgram.copyWith(winningNumbers: winningNumbers);
+      final updatedStampProgram = stampEntity.copyWith(winningNumbers: winningNumbers);
       emit(state.copyWith(status: Status.ongoing, message: 'Winning number changed', loyaltyProgramEntity: updatedStampProgram, stampReward: selectedStampReward));
     } else {
       emit(state.copyWith(status: Status.error, message: 'Wrong program'));
@@ -125,7 +137,10 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
   }
 
   _onStampRewardChanged(StampRewardChanged event, Emitter<LoyaltyProgramState> emit) {
-    emit(state.copyWith(status: Status.ongoing, stampReward: event.stampReward,));
+    emit(state.copyWith(
+      status: Status.ongoing,
+      stampReward: event.stampReward,
+    ));
   }
 
   _onPointsChanged(PointsChanged event, Emitter<LoyaltyProgramState> emit) async {

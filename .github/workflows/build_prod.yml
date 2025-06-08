@@ -63,7 +63,7 @@ jobs:
           echo "${{ secrets.PROD_ENV }}" > lib/.prod.env
 
       - name: Build APK (prod)
-        run: flutter build apk --flavor prod --dart-define=ENV=prod --build-number=${{ github.run_number }}
+        run: flutter build apk --flavor prod --dart-define-from-file=lib/.prod.env --build-number=${{ github.run_number }}
 
       - name: Set Tag from Branch Name
         id: tag
