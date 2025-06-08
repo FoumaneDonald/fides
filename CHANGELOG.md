@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/FoumaneDonald/fides/compare/v1.0.0...v1.0.1) (2025-06-08)
+
+
+### Bug Fixes
+
+* **app_config:** change the way to get env variables ([d8a5474](https://github.com/FoumaneDonald/fides/commit/d8a5474cdd424a3777c2315b6161c8155f86fd9d))
+
 ## 1.0.0 (2025-06-08)
 
 
