@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../services/helpers/app_route_enum.dart';
+import '../utilities/app_icon.dart';
 
 class ScaffoldWithNestedNavigation extends StatelessWidget {
   const ScaffoldWithNestedNavigation({
@@ -49,15 +50,21 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        // currentIndex: child.currentIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.credit_card_rounded), label: 'Programs'),
-        ],
-        currentIndex: _calculateSelectedIndex(context),
-        onTap: (int index) => _onItemTapped(index, context),
-      ),
+      bottomNavigationBar: Builder(builder: (context) {
+        final selectedIndex = _calculateSelectedIndex(context);
+        final selectedColor = Theme.of(context).bottomNavigationBarTheme.selectedItemColor ?? Theme.of(context).colorScheme.primary;
+        final unselectedColor = Theme.of(context).bottomNavigationBarTheme.unselectedItemColor ?? Theme.of(context).colorScheme.onSurfaceVariant;
+
+        return BottomNavigationBar(
+          // currentIndex: child.currentIndex,
+          currentIndex: _calculateSelectedIndex(context),
+          onTap: (int index) => _onItemTapped(index, context),
+          items: [
+            BottomNavigationBarItem(icon: AppIcon.home(color: selectedIndex == 0 ? selectedColor : unselectedColor), label: 'Home'),
+            BottomNavigationBarItem(icon: AppIcon.program(color: selectedIndex == 1 ? selectedColor : unselectedColor), label: 'Programs'),
+          ],
+        );
+      }),
     );
   }
 }

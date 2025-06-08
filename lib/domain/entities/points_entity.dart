@@ -5,7 +5,6 @@ import '../../data/models/points_model.dart';
 import '../../services/helpers/program_type_enum.dart';
 import 'loyalty_program_entity.dart';
 
-//Todo: add the relation between [RewardEntity] and [PointsEntity]
 class PointsEntity extends LoyaltyProgramEntity {
   final int? id;
   @override
@@ -15,6 +14,8 @@ class PointsEntity extends LoyaltyProgramEntity {
   final double? points;
   final double? minimumSpent;
   final String currencyCode;
+  @override
+  final List<RewardEntity> rewards;
 
   PointsEntity({
     this.id,
@@ -23,6 +24,7 @@ class PointsEntity extends LoyaltyProgramEntity {
     this.points,
     this.minimumSpent,
     required this.currencyCode,
+    required this.rewards,
   });
 
   @override
@@ -33,6 +35,7 @@ class PointsEntity extends LoyaltyProgramEntity {
     double? points,
     double? minimumSpent,
     String? currencyCode,
+    List<RewardEntity>? rewards,
   }) {
     return PointsEntity(
       id: id ?? this.id,
@@ -41,6 +44,7 @@ class PointsEntity extends LoyaltyProgramEntity {
       points: points ?? this.points,
       minimumSpent: minimumSpent ?? this.minimumSpent,
       currencyCode: currencyCode ?? this.currencyCode,
+      rewards: rewards ?? this.rewards,
     );
   }
 
@@ -53,9 +57,14 @@ class PointsEntity extends LoyaltyProgramEntity {
       points: model.points,
       minimumSpent: model.minimumSpent,
       currencyCode: model.currencyCode,
+      rewards: RewardEntity.fromModelList(model.rewards),
     );
   }
 
+  static List<PointsEntity> fromModelList(List<PointsModel> models) {
+    return models.map((model) => PointsEntity.fromModel(model)).toList();
+  }
+
   @override
-  List<Object?> get props => super.props + [id, points, minimumSpent, currencyCode];
+  List<Object?> get props => [...super.props, points, minimumSpent, currencyCode];
 }

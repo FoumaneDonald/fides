@@ -5,7 +5,6 @@ import 'package:fides/domain/entities/stamp_entity.dart';
 import '../../data/models/customer_model.dart';
 import 'loyalty_program_entity.dart';
 
-//Todo: Add the relation between [LoyaltyProgramEntity] and [CustomerEntity]
 class CustomerEntity extends Equatable {
   final int? id;
   final String? name;
@@ -40,8 +39,8 @@ class CustomerEntity extends Equatable {
   /// Convert [CustomerModel] to [CustomerEntity]
   factory CustomerEntity.fromModel(CustomerModel model) {
     final List<LoyaltyProgramEntity> programs = [
-      ...model.stampPrograms.map((stamp) => StampEntity.fromModel(stamp)),
-      ...model.pointsPrograms.map((point) => PointsEntity.fromModel(point)),
+      ...StampEntity.fromModelList(model.stampPrograms),
+      ...PointsEntity.fromModelList(model.pointsPrograms),
     ];
 
     return CustomerEntity(

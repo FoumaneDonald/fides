@@ -9,6 +9,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final TextEditingController controller;
   final String inputLabel;
   final String? hintText;
+  final bool? enable;
   final TextAlign? textAlign;
   final String? suffixText;
   final Widget? prefixIcon;
@@ -34,6 +35,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     required this.controller,
     required this.inputLabel,
     this.hintText,
+    this.enable,
     this.textAlign,
     this.suffixText,
     this.prefixIcon,
@@ -79,6 +81,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
             suffix: suffix,
             helper: helper,
           ),
+          enabled: enable,
           keyboardType: textInputType,
           textAlign: textAlign ?? TextAlign.start,
           autovalidateMode: autoValidateMode,

@@ -9,11 +9,14 @@ import '../../domain/entities/stamp_entity.dart';
 import 'loyalty_program_model.dart';
 
 @Entity()
-class CustomerModel extends Equatable {
+class CustomerModel {
   @Id()
   int? id = 0;
+  @Unique()
   String? name;
+  @Unique()
   String? phone;
+  @Unique()
   String? email;
 
   final pointsPrograms = ToMany<PointsModel>();
@@ -49,17 +52,14 @@ class CustomerModel extends Equatable {
       email: entity.email,
     );
 
-    for (var program in entity.loyaltyPrograms!) {
-      if( program is StampEntity ){
-        model.stampPrograms.add(StampModel.fromEntity(program));
-      } else if ( program is PointsEntity ){
-        model.pointsPrograms.add(PointsModel.fromEntity(program));
-      }
-    }
+    model.stampPrograms.addAll(StampModel.fromEntityList(entity.loyaltyPrograms as List<StampEntity>));
+    model.pointsPrograms.addAll(PointsModel.fromEntityList(entity.loyaltyPrograms as List<PointsEntity>));
 
     return model;
   }
 
-  @override
-  List<Object?> get props => [id, name, phone, email];
+  /// Convert list of [CustomerEntity] to List of [CustomerModel]
+  static List<CustomerModel> fromEntityList(List<CustomerEntity> models) {
+    return models.map((model) => CustomerModel.fromEntity(model)).toList();
+  }
 }

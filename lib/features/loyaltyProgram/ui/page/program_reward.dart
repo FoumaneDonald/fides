@@ -33,12 +33,20 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
   final FocusNode _itemFocus = FocusNode();
   final FocusNode _pointsFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
+  final FocusNode _winningStampFocus = FocusNode();
   final TextEditingController _discountAmountController = TextEditingController();
   final TextEditingController _itemController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _pointCostController = TextEditingController();
+  final TextEditingController _winningStampController = TextEditingController();
   DiscountType selectedDiscountType = DiscountType.price;
   RewardType selectedRewardType = RewardType.free;
+
+  @override
+  void initState() {
+    super.initState();
+    _winningStampController.text = context.read<LoyaltyProgramBloc>().state.stampReward?.toString() ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +83,23 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                           child: Form(
                             key: _formKey,
                             child: Column(
+                              spacing: 16,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                if(state.selectedProgramType == ProgramType.stamp)
+                                  FidesTextInput(
+                                    focusNode: _winningStampFocus,
+                                    controller: _winningStampController,
+                                    enable: false,
+                                    inputLabel: 'Winning stamps*',
+                                    validator: requiredField,
+                                    autoValidateMode: AutovalidateMode.onUnfocus,
+                                    onSaved: (value) => _winningStampController.text = value!.trim(),
+                                  ),
                                 FidesDropdownInput<RewardType>(
                                   focusNode: _rewardTypeFocus,
                                   inputLabel: 'Type of reward*',
-                                  dropDownList: RewardType.values,
+                                  dropDownList: RewardType.values.where((type) => type != RewardType.unknown).toList(),
                                   selectedValue: selectedRewardType,
                                   validator: validateDropdown,
                                   onChanged: (value) => setState(() {
@@ -89,7 +109,6 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     return Text(type.label);
                                   },
                                 ),
-                                SizedBox(height: 16),
                                 if (selectedRewardType == RewardType.discount) ...{
                                   FidesTextInputSelection(
                                     focusNode: _discountAmountFocus,
@@ -97,10 +116,10 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     autoValidateMode: AutovalidateMode.onUnfocus,
                                     inputLabel: 'Discount amount*',
                                     hintText: '100',
-                                    prefixText: selectedDiscountType.label,
+                                    prefix: Text('${selectedDiscountType.label} '),
                                     textInputType: TextInputType.number,
                                     inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
-                                    dropDownList: DiscountType.values,
+                                    dropDownList: DiscountType.values.where((type) => type != DiscountType.unknown).toList(),
                                     selectedValue: selectedDiscountType,
                                     validator: validateDiscountAmount,
                                     onChangedDropdown: (value) => setState(() {
@@ -109,7 +128,6 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     onSaved: (value) => _discountAmountController.text = value!.trim(),
                                     itemBuilder: (DiscountType type) => Text(type.label),
                                   ),
-                                  SizedBox(height: 16),
                                 },
                                 FidesTextInput(
                                   focusNode: _itemFocus,
@@ -120,7 +138,6 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                   autoValidateMode: AutovalidateMode.onUnfocus,
                                   onSaved: (value) => _itemController.text = value!.trim(),
                                 ),
-                                SizedBox(height: 16),
                                 if (state.selectedProgramType! == ProgramType.points)
                                   FidesTextInput(
                                     focusNode: _pointsFocus,
@@ -133,7 +150,6 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                     autoValidateMode: AutovalidateMode.onUnfocus,
                                     onSaved: (value) => _pointCostController.text = value!.trim(),
                                   ),
-                                SizedBox(height: 16),
                                 FidesTextInput(
                                   focusNode: _descriptionFocus,
                                   controller: _descriptionController,
@@ -159,6 +175,7 @@ class _ProgramRewardState extends State<ProgramReward> with ValidationMixins {
                                   _formKey.currentState!.save();
                                   final rewardEntity = RewardEntity(
                                     type: selectedRewardType,
+                                    stampNumber: state.selectedProgramType! == ProgramType.stamp ? int.tryParse(_winningStampController.text.trim()) : null,
                                     discountValue: selectedRewardType == RewardType.discount ? int.tryParse(_discountAmountController.text.trim()) : null,
                                     discountType: selectedRewardType == RewardType.discount ? selectedDiscountType : null,
                                     item: _itemController.text.trim(),

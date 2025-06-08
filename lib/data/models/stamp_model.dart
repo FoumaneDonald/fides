@@ -45,12 +45,22 @@ class StampModel {
 
   ///Convert Entity to Model
   factory StampModel.fromEntity(StampEntity entity) {
-    return StampModel(
+    final StampModel stampModel = StampModel(
       id: entity.id ?? 0,
       type: entity.type.label,
       name: entity.name!,
       numberHoles: entity.numberHoles,
       winningNumbers: entity.winningNumbers,
     );
+
+    // add rewards to stampModel
+    stampModel.rewards.addAll(RewardModel.fromEntityList(entity.rewards));
+
+    return stampModel;
+  }
+
+  /// Convert list of StampEntity to List of StampModel
+  static List<StampModel> fromEntityList(List<StampEntity> models) {
+    return models.map((model) => StampModel.fromEntity(model)).toList();
   }
 }

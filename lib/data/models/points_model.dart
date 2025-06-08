@@ -8,8 +8,8 @@ import 'customer_model.dart';
 class PointsModel {
   @Id()
   int? id = 0;
-  @Unique()
   String type;
+  @Unique()
   String name;
   double points;
   double minimumSpent;
@@ -49,7 +49,7 @@ class PointsModel {
 
   ///Convert Entity to Model
   factory PointsModel.fromEntity(PointsEntity entity) {
-    return PointsModel(
+    final PointsModel pointsModel = PointsModel(
       id: entity.id ?? 0,
       type: entity.type.label,
       name: entity.name!,
@@ -57,5 +57,15 @@ class PointsModel {
       minimumSpent: entity.minimumSpent!,
       currencyCode: entity.currencyCode,
     );
+
+    // add rewards
+    pointsModel.rewards.addAll(RewardModel.fromEntityList(entity.rewards));
+    
+    return pointsModel;
+  }
+
+  /// Convert list of PointsEntity to List of PointsModel
+  static List<PointsModel> fromEntityList(List<PointsEntity> models) {
+    return models.map((model) => PointsModel.fromEntity(model)).toList();
   }
 }

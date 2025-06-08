@@ -25,7 +25,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(1, 3401710457310357716),
       name: 'RewardModel',
-      lastPropertyId: const obx_int.IdUid(12, 5095615782389340426),
+      lastPropertyId: const obx_int.IdUid(13, 6402870079329910719),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -81,7 +81,12 @@ final _entities = <obx_int.ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const obx_int.IdUid(8, 4043233121981302571),
-            relationTarget: 'StampModel')
+            relationTarget: 'StampModel'),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(13, 6402870079329910719),
+            name: 'stampNumber',
+            type: 6,
+            flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[]),
@@ -100,17 +105,20 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 3524937022293858320),
             name: 'name',
             type: 9,
-            flags: 0),
+            flags: 2080,
+            indexId: const obx_int.IdUid(10, 2791694562746837295)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 10449065858544969),
             name: 'phone',
             type: 9,
-            flags: 0),
+            flags: 2080,
+            indexId: const obx_int.IdUid(11, 3621269793141425718)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 8073404252985355084),
             name: 'email',
             type: 9,
-            flags: 0)
+            flags: 2080,
+            indexId: const obx_int.IdUid(12, 7651279757129464902))
       ],
       relations: <obx_int.ModelRelation>[
         obx_int.ModelRelation(
@@ -138,13 +146,13 @@ final _entities = <obx_int.ModelEntity>[
             id: const obx_int.IdUid(3, 1495667634021040905),
             name: 'type',
             type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(9, 2627159397715658803)),
+            flags: 0),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(4, 38712837054418215),
             name: 'name',
             type: 9,
-            flags: 0),
+            flags: 2080,
+            indexId: const obx_int.IdUid(13, 3006479290774145872)),
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 2297099000378969825),
             name: 'points',
@@ -253,7 +261,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
       lastEntityId: const obx_int.IdUid(5, 6685464445707830496),
-      lastIndexId: const obx_int.IdUid(9, 2627159397715658803),
+      lastIndexId: const obx_int.IdUid(13, 3006479290774145872),
       lastRelationId: const obx_int.IdUid(3, 5371440725444001829),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [1173935753394898722],
@@ -262,7 +270,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         6691712950610642240,
         8670166263391842496,
         78064764068026973,
-        5064043649769193035
+        5064043649769193035,
+        2627159397715658803
       ],
       retiredPropertyUids: const [
         5774164378543038065,
@@ -304,7 +313,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final descriptionOffset = object.description == null
               ? null
               : fbb.writeString(object.description!);
-          fbb.startTable(13);
+          fbb.startTable(14);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, typeOffset);
           fbb.addInt64(2, object.discountValue);
@@ -315,6 +324,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           fbb.addInt64(7, object.minimumPurchase);
           fbb.addInt64(10, object.pointsProgram.targetId);
           fbb.addInt64(11, object.stampProgram.targetId);
+          fbb.addInt64(12, object.stampNumber);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -325,6 +335,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
               const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final typeParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 6);
+          final stampNumberParam =
+              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 28);
           final discountValueParam =
               const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
           final discountValueTypeParam =
@@ -342,6 +354,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           final object = RewardModel(
               id: idParam,
               type: typeParam,
+              stampNumber: stampNumberParam,
               discountValue: discountValueParam,
               discountValueType: discountValueTypeParam,
               item: itemParam,
@@ -577,6 +590,10 @@ class RewardModel_ {
   /// See [RewardModel.stampProgram].
   static final stampProgram = obx.QueryRelationToOne<RewardModel, StampModel>(
       _entities[0].properties[9]);
+
+  /// See [RewardModel.stampNumber].
+  static final stampNumber =
+      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[10]);
 }
 
 /// [CustomerModel] entity fields to define ObjectBox queries.

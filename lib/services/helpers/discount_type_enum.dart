@@ -1,4 +1,5 @@
 enum DiscountType {
+  unknown(''),
   price('FCFA'),
   percentage('%');
 
@@ -9,7 +10,7 @@ enum DiscountType {
   static DiscountType from(String? value) {
     return DiscountType.values.firstWhere(
       (e) => e.label.toLowerCase() == value?.toLowerCase(),
-      orElse: () => throw Exception('Discount type not found'),
+      orElse: () => DiscountType.unknown,
     );
   }
 }

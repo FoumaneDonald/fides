@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../services/helpers/app_route_enum.dart';
+import '../../../core/utilities/app_icon.dart';
 
 class LoyalCustomersSection extends StatelessWidget {
   const LoyalCustomersSection({super.key});
@@ -31,7 +32,7 @@ class LoyalCustomersSection extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Customer'),
-                    Icon(Icons.add_circle),
+                    AppIcon.addUser(color: Theme.of(context).colorScheme.onPrimaryContainer),
                   ],
                 ),
               ),

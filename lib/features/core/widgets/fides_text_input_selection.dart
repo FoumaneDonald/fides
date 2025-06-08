@@ -10,7 +10,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
   final String inputLabel;
   final String? hintText;
   final String? suffixText;
-  final String? prefixText;
+  final Widget? prefix;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final Widget? suffix;
@@ -40,7 +40,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
     required this.inputLabel,
     this.hintText,
     this.suffixText,
-    this.prefixText,
+    this.prefix,
     this.prefixIcon,
     this.suffixIcon,
     this.suffix,
@@ -107,7 +107,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
             ),
             hintText: hintText,
             suffixText: suffixText,
-            prefixText: prefixText,
+            prefix: prefix,
             suffix: suffix,
             helper: helper,
           ),

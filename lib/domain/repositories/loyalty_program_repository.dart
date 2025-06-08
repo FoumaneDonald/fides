@@ -8,9 +8,9 @@ import '../entities/stamp_entity.dart';
 
 abstract class LoyaltyProgramRepository {
 
-  Future<Result<PointsEntity>> createPointsProgram({required PointsEntity pointsEntity, required List<RewardEntity> rewardList});
+  Future<Result<PointsEntity>> createPointsProgram({required PointsEntity pointsEntity});
 
-  Future<Result<StampEntity>> createStampProgram({required StampEntity stampEntity, required List<RewardEntity> rewardList});
+  Future<Result<StampEntity>> createStampProgram({required StampEntity stampEntity});
 
   Future<Result<Map<ProgramType, List<LoyaltyProgramEntity>>>> getLoyaltyProgram();
 

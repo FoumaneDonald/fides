@@ -50,6 +50,15 @@ final class NumHolesChanged extends LoyaltyProgramEvent {
   List<Object?> get props => [numHoles, deletedNumber];
 }
 
+final class StampRewardChanged extends LoyaltyProgramEvent {
+  final int stampReward;
+
+  const StampRewardChanged(this.stampReward);
+
+  @override
+  List<Object?> get props => [stampReward];
+}
+
 final class NameChanged extends LoyaltyProgramEvent {
   final String name;
 

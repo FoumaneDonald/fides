@@ -65,22 +65,9 @@ class LoyaltyProgramDao {
   ///   a [Failure] if an error occurred.
   Result<T> createProgram<T extends Object>({
     required T programModel,
-    required List<RewardModel> programRewards,
-    // required T Function(String uid) copyProgramWithUid,
     required void Function(T program) putToBox,
-    required void Function(T program, List<RewardModel> rewards) attachRewards,
   }) {
     try {
-      // // Generate a unique ID for the program.
-      // final uid = const Uuid().v4();
-      // final program = copyProgramWithUid(uid);
-      //
-      // // Generate unique IDs for each reward and create new instances.
-      // final List<RewardModel> rewards = programRewards.map((reward) => reward.copyWith(uid: const Uuid().v4())).toList();
-
-      // Associate the rewards with the program.
-      attachRewards(programModel, programRewards);
-
       // Save the program to the appropriate storage.
       putToBox(programModel);
 
@@ -94,23 +81,17 @@ class LoyaltyProgramDao {
   }
 
   /// Creates a new points program.
-  Result<PointsModel> createPointsProgram(PointsModel model, List<RewardModel> rewards) {
+  Result<PointsModel> createPointsProgram(PointsModel model) {
     return createProgram<PointsModel>(
       programModel: model,
-      programRewards: rewards,
-      // copyProgramWithUid: (uid) => model.copyWith(uid: uid),
-      attachRewards: (program, rewards) => program.rewards.addAll(rewards),
       putToBox: (program) => _pointsProgramBox.put(program),
     );
   }
 
   /// Creates a new stamp program
-  Result<StampModel> createStampProgram(StampModel model, List<RewardModel> rewards) {
+  Result<StampModel> createStampProgram(StampModel model) {
     return createProgram<StampModel>(
       programModel: model,
-      programRewards: rewards,
-      // copyProgramWithUid: (uid) => model.copyWith(uid: uid),
-      attachRewards: (program, rewards) => program.rewards.addAll(rewards),
       putToBox: (program) => _stampProgramBox.put(program),
     );
   }

@@ -32,17 +32,17 @@ class RewardCard extends StatelessWidget {
             color: Colors.redAccent,
           ),
         ),
-        title: Text(reward.type!.label),
+        title: Text(reward.type.label),
         subtitle: Column(
           spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(reward.description!),
+            Text(reward.description),
             Wrap(
               spacing: 16,
               runSpacing: 16,
               children: [
-                Text(reward.item!),
+                Text(reward.item),
                 if (reward.type == RewardType.discount)
                   Row(
                     mainAxisSize: MainAxisSize.min,

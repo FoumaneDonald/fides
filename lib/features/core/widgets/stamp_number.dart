@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 
-class NumberInSquare extends StatelessWidget {
+class StampNumber extends StatelessWidget {
   final bool isSelected;
   final int number;
   final Function(int)? onTap;
 
-  const NumberInSquare({
+  const StampNumber({
     super.key,
     required this.isSelected,
     required this.number,
@@ -29,7 +29,7 @@ class NumberInSquare extends StatelessWidget {
             width: 1,
             color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onSurface,
           ),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(100.0),
         ),
         child: Center(
           child: Text(

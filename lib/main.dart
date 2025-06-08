@@ -39,12 +39,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // final brightness = View.of(context).platformDispatcher.platformBrightness;
-    // TextTheme textTheme = createTextTheme(context, "Livvic", "Livvic");
-    // MaterialTheme theme = MaterialTheme(textTheme);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -63,14 +59,6 @@ class MyApp extends StatelessWidget {
         // theme: brightness == Brightness.light ? theme.light() : theme.dark(),
         theme: AppTheme.light,
         darkTheme: AppTheme.dark,
-        // theme: ThemeData(
-        //   fontFamily: 'Livvic',
-        //   filledButtonTheme: filledButtonThemeData,
-        //   inputDecorationTheme: InputTheme.inputDecorationLightTheme,
-        //   dropdownMenuTheme: InputTheme.dropdownDecorationLightTheme,
-        //   // colorScheme: ColorScheme.fromSeed(seedColor: Color(0xffFFAAA2)),
-        //   colorScheme: lightScheme(),
-        // ),
         routerConfig: Routes.router,
       ),
     );

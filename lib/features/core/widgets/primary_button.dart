@@ -5,17 +5,18 @@ import 'loader.dart';
 class PrimaryButton extends StatelessWidget {
   final Function()? onPressed;
   final bool loading;
+  final bool isActive;
   final String text;
   final IconData? icon;
 
-  const PrimaryButton({super.key, this.onPressed, required this.text, this.loading = false, this.icon});
+  const PrimaryButton({super.key, this.onPressed, required this.text, this.loading = false, this.isActive = false, this.icon});
 
   @override
   Widget build(BuildContext context) {
     return loading
         ? Loader()
         : FilledButton(
-            onPressed: onPressed,
+            onPressed: isActive ? onPressed : null,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

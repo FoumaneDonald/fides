@@ -27,12 +27,14 @@ dependencies:
   flutter_dotenv: ^5.2.1
   currency_picker: ^2.0.21
   phone_form_field: ^10.0.2
-
+  hugeicons: ^0.0.11
+  beamer: ^1.7.0
   cupertino_icons: ^1.0.8
   flutter_localizations:
     sdk: flutter
   intl: any
   flex_color_scheme: ^8.2.0
+  freezed_annotation: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -41,6 +43,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   build_runner: ^2.4.15
   objectbox_generator: any
+  freezed: ^3.0.6
 
 flutter:
   generate: true

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entities/customer_entity.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../core/utilities/app_icon.dart';
 import '../../../loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
 import '../bloc/home_bloc.dart';
 import '../widgets/latest_customers_section.dart';
@@ -25,7 +26,7 @@ class HomePage extends StatelessWidget {
               slivers: [
                 SliverAppBar(
                   pinned: true,
-                  leading: Icon(Icons.menu),
+                  leading: AppIcon.menu(color: Theme.of(context).colorScheme.onSurface),
                   flexibleSpace: FlexibleSpaceBar(
                     title: Text(AppLocalizations.of(context)!.home),
                   ),
@@ -38,7 +39,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                // "Latest customers" heading
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -52,7 +52,6 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                // "Today" text
                 SliverToBoxAdapter(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),

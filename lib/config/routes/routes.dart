@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../domain/entities/loyalty_program_entity.dart';
 import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
 import '../../features/homePage/ui/pages/home.dart';
+import '../../features/loyaltyProgram/ui/page/program_details.dart';
 import '../../features/loyaltyProgram/ui/page/program_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
@@ -49,6 +51,11 @@ class Routes {
                     builder: (context, state) => AboutProgram(),
                   ),
                 ],
+              ),
+              GoRoute(
+                name: AppRoute.programDetails.name,
+                path: AppRoute.programDetails.path,
+                builder: (context, state) => ProgramDetails(program: state.extra as LoyaltyProgramEntity,),
               ),
             ],
           ),

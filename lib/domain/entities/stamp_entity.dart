@@ -5,7 +5,6 @@ import '../../data/models/stamp_model.dart';
 import '../../services/helpers/program_type_enum.dart';
 import 'loyalty_program_entity.dart';
 
-//Todo: add the relation between [RewardEntity] and [StampEntity]
 class StampEntity extends LoyaltyProgramEntity {
   final int? id;
   @override
@@ -14,6 +13,8 @@ class StampEntity extends LoyaltyProgramEntity {
   final ProgramType type;
   final int numberHoles;
   final List<int> winningNumbers;
+  @override
+  final List<RewardEntity> rewards;
 
   StampEntity({
     this.id,
@@ -21,6 +22,7 @@ class StampEntity extends LoyaltyProgramEntity {
     this.name,
     required this.numberHoles,
     required this.winningNumbers,
+    required this.rewards,
   });
 
   @override
@@ -30,6 +32,7 @@ class StampEntity extends LoyaltyProgramEntity {
     String? name,
     int? numberHoles,
     List<int>? winningNumbers,
+    List<RewardEntity>? rewards
   }) {
     return StampEntity(
       id: id ?? this.id,
@@ -37,20 +40,28 @@ class StampEntity extends LoyaltyProgramEntity {
       name: name ?? this.name,
       numberHoles: numberHoles ?? this.numberHoles,
       winningNumbers: winningNumbers ?? this.winningNumbers,
+      rewards: rewards ?? this.rewards,
     );
   }
 
   ///Convert Model to Entity
   factory StampEntity.fromModel(StampModel model) {
+    final List<RewardEntity> rewards = RewardEntity.fromModelList(model.rewards);
+
     return StampEntity(
       id: model.id ?? 0,
       type: ProgramType.from(model.type),
       name: model.name,
       numberHoles: model.numberHoles,
       winningNumbers: model.winningNumbers,
+      rewards: rewards
     );
   }
 
+  static List<StampEntity> fromModelList(List<StampModel> models) {
+    return models.map((model) => StampEntity.fromModel(model)).toList();
+  }
+
   @override
-  List<Object?> get props => [id, type, name, numberHoles, winningNumbers];
+  List<Object?> get props => [...super.props, name, numberHoles, winningNumbers];
 }

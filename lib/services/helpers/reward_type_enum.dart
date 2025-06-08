@@ -1,4 +1,5 @@
 enum RewardType {
+  unknown(''),
   free('Free'),
   discount('Discount');
 

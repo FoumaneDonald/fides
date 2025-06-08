@@ -41,6 +41,14 @@ mixin ValidationMixins{
     };
   }
 
+  String? validateNull<T>( T? value ) {
+    if( value == null) {
+      return 'Field required';
+    }
+
+    return null;
+  }
+
   String? requiredField( String? value ){
     if( value == null){
       return 'Field required';
