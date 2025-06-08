@@ -63,7 +63,7 @@ jobs:
           echo "${{ secrets.STAGE_ENV }}" > lib/.staging.env
 
       - name: Build APK (Staging)
-        run: flutter build apk --flavor staging --dart-define=ENV=staging --build-number=${{ github.run_number }}
+        run: flutter build apk --flavor staging --dart-define-from-file=lib/.staging.env --build-number=${{ github.run_number }}
 
 #      - name: Create Sentry release
 #        uses: getsentry/action-release@v3

@@ -63,7 +63,7 @@ jobs:
           echo "${{ secrets.DEV_ENV }}" > lib/.dev.env
 
       - name: Build APK (Dev)
-        run: flutter build apk --flavor dev --dart-define=ENV=dev --build-number=${{ github.run_number }}
+        run: flutter build apk --flavor dev --dart-define-from-file=lib/.dev.env --build-number=${{ github.run_number }}
 
 #      - name: Create Sentry release
 #        uses: getsentry/action-release@v3
