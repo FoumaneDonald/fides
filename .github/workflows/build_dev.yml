@@ -24,7 +24,7 @@ jobs:
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.GITHUB_ACTION }}
+          token: ${{ secrets.PAT }}
           release-type: dart
           target-branch: dev
 
@@ -85,6 +85,6 @@ jobs:
           # Correct path for debug APK
           artifacts: "build/app/outputs/flutter-apk/app-dev-release.apk"
           tag: ${{ needs.version_and_release.outputs.tag_name }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           # Allow updating the release, as release-please created it, and we're just adding an artifact.
           allowUpdates: true
