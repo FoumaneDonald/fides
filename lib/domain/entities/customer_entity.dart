@@ -1,40 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:fides/domain/entities/points_entity.dart';
 import 'package:fides/domain/entities/stamp_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import '../../data/models/customer_model.dart';
 import 'loyalty_program_entity.dart';
 
-class CustomerEntity extends Equatable {
-  final int? id;
-  final String? name;
-  final String? phone;
-  final String? email;
-  final List<LoyaltyProgramEntity>? loyaltyPrograms;
+part 'customer_entity.freezed.dart';
 
-  const CustomerEntity({
-    this.id,
-    this.name,
-    this.phone,
-    this.email,
-    this.loyaltyPrograms,
-  });
+@freezed
+abstract class CustomerEntity with _$CustomerEntity {
+  const CustomerEntity._();
 
-  CustomerEntity copyWith({
+  const factory CustomerEntity({
     int? id,
-    String? name,
+    @Default('') String name,
     String? phone,
     String? email,
-    List<LoyaltyProgramEntity>? loyaltyPrograms,
-  }) {
-    return CustomerEntity(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      phone: phone ?? this.phone,
-      email: email ?? this.email,
-      loyaltyPrograms: loyaltyPrograms ?? this.loyaltyPrograms,
-    );
-  }
+    @Default([]) List<LoyaltyProgramEntity> loyaltyPrograms,
+  }) = _CustomerEntity;
+
+  factory CustomerEntity.empty() => CustomerEntity(name: '', loyaltyPrograms: const []);
 
   /// Convert [CustomerModel] to [CustomerEntity]
   factory CustomerEntity.fromModel(CustomerModel model) {
@@ -55,7 +41,4 @@ class CustomerEntity extends Equatable {
   static List<CustomerEntity> fromModelList(List<CustomerModel> models) {
     return models.map((model) => CustomerEntity.fromModel(model)).toList();
   }
-
-  @override
-  List<Object?> get props => [id, name, phone, email, loyaltyPrograms];
 }

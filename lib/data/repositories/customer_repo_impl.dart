@@ -12,8 +12,8 @@ class CustomerRepoImpl implements CustomerRepository {
   CustomerRepoImpl(CustomerDao customerDao) : _customerDao = customerDao;
 
   @override
-  Future<Result<CustomerEntity>> createCustomer({required CustomerEntity customerEntity}) async {
-    final Result<CustomerModel> result = await _customerDao.createCustomer(CustomerModel.fromEntity(customerEntity));
+  Future<ResultDart<CustomerEntity, String>> createCustomer({required CustomerEntity customerEntity}) async {
+    final ResultDart<CustomerModel, String> result = await _customerDao.createCustomer(CustomerModel.fromEntity(customerEntity));
 
     return result.fold(
       (customer) => Success(CustomerEntity.fromModel(customer)),

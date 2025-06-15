@@ -6,14 +6,13 @@ import 'package:objectbox/objectbox.dart';
 import '../../domain/entities/customer_entity.dart';
 import '../../domain/entities/points_entity.dart';
 import '../../domain/entities/stamp_entity.dart';
-import 'loyalty_program_model.dart';
 
 @Entity()
 class CustomerModel {
   @Id()
-  int? id = 0;
+  int id = 0;
   @Unique()
-  String? name;
+  String name;
   @Unique()
   String? phone;
   @Unique()
@@ -24,7 +23,7 @@ class CustomerModel {
 
   CustomerModel({
     required this.id,
-    this.name,
+    required this.name,
     this.phone,
     this.email,
   });
@@ -52,8 +51,13 @@ class CustomerModel {
       email: entity.email,
     );
 
-    model.stampPrograms.addAll(StampModel.fromEntityList(entity.loyaltyPrograms as List<StampEntity>));
-    model.pointsPrograms.addAll(PointsModel.fromEntityList(entity.loyaltyPrograms as List<PointsEntity>));
+    entity.loyaltyPrograms.map((program) {
+      if (program is PointsEntity) {
+        model.pointsPrograms.add(PointsModel.fromEntity(program));
+      } else if (program is StampEntity) {
+        model.stampPrograms.add(StampModel.fromEntity(program));
+      }
+    });
 
     return model;
   }
