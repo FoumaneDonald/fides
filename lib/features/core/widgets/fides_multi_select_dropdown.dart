@@ -164,66 +164,70 @@ class _BottomSheetSelectorState<T> extends State<_BottomSheetSelector<T>> {
         padding: const EdgeInsets.only(top: 16, bottom: 24, left: 16, right: 16),
         child: ConstrainedBox(
           constraints: BoxConstraints(
+            minWidth: double.infinity,
             maxHeight: maxHeight,
           ),
           child: Column(
+            spacing: 16,
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
+              Text(
                 'Select Programs',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 16),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      // Determine column count based on available width
-                      final double width = constraints.maxWidth;
-                      int columns;
+              if(widget.options.isEmpty) ...{
+                const Text('No programs found, create one'),
+              } else ...{
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        // Determine column count based on available width
+                        final double width = constraints.maxWidth;
+                        int columns;
 
-                      if (width >= 1024) {
-                        columns = 4; // Desktop
-                      } else if (width >= 600) {
-                        columns = 3; // Tablet
-                      } else {
-                        columns = 2; // Mobile
-                      }
-                      return LayoutGrid(
-                        columnSizes: List.generate(columns, (_) => auto),
-                        rowSizes: List<TrackSize>.generate((widget.options.length / 2).ceil(), (_) => auto),
-                        columnGap: 8,
-                        rowGap: 8,
-                        autoPlacement: AutoPlacement.rowSparse,
-                        children: widget.options.map(
-                          (item) {
-                            return widget.itemDisplayBuilder(
-                              item,
-                              _selected.contains(item),
-                              () {
-                                setState(
-                                  () {
-                                    if (_selected.contains(item)) {
-                                      _selected.remove(item);
-                                    } else {
-                                      _selected.add(item);
-                                    }
-                                  },
-                                );
-                              },
-                            );
-                          },
-                        ).toList(),
-                      );
-                    },
+                        if (width >= 1024) {
+                          columns = 4; // Desktop
+                        } else if (width >= 600) {
+                          columns = 3; // Tablet
+                        } else {
+                          columns = 2; // Mobile
+                        }
+                        return LayoutGrid(
+                          columnSizes: List.generate(columns, (_) => auto),
+                          rowSizes: List<TrackSize>.generate((widget.options.length / 2).ceil(), (_) => auto),
+                          columnGap: 8,
+                          rowGap: 8,
+                          autoPlacement: AutoPlacement.rowSparse,
+                          children: widget.options.map(
+                                (item) {
+                              return widget.itemDisplayBuilder(
+                                item,
+                                _selected.contains(item),
+                                    () {
+                                  setState(
+                                        () {
+                                      if (_selected.contains(item)) {
+                                        _selected.remove(item);
+                                      } else {
+                                        _selected.add(item);
+                                      }
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          ).toList(),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context, _selected),
-                child: const Text('Done'),
-              ),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, _selected),
+                  child: const Text('Done'),
+                ),
+              },
             ],
           ),
         ),

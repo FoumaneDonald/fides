@@ -18,6 +18,7 @@ import '../../../core/widgets/fides_phone_input.dart';
 import '../../../core/widgets/fides_text_input.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../../core/widgets/required_field_text.dart';
+import '../../../homePage/ui/bloc/home_bloc.dart';
 import '../../../homePage/ui/widgets/program_card.dart';
 import '../bloc/customer_bloc.dart';
 
@@ -39,7 +40,6 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
   final FocusNode _phoneFocusNode = FocusNode();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _programsFocusNode = FocusNode();
-  List<LoyaltyProgramEntity> selectedProgram = [];
 
   @override
   void initState() {
@@ -51,30 +51,31 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
     return BlocProvider(
       lazy: false,
       create: (context) => sl<CustomerBloc>()..add(Init()),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Add a Customer'),
-          leading: IconButton(
-              onPressed: () {
-                context.pop();
-              },
-              icon: Icon(Icons.arrow_back_outlined)),
-        ),
-        body: SafeArea(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: BlocConsumer<CustomerBloc, CustomerState>(
-                listener: (context, state){
-                  if(state.status == CustomerStatus.success){
-                    MindLabSnackBar.success(context, state.message!);
+      child: BlocConsumer<CustomerBloc, CustomerState>(
+        listener: (context, state) {
+          if (state.status == CustomerStatus.success) {
+            MindLabSnackBar.success(context, state.message!);
+            context.read<HomeBloc>().add(LatestCustomer());
+            context.pop();
+          } else if (state.status == CustomerStatus.error) {
+            MindLabSnackBar.error(context, state.message!);
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text('Add a Customer'),
+              leading: IconButton(
+                  onPressed: () {
                     context.pop();
-                  } else if (state.status == CustomerStatus.error) {
-                    MindLabSnackBar.error(context, state.message!);
-                  }
-                },
-                builder: (context, state) {
-                  return Column(
+                  },
+                  icon: Icon(Icons.arrow_back_outlined)),
+            ),
+            body: SafeArea(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                  child: Column(
                     spacing: 8,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -95,6 +96,11 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                                   autoValidateMode: AutovalidateMode.onUnfocus,
                                   onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(_phoneFocusNode),
                                   validator: composeValidators<String>([requiredField]),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _nameController.text = value ?? '';
+                                    });
+                                  },
                                   onSaved: (value) {
                                     _nameController.text = value ?? '';
                                   },
@@ -142,7 +148,7 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                                         FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
                                           focusNode: _programsFocusNode,
                                           inputLabel: 'Add to program*',
-                                          options: state.programStatus == ProgramStatus.loading ? [] : state.loyaltyPrograms!,
+                                          options: state.programStatus == ProgramStatus.loading ? [] : state.listOfPrograms!,
                                           selectedValues: state.customerEntity!.loyaltyPrograms ?? [],
                                           errorText: field.errorText,
                                           hasError: field.hasError,
@@ -167,31 +173,35 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                           ),
                         ),
                       ),
-                      PrimaryButton(
-                        text: 'Add Customer',
-                        icon: Icons.add_rounded,
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            final newCustomer = CustomerEntity(
-                              name: _nameController.text.trim(),
-                              phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
-                              email: _emailController.text.trim(),
-                              loyaltyPrograms: state.customerEntity!.loyaltyPrograms!,
-                            );
-
-                            context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
-                            // context.goNamed(AppRoute.programReward.name);
-                          }
-                        },
-                      ),
                     ],
-                  );
+                  ),
+                ),
+              ),
+            ),
+            bottomNavigationBar: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: PrimaryButton(
+                text: 'Add Customer',
+                icon: Icons.add_rounded,
+                isActive: _nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms?.isNotEmpty ?? false),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+                    final newCustomer = CustomerEntity(
+                      name: _nameController.text.trim(),
+                      phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
+                      email: _emailController.text.trim(),
+                      loyaltyPrograms: state.customerEntity!.loyaltyPrograms!,
+                    );
+
+                    context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
+                    // context.goNamed(AppRoute.programReward.name);
+                  }
                 },
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -2,7 +2,6 @@ import 'package:result_dart/result_dart.dart';
 import 'package:uuid/uuid.dart';
 
 import '../data/models/customer_model.dart';
-import '../data/models/loyalty_program_model.dart';
 import '../objectbox.g.dart';
 import 'object_box.dart';
 
@@ -12,17 +11,17 @@ class CustomerDao {
 
   CustomerDao(this._objectBox);
 
-  Box<LoyaltyProgramModel> get _loyaltyProgramBox => _objectBox.store.box<LoyaltyProgramModel>();
-
   Box<CustomerModel> get _customerBox => _objectBox.store.box<CustomerModel>();
 
-  Future<Result<CustomerModel>> createCustomer(CustomerModel customerModel) async{
+  Future<ResultDart<CustomerModel, String>> createCustomer(CustomerModel customerModel) async{
     try {
       final result = await _customerBox.putAndGetAsync(customerModel);
       return Success(result);
+    } on ObjectBoxException catch (error, stackTrace){
+      return Failure('Name is already taken');
     } catch (error, stackTrace) {
       print('$error, $stackTrace');
-      return Failure(Exception('Failed to create data'));
+      return Failure('Failed to create data');
     }
   }
 

@@ -373,9 +373,9 @@ obx_int.ModelDefinition getObjectBoxModel() {
         model: _entities[1],
         toOneRelations: (CustomerModel object) => [],
         toManyRelations: (CustomerModel object) => {
-              obx_int.RelInfo<CustomerModel>.toMany(2, object.id!):
+              obx_int.RelInfo<CustomerModel>.toMany(2, object.id):
                   object.pointsPrograms,
-              obx_int.RelInfo<CustomerModel>.toMany(3, object.id!):
+              obx_int.RelInfo<CustomerModel>.toMany(3, object.id):
                   object.stampPrograms
             },
         getId: (CustomerModel object) => object.id,
@@ -383,27 +383,26 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (CustomerModel object, fb.Builder fbb) {
-          final nameOffset =
-              object.name == null ? null : fbb.writeString(object.name!);
+          final nameOffset = fbb.writeString(object.name);
           final phoneOffset =
               object.phone == null ? null : fbb.writeString(object.phone!);
           final emailOffset =
               object.email == null ? null : fbb.writeString(object.email!);
           fbb.startTable(6);
-          fbb.addInt64(0, object.id ?? 0);
+          fbb.addInt64(0, object.id);
           fbb.addOffset(2, nameOffset);
           fbb.addOffset(3, phoneOffset);
           fbb.addOffset(4, emailOffset);
           fbb.finish(fbb.endTable());
-          return object.id ?? 0;
+          return object.id;
         },
         objectFromFB: (obx.Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
           final idParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
           final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 8);
+              .vTableGet(buffer, rootOffset, 8, '');
           final phoneParam = const fb.StringReader(asciiOptimization: true)
               .vTableGetNullable(buffer, rootOffset, 10);
           final emailParam = const fb.StringReader(asciiOptimization: true)
@@ -416,11 +415,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
               object.pointsPrograms,
               store,
-              obx_int.RelInfo<CustomerModel>.toMany(2, object.id!));
+              obx_int.RelInfo<CustomerModel>.toMany(2, object.id));
           obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
               object.stampPrograms,
               store,
-              obx_int.RelInfo<CustomerModel>.toMany(3, object.id!));
+              obx_int.RelInfo<CustomerModel>.toMany(3, object.id));
           return object;
         }),
     PointsModel: obx_int.EntityDefinition<PointsModel>(

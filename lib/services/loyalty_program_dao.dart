@@ -1,11 +1,6 @@
-import 'dart:math';
-
 import 'package:result_dart/result_dart.dart';
-import 'package:uuid/uuid.dart';
 
-import '../data/models/loyalty_program_model.dart';
 import '../data/models/points_model.dart';
-import '../data/models/reward_model.dart';
 import '../data/models/stamp_model.dart';
 import '../objectbox.g.dart';
 import 'helpers/program_type_enum.dart';

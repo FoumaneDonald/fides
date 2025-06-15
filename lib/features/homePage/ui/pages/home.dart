@@ -85,7 +85,7 @@ class HomePage extends StatelessWidget {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(customer.name!),
+                                      Text(customer.name),
                                       Text(customer.phone ?? ''),
                                       Text(customer.email ?? ''),
                                     ],

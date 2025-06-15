@@ -41,5 +41,5 @@ class HomeState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [status, message, listOfCustomers];
+  List<Object?> get props => [status, message, listOfCustomers!.length];
 }
