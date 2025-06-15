@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/FoumaneDonald/fides/compare/v1.0.3...v1.0.4) (2025-06-15)
+
+
+### Bug Fixes
+
+* **customer subscription:** creating a customer ([0d2f610](https://github.com/FoumaneDonald/fides/commit/0d2f6107af6692b6263f139cd771683272c59f04))
+
 ## [1.0.3](https://github.com/FoumaneDonald/fides/compare/v1.0.2...v1.0.3) (2025-06-15)
 
 
