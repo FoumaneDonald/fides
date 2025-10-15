@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/FoumaneDonald/fides/compare/v1.0.3...v1.0.4) (2025-10-15)
+
+
+### Bug Fixes
+
+* **ci:** update flutter version ([b1fd37b](https://github.com/FoumaneDonald/fides/commit/b1fd37bc3983c1bcb96a28c2b7c79f49acec9f48))
+
 ## [1.0.3](https://github.com/FoumaneDonald/fides/compare/v1.0.2...v1.0.3) (2025-06-15)
 
 
