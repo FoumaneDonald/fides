@@ -15,214 +15,340 @@ import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import 'data/models/customer_model.dart';
-import 'data/models/points_model.dart';
+import 'data/models/return_model.dart';
 import 'data/models/reward_model.dart';
-import 'data/models/stamp_model.dart';
+import 'data/models/spend_model.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(1, 3401710457310357716),
-      name: 'RewardModel',
-      lastPropertyId: const obx_int.IdUid(13, 6402870079329910719),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 7595346860182445469),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 1315264941201472981),
-            name: 'type',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 4156855547960980391),
-            name: 'discountValue',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 6119365577983705815),
-            name: 'discountValueType',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 7333605600765203908),
-            name: 'item',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 9193741409764690578),
-            name: 'description',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 482995528713180466),
-            name: 'rewardCost',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(8, 4538394185443530244),
-            name: 'minimumPurchase',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(11, 9111147930762667052),
-            name: 'pointsProgramId',
-            type: 11,
-            flags: 520,
-            indexId: const obx_int.IdUid(7, 3842039719501598814),
-            relationTarget: 'PointsModel'),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(12, 5095615782389340426),
-            name: 'stampProgramId',
-            type: 11,
-            flags: 520,
-            indexId: const obx_int.IdUid(8, 4043233121981302571),
-            relationTarget: 'StampModel'),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(13, 6402870079329910719),
-            name: 'stampNumber',
-            type: 6,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[]),
+    id: const obx_int.IdUid(1, 7015283484083012668),
+    name: 'CustomerModel',
+    lastPropertyId: const obx_int.IdUid(4, 871110795401683576),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 7323562755771865711),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 560575189651736899),
+        name: 'name',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(1, 7789491649031326571),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 8216373017593947271),
+        name: 'phone',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(2, 6654674752017967571),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 871110795401683576),
+        name: 'email',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(3, 1031450621937900103),
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[
+      obx_int.ModelRelation(
+        id: const obx_int.IdUid(1, 2813295639591578593),
+        name: 'spendPrograms',
+        targetId: const obx_int.IdUid(4, 6581289349773652606),
+      ),
+      obx_int.ModelRelation(
+        id: const obx_int.IdUid(2, 8379675187063647004),
+        name: 'returnPrograms',
+        targetId: const obx_int.IdUid(2, 6381600442670235898),
+      ),
+    ],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(3, 12435688903466140),
-      name: 'CustomerModel',
-      lastPropertyId: const obx_int.IdUid(5, 8073404252985355084),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1542532643528651518),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 3524937022293858320),
-            name: 'name',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(10, 2791694562746837295)),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 10449065858544969),
-            name: 'phone',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(11, 3621269793141425718)),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 8073404252985355084),
-            name: 'email',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(12, 7651279757129464902))
-      ],
-      relations: <obx_int.ModelRelation>[
-        obx_int.ModelRelation(
-            id: const obx_int.IdUid(2, 7940335822263021417),
-            name: 'pointsPrograms',
-            targetId: const obx_int.IdUid(4, 7344921886123381777)),
-        obx_int.ModelRelation(
-            id: const obx_int.IdUid(3, 5371440725444001829),
-            name: 'stampPrograms',
-            targetId: const obx_int.IdUid(5, 6685464445707830496))
-      ],
-      backlinks: <obx_int.ModelBacklink>[]),
+    id: const obx_int.IdUid(2, 6381600442670235898),
+    name: 'ReturnModel',
+    lastPropertyId: const obx_int.IdUid(11, 9193132095175493718),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 7555628221072167428),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 7167818898595519913),
+        name: 'type',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 5391885287981564768),
+        name: 'name',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 5934419896306581815),
+        name: 'numberHoles',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 1440274582251185851),
+        name: 'winningNumbers',
+        type: 24,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 4952478839050913934),
+        name: 'lastingNumber',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 1816850983170984713),
+        name: 'lastingPeriod',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 2848204522093473624),
+        name: 'startingDate',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 3485055448530788744),
+        name: 'endDate',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 7527426910035983512),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 9193132095175493718),
+        name: 'updatedAt',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[
+      obx_int.ModelBacklink(
+        name: 'rewards',
+        srcEntity: 'RewardModel',
+        srcField: 'returnProgram',
+      ),
+      obx_int.ModelBacklink(
+        name: 'customers',
+        srcEntity: 'CustomerModel',
+        srcField: 'returnPrograms',
+      ),
+    ],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(4, 7344921886123381777),
-      name: 'PointsModel',
-      lastPropertyId: const obx_int.IdUid(7, 8399627070114772951),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 8156887839954770586),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 1495667634021040905),
-            name: 'type',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 38712837054418215),
-            name: 'name',
-            type: 9,
-            flags: 2080,
-            indexId: const obx_int.IdUid(13, 3006479290774145872)),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 2297099000378969825),
-            name: 'points',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 1840965130373951759),
-            name: 'minimumSpent',
-            type: 8,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(7, 8399627070114772951),
-            name: 'currencyCode',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[
-        obx_int.ModelBacklink(
-            name: 'rewards',
-            srcEntity: 'RewardModel',
-            srcField: 'pointsProgram'),
-        obx_int.ModelBacklink(
-            name: 'customers',
-            srcEntity: 'CustomerModel',
-            srcField: 'pointsPrograms')
-      ]),
+    id: const obx_int.IdUid(3, 3012900800852066697),
+    name: 'RewardModel',
+    lastPropertyId: const obx_int.IdUid(14, 1165729295383189103),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 5150389418624380097),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 4064391079261861944),
+        name: 'type',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 2986004899823721230),
+        name: 'stampNumber',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 5247338008956317061),
+        name: 'discountValue',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 1418412527454630620),
+        name: 'discountValueType',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 8949179679844281677),
+        name: 'item',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 5238213391604292930),
+        name: 'imagePath',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 6192561775398996570),
+        name: 'description',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 8765499207399769269),
+        name: 'rewardCost',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 6928759165017539537),
+        name: 'minimumPurchase',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 2859249684924034469),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 2605144509052512069),
+        name: 'updatedAt',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(13, 1974151542789393545),
+        name: 'spendProgramId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(4, 2963466069058881996),
+        relationTarget: 'SpendModel',
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(14, 1165729295383189103),
+        name: 'returnProgramId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(5, 7661441503771101191),
+        relationTarget: 'ReturnModel',
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(5, 6685464445707830496),
-      name: 'StampModel',
-      lastPropertyId: const obx_int.IdUid(6, 2898450460488718427),
-      flags: 0,
-      properties: <obx_int.ModelProperty>[
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 1894107812119558610),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 1883586170591108454),
-            name: 'type',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 6837325332857488867),
-            name: 'name',
-            type: 9,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 882232257323069456),
-            name: 'numberHoles',
-            type: 6,
-            flags: 0),
-        obx_int.ModelProperty(
-            id: const obx_int.IdUid(6, 2898450460488718427),
-            name: 'winningNumbers',
-            type: 24,
-            flags: 0)
-      ],
-      relations: <obx_int.ModelRelation>[],
-      backlinks: <obx_int.ModelBacklink>[
-        obx_int.ModelBacklink(
-            name: 'rewards',
-            srcEntity: 'RewardModel',
-            srcField: 'stampProgram'),
-        obx_int.ModelBacklink(
-            name: 'customers',
-            srcEntity: 'CustomerModel',
-            srcField: 'stampPrograms')
-      ])
+    id: const obx_int.IdUid(4, 6581289349773652606),
+    name: 'SpendModel',
+    lastPropertyId: const obx_int.IdUid(12, 1297590559322689021),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 4927317179946854576),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 7140211232023038728),
+        name: 'type',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 3002983200715798307),
+        name: 'name',
+        type: 9,
+        flags: 2080,
+        indexId: const obx_int.IdUid(6, 4298365782765950991),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 1211679929624497774),
+        name: 'points',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 4885474907870954284),
+        name: 'minimumSpent',
+        type: 8,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 4803115434500795169),
+        name: 'currencyCode',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 1019168761634338807),
+        name: 'lastingNumber',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 2878776337406935823),
+        name: 'lastingPeriod',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 1537731386392984746),
+        name: 'startingDate',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 5772034534268627829),
+        name: 'endDate',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(11, 3388537713656770261),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(12, 1297590559322689021),
+        name: 'updatedAt',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[
+      obx_int.ModelBacklink(
+        name: 'rewards',
+        srcEntity: 'RewardModel',
+        srcField: 'spendProgram',
+      ),
+      obx_int.ModelBacklink(
+        name: 'customers',
+        srcEntity: 'CustomerModel',
+        srcField: 'spendPrograms',
+      ),
+    ],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -236,448 +362,750 @@ final _entities = <obx_int.ModelEntity>[
 /// For Flutter apps, also calls `loadObjectBoxLibraryAndroidCompat()` from
 /// the ObjectBox Flutter library to fix loading the native ObjectBox library
 /// on Android 6 and older.
-Future<obx.Store> openStore(
-    {String? directory,
-    int? maxDBSizeInKB,
-    int? maxDataSizeInKB,
-    int? fileMode,
-    int? maxReaders,
-    bool queriesCaseSensitiveDefault = true,
-    String? macosApplicationGroup}) async {
+Future<obx.Store> openStore({
+  String? directory,
+  int? maxDBSizeInKB,
+  int? maxDataSizeInKB,
+  int? fileMode,
+  int? maxReaders,
+  bool queriesCaseSensitiveDefault = true,
+  String? macosApplicationGroup,
+}) async {
   await loadObjectBoxLibraryAndroidCompat();
-  return obx.Store(getObjectBoxModel(),
-      directory: directory ?? (await defaultStoreDirectory()).path,
-      maxDBSizeInKB: maxDBSizeInKB,
-      maxDataSizeInKB: maxDataSizeInKB,
-      fileMode: fileMode,
-      maxReaders: maxReaders,
-      queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
-      macosApplicationGroup: macosApplicationGroup);
+  return obx.Store(
+    getObjectBoxModel(),
+    directory: directory ?? (await defaultStoreDirectory()).path,
+    maxDBSizeInKB: maxDBSizeInKB,
+    maxDataSizeInKB: maxDataSizeInKB,
+    fileMode: fileMode,
+    maxReaders: maxReaders,
+    queriesCaseSensitiveDefault: queriesCaseSensitiveDefault,
+    macosApplicationGroup: macosApplicationGroup,
+  );
 }
 
 /// Returns the ObjectBox model definition for this project for use with
 /// [obx.Store.new].
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
-      entities: _entities,
-      lastEntityId: const obx_int.IdUid(5, 6685464445707830496),
-      lastIndexId: const obx_int.IdUid(13, 3006479290774145872),
-      lastRelationId: const obx_int.IdUid(3, 5371440725444001829),
-      lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [1173935753394898722],
-      retiredIndexUids: const [
-        5939902998660536462,
-        6691712950610642240,
-        8670166263391842496,
-        78064764068026973,
-        5064043649769193035,
-        2627159397715658803
-      ],
-      retiredPropertyUids: const [
-        5774164378543038065,
-        6716148227055326269,
-        1743111344690139695,
-        165063373242491864,
-        544434251751493668,
-        7118891231732692149,
-        3007625745844823324,
-        2241679788063526819,
-        5157720441148261386,
-        7190404437975898656,
-        5038353275190053216,
-        2340145866410014569
-      ],
-      retiredRelationUids: const [8726568091037055140],
-      modelVersion: 5,
-      modelVersionParserMinimum: 5,
-      version: 1);
+    entities: _entities,
+    lastEntityId: const obx_int.IdUid(4, 6581289349773652606),
+    lastIndexId: const obx_int.IdUid(6, 4298365782765950991),
+    lastRelationId: const obx_int.IdUid(2, 8379675187063647004),
+    lastSequenceId: const obx_int.IdUid(0, 0),
+    retiredEntityUids: const [],
+    retiredIndexUids: const [],
+    retiredPropertyUids: const [],
+    retiredRelationUids: const [],
+    modelVersion: 5,
+    modelVersionParserMinimum: 5,
+    version: 1,
+  );
 
   final bindings = <Type, obx_int.EntityDefinition>{
-    RewardModel: obx_int.EntityDefinition<RewardModel>(
-        model: _entities[0],
-        toOneRelations: (RewardModel object) =>
-            [object.pointsProgram, object.stampProgram],
-        toManyRelations: (RewardModel object) => {},
-        getId: (RewardModel object) => object.id,
-        setId: (RewardModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (RewardModel object, fb.Builder fbb) {
-          final typeOffset =
-              object.type == null ? null : fbb.writeString(object.type!);
-          final discountValueTypeOffset = object.discountValueType == null
-              ? null
-              : fbb.writeString(object.discountValueType!);
-          final itemOffset =
-              object.item == null ? null : fbb.writeString(object.item!);
-          final descriptionOffset = object.description == null
-              ? null
-              : fbb.writeString(object.description!);
-          fbb.startTable(14);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, typeOffset);
-          fbb.addInt64(2, object.discountValue);
-          fbb.addOffset(3, discountValueTypeOffset);
-          fbb.addOffset(4, itemOffset);
-          fbb.addOffset(5, descriptionOffset);
-          fbb.addInt64(6, object.rewardCost);
-          fbb.addInt64(7, object.minimumPurchase);
-          fbb.addInt64(10, object.pointsProgram.targetId);
-          fbb.addInt64(11, object.stampProgram.targetId);
-          fbb.addInt64(12, object.stampNumber);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 6);
-          final stampNumberParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 28);
-          final discountValueParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 8);
-          final discountValueTypeParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 10);
-          final itemParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 12);
-          final descriptionParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGetNullable(buffer, rootOffset, 14);
-          final rewardCostParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 16);
-          final minimumPurchaseParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 18);
-          final object = RewardModel(
-              id: idParam,
-              type: typeParam,
-              stampNumber: stampNumberParam,
-              discountValue: discountValueParam,
-              discountValueType: discountValueTypeParam,
-              item: itemParam,
-              description: descriptionParam,
-              rewardCost: rewardCostParam,
-              minimumPurchase: minimumPurchaseParam);
-          object.pointsProgram.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
-          object.pointsProgram.attach(store);
-          object.stampProgram.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 26, 0);
-          object.stampProgram.attach(store);
-          return object;
-        }),
     CustomerModel: obx_int.EntityDefinition<CustomerModel>(
-        model: _entities[1],
-        toOneRelations: (CustomerModel object) => [],
-        toManyRelations: (CustomerModel object) => {
-              obx_int.RelInfo<CustomerModel>.toMany(2, object.id):
-                  object.pointsPrograms,
-              obx_int.RelInfo<CustomerModel>.toMany(3, object.id):
-                  object.stampPrograms
-            },
-        getId: (CustomerModel object) => object.id,
-        setId: (CustomerModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (CustomerModel object, fb.Builder fbb) {
-          final nameOffset = fbb.writeString(object.name);
-          final phoneOffset =
-              object.phone == null ? null : fbb.writeString(object.phone!);
-          final emailOffset =
-              object.email == null ? null : fbb.writeString(object.email!);
-          fbb.startTable(6);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(2, nameOffset);
-          fbb.addOffset(3, phoneOffset);
-          fbb.addOffset(4, emailOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
-          final phoneParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 10);
-          final emailParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGetNullable(buffer, rootOffset, 12);
-          final object = CustomerModel(
-              id: idParam,
-              name: nameParam,
-              phone: phoneParam,
-              email: emailParam);
-          obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
-              object.pointsPrograms,
-              store,
-              obx_int.RelInfo<CustomerModel>.toMany(2, object.id));
-          obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
-              object.stampPrograms,
-              store,
-              obx_int.RelInfo<CustomerModel>.toMany(3, object.id));
-          return object;
-        }),
-    PointsModel: obx_int.EntityDefinition<PointsModel>(
-        model: _entities[2],
-        toOneRelations: (PointsModel object) => [],
-        toManyRelations: (PointsModel object) => {
-              obx_int.RelInfo<RewardModel>.toOneBacklink(11, object.id!,
-                      (RewardModel srcObject) => srcObject.pointsProgram):
-                  object.rewards,
-              obx_int.RelInfo<CustomerModel>.toManyBacklink(2, object.id!):
-                  object.customers
-            },
-        getId: (PointsModel object) => object.id,
-        setId: (PointsModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (PointsModel object, fb.Builder fbb) {
-          final typeOffset = fbb.writeString(object.type);
-          final nameOffset = fbb.writeString(object.name);
-          final currencyCodeOffset = fbb.writeString(object.currencyCode);
-          fbb.startTable(8);
-          fbb.addInt64(0, object.id ?? 0);
-          fbb.addOffset(2, typeOffset);
-          fbb.addOffset(3, nameOffset);
-          fbb.addFloat64(4, object.points);
-          fbb.addFloat64(5, object.minimumSpent);
-          fbb.addOffset(6, currencyCodeOffset);
-          fbb.finish(fbb.endTable());
-          return object.id ?? 0;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
-          final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
-          final pointsParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 12, 0);
-          final minimumSpentParam =
-              const fb.Float64Reader().vTableGet(buffer, rootOffset, 14, 0);
-          final currencyCodeParam =
-              const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 16, '');
-          final object = PointsModel(
-              id: idParam,
-              type: typeParam,
-              name: nameParam,
-              points: pointsParam,
-              minimumSpent: minimumSpentParam,
-              currencyCode: currencyCodeParam);
-          obx_int.InternalToManyAccess.setRelInfo<PointsModel>(
-              object.rewards,
-              store,
-              obx_int.RelInfo<RewardModel>.toOneBacklink(11, object.id!,
-                  (RewardModel srcObject) => srcObject.pointsProgram));
-          obx_int.InternalToManyAccess.setRelInfo<PointsModel>(
-              object.customers,
-              store,
-              obx_int.RelInfo<CustomerModel>.toManyBacklink(2, object.id!));
-          return object;
-        }),
-    StampModel: obx_int.EntityDefinition<StampModel>(
-        model: _entities[3],
-        toOneRelations: (StampModel object) => [],
-        toManyRelations: (StampModel object) => {
-              obx_int.RelInfo<RewardModel>.toOneBacklink(12, object.id!,
-                      (RewardModel srcObject) => srcObject.stampProgram):
-                  object.rewards,
-              obx_int.RelInfo<CustomerModel>.toManyBacklink(3, object.id!):
-                  object.customers
-            },
-        getId: (StampModel object) => object.id,
-        setId: (StampModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (StampModel object, fb.Builder fbb) {
-          final typeOffset = fbb.writeString(object.type);
-          final nameOffset = fbb.writeString(object.name);
-          final winningNumbersOffset =
-              fbb.writeListInt16(object.winningNumbers);
-          fbb.startTable(7);
-          fbb.addInt64(0, object.id ?? 0);
-          fbb.addOffset(2, typeOffset);
-          fbb.addOffset(3, nameOffset);
-          fbb.addInt64(4, object.numberHoles);
-          fbb.addOffset(5, winningNumbersOffset);
-          fbb.finish(fbb.endTable());
-          return object.id ?? 0;
-        },
-        objectFromFB: (obx.Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-          final idParam =
-              const fb.Int64Reader().vTableGetNullable(buffer, rootOffset, 4);
-          final typeParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 8, '');
-          final nameParam = const fb.StringReader(asciiOptimization: true)
-              .vTableGet(buffer, rootOffset, 10, '');
-          final numberHolesParam =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
-          final winningNumbersParam =
-              const fb.ListReader<int>(fb.Int16Reader(), lazy: false)
-                  .vTableGet(buffer, rootOffset, 14, []);
-          final object = StampModel(
-              id: idParam,
-              type: typeParam,
-              name: nameParam,
-              numberHoles: numberHolesParam,
-              winningNumbers: winningNumbersParam);
-          obx_int.InternalToManyAccess.setRelInfo<StampModel>(
-              object.rewards,
-              store,
-              obx_int.RelInfo<RewardModel>.toOneBacklink(12, object.id!,
-                  (RewardModel srcObject) => srcObject.stampProgram));
-          obx_int.InternalToManyAccess.setRelInfo<StampModel>(
-              object.customers,
-              store,
-              obx_int.RelInfo<CustomerModel>.toManyBacklink(3, object.id!));
-          return object;
-        })
+      model: _entities[0],
+      toOneRelations: (CustomerModel object) => [],
+      toManyRelations: (CustomerModel object) => {
+        obx_int.RelInfo<CustomerModel>.toMany(1, object.id):
+            object.spendPrograms,
+        obx_int.RelInfo<CustomerModel>.toMany(2, object.id):
+            object.returnPrograms,
+      },
+      getId: (CustomerModel object) => object.id,
+      setId: (CustomerModel object, int id) {
+        object.id = id;
+      },
+      objectToFB: (CustomerModel object, fb.Builder fbb) {
+        final nameOffset = fbb.writeString(object.name);
+        final phoneOffset = object.phone == null
+            ? null
+            : fbb.writeString(object.phone!);
+        final emailOffset = object.email == null
+            ? null
+            : fbb.writeString(object.email!);
+        fbb.startTable(5);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, nameOffset);
+        fbb.addOffset(2, phoneOffset);
+        fbb.addOffset(3, emailOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final phoneParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 8);
+        final emailParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 10);
+        final object = CustomerModel(
+          id: idParam,
+          name: nameParam,
+          phone: phoneParam,
+          email: emailParam,
+        );
+        obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
+          object.spendPrograms,
+          store,
+          obx_int.RelInfo<CustomerModel>.toMany(1, object.id),
+        );
+        obx_int.InternalToManyAccess.setRelInfo<CustomerModel>(
+          object.returnPrograms,
+          store,
+          obx_int.RelInfo<CustomerModel>.toMany(2, object.id),
+        );
+        return object;
+      },
+    ),
+    ReturnModel: obx_int.EntityDefinition<ReturnModel>(
+      model: _entities[1],
+      toOneRelations: (ReturnModel object) => [],
+      toManyRelations: (ReturnModel object) => {
+        obx_int.RelInfo<RewardModel>.toOneBacklink(
+          14,
+          object.id!,
+          (RewardModel srcObject) => srcObject.returnProgram,
+        ): object.rewards,
+        obx_int.RelInfo<CustomerModel>.toManyBacklink(2, object.id!):
+            object.customers,
+      },
+      getId: (ReturnModel object) => object.id,
+      setId: (ReturnModel object, int id) {
+        object.id = id;
+      },
+      objectToFB: (ReturnModel object, fb.Builder fbb) {
+        final typeOffset = fbb.writeString(object.type);
+        final nameOffset = fbb.writeString(object.name);
+        final winningNumbersOffset = fbb.writeListInt16(object.winningNumbers);
+        final lastingPeriodOffset = fbb.writeString(object.lastingPeriod);
+        fbb.startTable(12);
+        fbb.addInt64(0, object.id ?? 0);
+        fbb.addOffset(1, typeOffset);
+        fbb.addOffset(2, nameOffset);
+        fbb.addInt64(3, object.numberHoles);
+        fbb.addOffset(4, winningNumbersOffset);
+        fbb.addInt64(5, object.lastingNumber);
+        fbb.addOffset(6, lastingPeriodOffset);
+        fbb.addInt64(7, object.startingDate?.millisecondsSinceEpoch);
+        fbb.addInt64(8, object.endDate?.millisecondsSinceEpoch);
+        fbb.addInt64(9, object.createdAt?.millisecondsSinceEpoch);
+        fbb.addInt64(10, object.updatedAt?.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id ?? 0;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final startingDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          18,
+        );
+        final endDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          20,
+        );
+        final createdAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          22,
+        );
+        final updatedAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          24,
+        );
+        final idParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          4,
+        );
+        final typeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final numberHolesParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          10,
+          0,
+        );
+        final winningNumbersParam = const fb.ListReader<int>(
+          fb.Int16Reader(),
+          lazy: false,
+        ).vTableGet(buffer, rootOffset, 12, []);
+        final lastingNumberParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          14,
+          0,
+        );
+        final lastingPeriodParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 16, '');
+        final startingDateParam = startingDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(startingDateValue);
+        final endDateParam = endDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(endDateValue);
+        final createdAtParam = createdAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(createdAtValue);
+        final updatedAtParam = updatedAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
+        final object = ReturnModel(
+          id: idParam,
+          type: typeParam,
+          name: nameParam,
+          numberHoles: numberHolesParam,
+          winningNumbers: winningNumbersParam,
+          lastingNumber: lastingNumberParam,
+          lastingPeriod: lastingPeriodParam,
+          startingDate: startingDateParam,
+          endDate: endDateParam,
+          createdAt: createdAtParam,
+          updatedAt: updatedAtParam,
+        );
+        obx_int.InternalToManyAccess.setRelInfo<ReturnModel>(
+          object.rewards,
+          store,
+          obx_int.RelInfo<RewardModel>.toOneBacklink(
+            14,
+            object.id!,
+            (RewardModel srcObject) => srcObject.returnProgram,
+          ),
+        );
+        obx_int.InternalToManyAccess.setRelInfo<ReturnModel>(
+          object.customers,
+          store,
+          obx_int.RelInfo<CustomerModel>.toManyBacklink(2, object.id!),
+        );
+        return object;
+      },
+    ),
+    RewardModel: obx_int.EntityDefinition<RewardModel>(
+      model: _entities[2],
+      toOneRelations: (RewardModel object) => [
+        object.spendProgram,
+        object.returnProgram,
+      ],
+      toManyRelations: (RewardModel object) => {},
+      getId: (RewardModel object) => object.id,
+      setId: (RewardModel object, int id) {
+        object.id = id;
+      },
+      objectToFB: (RewardModel object, fb.Builder fbb) {
+        final typeOffset = fbb.writeString(object.type);
+        final discountValueTypeOffset = object.discountValueType == null
+            ? null
+            : fbb.writeString(object.discountValueType!);
+        final itemOffset = fbb.writeString(object.item);
+        final imagePathOffset = fbb.writeString(object.imagePath);
+        final descriptionOffset = fbb.writeString(object.description);
+        fbb.startTable(15);
+        fbb.addInt64(0, object.id);
+        fbb.addOffset(1, typeOffset);
+        fbb.addInt64(2, object.stampNumber);
+        fbb.addInt64(3, object.discountValue);
+        fbb.addOffset(4, discountValueTypeOffset);
+        fbb.addOffset(5, itemOffset);
+        fbb.addOffset(6, imagePathOffset);
+        fbb.addOffset(7, descriptionOffset);
+        fbb.addInt64(8, object.rewardCost);
+        fbb.addInt64(9, object.minimumPurchase);
+        fbb.addInt64(10, object.createdAt?.millisecondsSinceEpoch);
+        fbb.addInt64(11, object.updatedAt?.millisecondsSinceEpoch);
+        fbb.addInt64(12, object.spendProgram.targetId);
+        fbb.addInt64(13, object.returnProgram.targetId);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final createdAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          24,
+        );
+        final updatedAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          26,
+        );
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final typeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final stampNumberParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          8,
+        );
+        final discountValueParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          10,
+        );
+        final discountValueTypeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 12);
+        final itemParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 14, '');
+        final imagePathParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 16, '');
+        final descriptionParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 18, '');
+        final rewardCostParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          20,
+        );
+        final minimumPurchaseParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          22,
+        );
+        final createdAtParam = createdAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(createdAtValue);
+        final updatedAtParam = updatedAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
+        final object = RewardModel(
+          id: idParam,
+          type: typeParam,
+          stampNumber: stampNumberParam,
+          discountValue: discountValueParam,
+          discountValueType: discountValueTypeParam,
+          item: itemParam,
+          imagePath: imagePathParam,
+          description: descriptionParam,
+          rewardCost: rewardCostParam,
+          minimumPurchase: minimumPurchaseParam,
+          createdAt: createdAtParam,
+          updatedAt: updatedAtParam,
+        );
+        object.spendProgram.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          28,
+          0,
+        );
+        object.spendProgram.attach(store);
+        object.returnProgram.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          30,
+          0,
+        );
+        object.returnProgram.attach(store);
+        return object;
+      },
+    ),
+    SpendModel: obx_int.EntityDefinition<SpendModel>(
+      model: _entities[3],
+      toOneRelations: (SpendModel object) => [],
+      toManyRelations: (SpendModel object) => {
+        obx_int.RelInfo<RewardModel>.toOneBacklink(
+          13,
+          object.id!,
+          (RewardModel srcObject) => srcObject.spendProgram,
+        ): object.rewards,
+        obx_int.RelInfo<CustomerModel>.toManyBacklink(1, object.id!):
+            object.customers,
+      },
+      getId: (SpendModel object) => object.id,
+      setId: (SpendModel object, int id) {
+        object.id = id;
+      },
+      objectToFB: (SpendModel object, fb.Builder fbb) {
+        final typeOffset = fbb.writeString(object.type);
+        final nameOffset = fbb.writeString(object.name);
+        final currencyCodeOffset = fbb.writeString(object.currencyCode);
+        final lastingPeriodOffset = fbb.writeString(object.lastingPeriod);
+        fbb.startTable(13);
+        fbb.addInt64(0, object.id ?? 0);
+        fbb.addOffset(1, typeOffset);
+        fbb.addOffset(2, nameOffset);
+        fbb.addFloat64(3, object.points);
+        fbb.addFloat64(4, object.minimumSpent);
+        fbb.addOffset(5, currencyCodeOffset);
+        fbb.addInt64(6, object.lastingNumber);
+        fbb.addOffset(7, lastingPeriodOffset);
+        fbb.addInt64(8, object.startingDate?.millisecondsSinceEpoch);
+        fbb.addInt64(9, object.endDate?.millisecondsSinceEpoch);
+        fbb.addInt64(10, object.createdAt?.millisecondsSinceEpoch);
+        fbb.addInt64(11, object.updatedAt?.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id ?? 0;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+        final startingDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          20,
+        );
+        final endDateValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          22,
+        );
+        final createdAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          24,
+        );
+        final updatedAtValue = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          26,
+        );
+        final idParam = const fb.Int64Reader().vTableGetNullable(
+          buffer,
+          rootOffset,
+          4,
+        );
+        final typeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final pointsParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          10,
+          0,
+        );
+        final minimumSpentParam = const fb.Float64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          12,
+          0,
+        );
+        final currencyCodeParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 14, '');
+        final lastingNumberParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          16,
+          0,
+        );
+        final lastingPeriodParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 18, '');
+        final startingDateParam = startingDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(startingDateValue);
+        final endDateParam = endDateValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(endDateValue);
+        final createdAtParam = createdAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(createdAtValue);
+        final updatedAtParam = updatedAtValue == null
+            ? null
+            : DateTime.fromMillisecondsSinceEpoch(updatedAtValue);
+        final object = SpendModel(
+          id: idParam,
+          type: typeParam,
+          name: nameParam,
+          points: pointsParam,
+          minimumSpent: minimumSpentParam,
+          currencyCode: currencyCodeParam,
+          lastingNumber: lastingNumberParam,
+          lastingPeriod: lastingPeriodParam,
+          startingDate: startingDateParam,
+          endDate: endDateParam,
+          createdAt: createdAtParam,
+          updatedAt: updatedAtParam,
+        );
+        obx_int.InternalToManyAccess.setRelInfo<SpendModel>(
+          object.rewards,
+          store,
+          obx_int.RelInfo<RewardModel>.toOneBacklink(
+            13,
+            object.id!,
+            (RewardModel srcObject) => srcObject.spendProgram,
+          ),
+        );
+        obx_int.InternalToManyAccess.setRelInfo<SpendModel>(
+          object.customers,
+          store,
+          obx_int.RelInfo<CustomerModel>.toManyBacklink(1, object.id!),
+        );
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
 }
 
-/// [RewardModel] entity fields to define ObjectBox queries.
-class RewardModel_ {
-  /// See [RewardModel.id].
-  static final id =
-      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[0]);
-
-  /// See [RewardModel.type].
-  static final type =
-      obx.QueryStringProperty<RewardModel>(_entities[0].properties[1]);
-
-  /// See [RewardModel.discountValue].
-  static final discountValue =
-      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[2]);
-
-  /// See [RewardModel.discountValueType].
-  static final discountValueType =
-      obx.QueryStringProperty<RewardModel>(_entities[0].properties[3]);
-
-  /// See [RewardModel.item].
-  static final item =
-      obx.QueryStringProperty<RewardModel>(_entities[0].properties[4]);
-
-  /// See [RewardModel.description].
-  static final description =
-      obx.QueryStringProperty<RewardModel>(_entities[0].properties[5]);
-
-  /// See [RewardModel.rewardCost].
-  static final rewardCost =
-      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[6]);
-
-  /// See [RewardModel.minimumPurchase].
-  static final minimumPurchase =
-      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[7]);
-
-  /// See [RewardModel.pointsProgram].
-  static final pointsProgram = obx.QueryRelationToOne<RewardModel, PointsModel>(
-      _entities[0].properties[8]);
-
-  /// See [RewardModel.stampProgram].
-  static final stampProgram = obx.QueryRelationToOne<RewardModel, StampModel>(
-      _entities[0].properties[9]);
-
-  /// See [RewardModel.stampNumber].
-  static final stampNumber =
-      obx.QueryIntegerProperty<RewardModel>(_entities[0].properties[10]);
-}
-
 /// [CustomerModel] entity fields to define ObjectBox queries.
 class CustomerModel_ {
   /// See [CustomerModel.id].
-  static final id =
-      obx.QueryIntegerProperty<CustomerModel>(_entities[1].properties[0]);
+  static final id = obx.QueryIntegerProperty<CustomerModel>(
+    _entities[0].properties[0],
+  );
 
   /// See [CustomerModel.name].
-  static final name =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[1]);
+  static final name = obx.QueryStringProperty<CustomerModel>(
+    _entities[0].properties[1],
+  );
 
   /// See [CustomerModel.phone].
-  static final phone =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[2]);
+  static final phone = obx.QueryStringProperty<CustomerModel>(
+    _entities[0].properties[2],
+  );
 
   /// See [CustomerModel.email].
-  static final email =
-      obx.QueryStringProperty<CustomerModel>(_entities[1].properties[3]);
+  static final email = obx.QueryStringProperty<CustomerModel>(
+    _entities[0].properties[3],
+  );
 
-  /// see [CustomerModel.pointsPrograms]
-  static final pointsPrograms =
-      obx.QueryRelationToMany<CustomerModel, PointsModel>(
-          _entities[1].relations[0]);
+  /// see [CustomerModel.spendPrograms]
+  static final spendPrograms =
+      obx.QueryRelationToMany<CustomerModel, SpendModel>(
+        _entities[0].relations[0],
+      );
 
-  /// see [CustomerModel.stampPrograms]
-  static final stampPrograms =
-      obx.QueryRelationToMany<CustomerModel, StampModel>(
-          _entities[1].relations[1]);
+  /// see [CustomerModel.returnPrograms]
+  static final returnPrograms =
+      obx.QueryRelationToMany<CustomerModel, ReturnModel>(
+        _entities[0].relations[1],
+      );
 }
 
-/// [PointsModel] entity fields to define ObjectBox queries.
-class PointsModel_ {
-  /// See [PointsModel.id].
-  static final id =
-      obx.QueryIntegerProperty<PointsModel>(_entities[2].properties[0]);
+/// [ReturnModel] entity fields to define ObjectBox queries.
+class ReturnModel_ {
+  /// See [ReturnModel.id].
+  static final id = obx.QueryIntegerProperty<ReturnModel>(
+    _entities[1].properties[0],
+  );
 
-  /// See [PointsModel.type].
-  static final type =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[1]);
+  /// See [ReturnModel.type].
+  static final type = obx.QueryStringProperty<ReturnModel>(
+    _entities[1].properties[1],
+  );
 
-  /// See [PointsModel.name].
-  static final name =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[2]);
+  /// See [ReturnModel.name].
+  static final name = obx.QueryStringProperty<ReturnModel>(
+    _entities[1].properties[2],
+  );
 
-  /// See [PointsModel.points].
-  static final points =
-      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[3]);
+  /// See [ReturnModel.numberHoles].
+  static final numberHoles = obx.QueryIntegerProperty<ReturnModel>(
+    _entities[1].properties[3],
+  );
 
-  /// See [PointsModel.minimumSpent].
-  static final minimumSpent =
-      obx.QueryDoubleProperty<PointsModel>(_entities[2].properties[4]);
+  /// See [ReturnModel.winningNumbers].
+  static final winningNumbers = obx.QueryIntegerVectorProperty<ReturnModel>(
+    _entities[1].properties[4],
+  );
 
-  /// See [PointsModel.currencyCode].
-  static final currencyCode =
-      obx.QueryStringProperty<PointsModel>(_entities[2].properties[5]);
+  /// See [ReturnModel.lastingNumber].
+  static final lastingNumber = obx.QueryIntegerProperty<ReturnModel>(
+    _entities[1].properties[5],
+  );
 
-  /// see [PointsModel.rewards]
-  static final rewards = obx.QueryBacklinkToMany<RewardModel, PointsModel>(
-      RewardModel_.pointsProgram);
+  /// See [ReturnModel.lastingPeriod].
+  static final lastingPeriod = obx.QueryStringProperty<ReturnModel>(
+    _entities[1].properties[6],
+  );
+
+  /// See [ReturnModel.startingDate].
+  static final startingDate = obx.QueryDateProperty<ReturnModel>(
+    _entities[1].properties[7],
+  );
+
+  /// See [ReturnModel.endDate].
+  static final endDate = obx.QueryDateProperty<ReturnModel>(
+    _entities[1].properties[8],
+  );
+
+  /// See [ReturnModel.createdAt].
+  static final createdAt = obx.QueryDateProperty<ReturnModel>(
+    _entities[1].properties[9],
+  );
+
+  /// See [ReturnModel.updatedAt].
+  static final updatedAt = obx.QueryDateProperty<ReturnModel>(
+    _entities[1].properties[10],
+  );
+
+  /// see [ReturnModel.rewards]
+  static final rewards = obx.QueryBacklinkToMany<RewardModel, ReturnModel>(
+    RewardModel_.returnProgram,
+  );
 }
 
-/// [StampModel] entity fields to define ObjectBox queries.
-class StampModel_ {
-  /// See [StampModel.id].
-  static final id =
-      obx.QueryIntegerProperty<StampModel>(_entities[3].properties[0]);
+/// [RewardModel] entity fields to define ObjectBox queries.
+class RewardModel_ {
+  /// See [RewardModel.id].
+  static final id = obx.QueryIntegerProperty<RewardModel>(
+    _entities[2].properties[0],
+  );
 
-  /// See [StampModel.type].
-  static final type =
-      obx.QueryStringProperty<StampModel>(_entities[3].properties[1]);
+  /// See [RewardModel.type].
+  static final type = obx.QueryStringProperty<RewardModel>(
+    _entities[2].properties[1],
+  );
 
-  /// See [StampModel.name].
-  static final name =
-      obx.QueryStringProperty<StampModel>(_entities[3].properties[2]);
+  /// See [RewardModel.stampNumber].
+  static final stampNumber = obx.QueryIntegerProperty<RewardModel>(
+    _entities[2].properties[2],
+  );
 
-  /// See [StampModel.numberHoles].
-  static final numberHoles =
-      obx.QueryIntegerProperty<StampModel>(_entities[3].properties[3]);
+  /// See [RewardModel.discountValue].
+  static final discountValue = obx.QueryIntegerProperty<RewardModel>(
+    _entities[2].properties[3],
+  );
 
-  /// See [StampModel.winningNumbers].
-  static final winningNumbers =
-      obx.QueryIntegerVectorProperty<StampModel>(_entities[3].properties[4]);
+  /// See [RewardModel.discountValueType].
+  static final discountValueType = obx.QueryStringProperty<RewardModel>(
+    _entities[2].properties[4],
+  );
 
-  /// see [StampModel.rewards]
-  static final rewards = obx.QueryBacklinkToMany<RewardModel, StampModel>(
-      RewardModel_.stampProgram);
+  /// See [RewardModel.item].
+  static final item = obx.QueryStringProperty<RewardModel>(
+    _entities[2].properties[5],
+  );
+
+  /// See [RewardModel.imagePath].
+  static final imagePath = obx.QueryStringProperty<RewardModel>(
+    _entities[2].properties[6],
+  );
+
+  /// See [RewardModel.description].
+  static final description = obx.QueryStringProperty<RewardModel>(
+    _entities[2].properties[7],
+  );
+
+  /// See [RewardModel.rewardCost].
+  static final rewardCost = obx.QueryIntegerProperty<RewardModel>(
+    _entities[2].properties[8],
+  );
+
+  /// See [RewardModel.minimumPurchase].
+  static final minimumPurchase = obx.QueryIntegerProperty<RewardModel>(
+    _entities[2].properties[9],
+  );
+
+  /// See [RewardModel.createdAt].
+  static final createdAt = obx.QueryDateProperty<RewardModel>(
+    _entities[2].properties[10],
+  );
+
+  /// See [RewardModel.updatedAt].
+  static final updatedAt = obx.QueryDateProperty<RewardModel>(
+    _entities[2].properties[11],
+  );
+
+  /// See [RewardModel.spendProgram].
+  static final spendProgram = obx.QueryRelationToOne<RewardModel, SpendModel>(
+    _entities[2].properties[12],
+  );
+
+  /// See [RewardModel.returnProgram].
+  static final returnProgram = obx.QueryRelationToOne<RewardModel, ReturnModel>(
+    _entities[2].properties[13],
+  );
+}
+
+/// [SpendModel] entity fields to define ObjectBox queries.
+class SpendModel_ {
+  /// See [SpendModel.id].
+  static final id = obx.QueryIntegerProperty<SpendModel>(
+    _entities[3].properties[0],
+  );
+
+  /// See [SpendModel.type].
+  static final type = obx.QueryStringProperty<SpendModel>(
+    _entities[3].properties[1],
+  );
+
+  /// See [SpendModel.name].
+  static final name = obx.QueryStringProperty<SpendModel>(
+    _entities[3].properties[2],
+  );
+
+  /// See [SpendModel.points].
+  static final points = obx.QueryDoubleProperty<SpendModel>(
+    _entities[3].properties[3],
+  );
+
+  /// See [SpendModel.minimumSpent].
+  static final minimumSpent = obx.QueryDoubleProperty<SpendModel>(
+    _entities[3].properties[4],
+  );
+
+  /// See [SpendModel.currencyCode].
+  static final currencyCode = obx.QueryStringProperty<SpendModel>(
+    _entities[3].properties[5],
+  );
+
+  /// See [SpendModel.lastingNumber].
+  static final lastingNumber = obx.QueryIntegerProperty<SpendModel>(
+    _entities[3].properties[6],
+  );
+
+  /// See [SpendModel.lastingPeriod].
+  static final lastingPeriod = obx.QueryStringProperty<SpendModel>(
+    _entities[3].properties[7],
+  );
+
+  /// See [SpendModel.startingDate].
+  static final startingDate = obx.QueryDateProperty<SpendModel>(
+    _entities[3].properties[8],
+  );
+
+  /// See [SpendModel.endDate].
+  static final endDate = obx.QueryDateProperty<SpendModel>(
+    _entities[3].properties[9],
+  );
+
+  /// See [SpendModel.createdAt].
+  static final createdAt = obx.QueryDateProperty<SpendModel>(
+    _entities[3].properties[10],
+  );
+
+  /// See [SpendModel.updatedAt].
+  static final updatedAt = obx.QueryDateProperty<SpendModel>(
+    _entities[3].properties[11],
+  );
+
+  /// see [SpendModel.rewards]
+  static final rewards = obx.QueryBacklinkToMany<RewardModel, SpendModel>(
+    RewardModel_.spendProgram,
+  );
 }

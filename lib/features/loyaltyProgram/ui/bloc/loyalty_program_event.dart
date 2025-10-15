@@ -50,13 +50,13 @@ final class NumHolesChanged extends LoyaltyProgramEvent {
   List<Object?> get props => [numHoles, deletedFromHereOn];
 }
 
-final class StampRewardChanged extends LoyaltyProgramEvent {
-  final int stampReward;
+final class SelectedReturnRewardChanged extends LoyaltyProgramEvent {
+  final int selectReturnNumber;
 
-  const StampRewardChanged(this.stampReward);
+  const SelectedReturnRewardChanged(this.selectReturnNumber);
 
   @override
-  List<Object?> get props => [stampReward];
+  List<Object?> get props => [selectReturnNumber];
 }
 
 final class NameChanged extends LoyaltyProgramEvent {
@@ -70,6 +70,19 @@ final class NameChanged extends LoyaltyProgramEvent {
   List<Object?> get props => [name];
 }
 
+final class LastingDateChanged extends LoyaltyProgramEvent {
+  final int lastingNumber;
+  final TimeUnit lastingPeriod;
+
+  const LastingDateChanged({
+    required this.lastingNumber,
+    required this.lastingPeriod,
+  });
+
+  @override
+  List<Object?> get props => [lastingNumber, lastingPeriod];
+}
+
 final class PointsChanged extends LoyaltyProgramEvent {
   final double pointValue;
 
@@ -81,7 +94,9 @@ final class PointsChanged extends LoyaltyProgramEvent {
 final class MinimumSpentChanged extends LoyaltyProgramEvent {
   final double minimumSpent;
 
-  const MinimumSpentChanged(this.minimumSpent,);
+  const MinimumSpentChanged(
+    this.minimumSpent,
+  );
 
   @override
   List<Object?> get props => [minimumSpent];
@@ -90,7 +105,9 @@ final class MinimumSpentChanged extends LoyaltyProgramEvent {
 final class CurrencyChanged extends LoyaltyProgramEvent {
   final String currency;
 
-  const CurrencyChanged(this.currency,);
+  const CurrencyChanged(
+    this.currency,
+  );
 
   @override
   List<Object?> get props => [currency];
@@ -108,8 +125,6 @@ final class AddReward extends LoyaltyProgramEvent {
   @override
   List<Object?> get props => [rewardEntity];
 }
-
-final class ResetForms extends LoyaltyProgramEvent {}
 
 final class DeleteReward extends LoyaltyProgramEvent {
   final RewardEntity reward;

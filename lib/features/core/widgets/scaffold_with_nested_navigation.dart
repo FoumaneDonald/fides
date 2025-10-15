@@ -60,8 +60,8 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
           currentIndex: _calculateSelectedIndex(context),
           onTap: (int index) => _onItemTapped(index, context),
           items: [
-            BottomNavigationBarItem(icon: AppIcon.home(color: selectedIndex == 0 ? selectedColor : unselectedColor), label: 'Home'),
-            BottomNavigationBarItem(icon: AppIcon.program(color: selectedIndex == 1 ? selectedColor : unselectedColor), label: 'Programs'),
+            BottomNavigationBarItem(icon: AppIcon.home(), label: 'Home'),
+            BottomNavigationBarItem(icon: AppIcon.program(), label: 'Programs'),
           ],
         );
       }),

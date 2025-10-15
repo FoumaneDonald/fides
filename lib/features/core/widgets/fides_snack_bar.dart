@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MindLabSnackBar {
+class FidesSnackBar {
   static void error(BuildContext context, String message) {
     _showSnackBar(context, message, backgroundColor: Theme.of(context).colorScheme.error);
   }

@@ -2,9 +2,9 @@ import 'package:beamer/beamer.dart';
 import 'package:fides/domain/entities/loyalty_program_entity.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/loyaltyProgram/ui/page/about_program.dart';
+import '../../features/loyaltyProgram/ui/page/create_program.dart';
 import '../../features/loyaltyProgram/ui/page/program_details.dart';
-import '../../features/loyaltyProgram/ui/page/program_reward.dart';
+import '../../features/loyaltyProgram/ui/page/create_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
 import '../../services/helpers/app_route_enum.dart';
@@ -42,12 +42,12 @@ class ProgramLocation extends BeamLocation<BeamState> {
       BeamPage(
         key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.aboutProgram.name),
         title: AppRoute.aboutProgram.name.toUpperCase(),
-        child: AboutProgram(),
+        child: CreateProgram(),
       ),
       BeamPage(
         key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.aboutProgram.name + AppRoute.programReward.name),
         title: AppRoute.programReward.name.toUpperCase(),
-        child: ProgramReward(),
+        child: CreateReward(),
       ),
     ];
   }

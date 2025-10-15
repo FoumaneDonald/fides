@@ -4,230 +4,281 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:3401710457310357716",
-      "lastPropertyId": "13:6402870079329910719",
-      "name": "RewardModel",
-      "properties": [
-        {
-          "id": "1:7595346860182445469",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:1315264941201472981",
-          "name": "type",
-          "type": 9
-        },
-        {
-          "id": "3:4156855547960980391",
-          "name": "discountValue",
-          "type": 6
-        },
-        {
-          "id": "4:6119365577983705815",
-          "name": "discountValueType",
-          "type": 9
-        },
-        {
-          "id": "5:7333605600765203908",
-          "name": "item",
-          "type": 9
-        },
-        {
-          "id": "6:9193741409764690578",
-          "name": "description",
-          "type": 9
-        },
-        {
-          "id": "7:482995528713180466",
-          "name": "rewardCost",
-          "type": 6
-        },
-        {
-          "id": "8:4538394185443530244",
-          "name": "minimumPurchase",
-          "type": 6
-        },
-        {
-          "id": "11:9111147930762667052",
-          "name": "pointsProgramId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "7:3842039719501598814",
-          "relationTarget": "PointsModel"
-        },
-        {
-          "id": "12:5095615782389340426",
-          "name": "stampProgramId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "8:4043233121981302571",
-          "relationTarget": "StampModel"
-        },
-        {
-          "id": "13:6402870079329910719",
-          "name": "stampNumber",
-          "type": 6
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "3:12435688903466140",
-      "lastPropertyId": "5:8073404252985355084",
+      "id": "1:7015283484083012668",
+      "lastPropertyId": "4:871110795401683576",
       "name": "CustomerModel",
       "properties": [
         {
-          "id": "1:1542532643528651518",
+          "id": "1:7323562755771865711",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "3:3524937022293858320",
+          "id": "2:560575189651736899",
           "name": "name",
+          "indexId": "1:7789491649031326571",
           "type": 9,
-          "flags": 2080,
-          "indexId": "10:2791694562746837295"
+          "flags": 2080
         },
         {
-          "id": "4:10449065858544969",
+          "id": "3:8216373017593947271",
           "name": "phone",
+          "indexId": "2:6654674752017967571",
           "type": 9,
-          "flags": 2080,
-          "indexId": "11:3621269793141425718"
+          "flags": 2080
         },
         {
-          "id": "5:8073404252985355084",
+          "id": "4:871110795401683576",
           "name": "email",
+          "indexId": "3:1031450621937900103",
           "type": 9,
-          "flags": 2080,
-          "indexId": "12:7651279757129464902"
+          "flags": 2080
         }
       ],
       "relations": [
         {
-          "id": "2:7940335822263021417",
-          "name": "pointsPrograms",
-          "targetId": "4:7344921886123381777"
+          "id": "1:2813295639591578593",
+          "name": "spendPrograms",
+          "targetId": "4:6581289349773652606"
         },
         {
-          "id": "3:5371440725444001829",
-          "name": "stampPrograms",
-          "targetId": "5:6685464445707830496"
+          "id": "2:8379675187063647004",
+          "name": "returnPrograms",
+          "targetId": "2:6381600442670235898"
         }
       ]
     },
     {
-      "id": "4:7344921886123381777",
-      "lastPropertyId": "7:8399627070114772951",
-      "name": "PointsModel",
+      "id": "2:6381600442670235898",
+      "lastPropertyId": "11:9193132095175493718",
+      "name": "ReturnModel",
       "properties": [
         {
-          "id": "1:8156887839954770586",
+          "id": "1:7555628221072167428",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "3:1495667634021040905",
+          "id": "2:7167818898595519913",
           "name": "type",
           "type": 9
         },
         {
-          "id": "4:38712837054418215",
+          "id": "3:5391885287981564768",
           "name": "name",
-          "type": 9,
-          "flags": 2080,
-          "indexId": "13:3006479290774145872"
-        },
-        {
-          "id": "5:2297099000378969825",
-          "name": "points",
-          "type": 8
-        },
-        {
-          "id": "6:1840965130373951759",
-          "name": "minimumSpent",
-          "type": 8
-        },
-        {
-          "id": "7:8399627070114772951",
-          "name": "currencyCode",
           "type": 9
+        },
+        {
+          "id": "4:5934419896306581815",
+          "name": "numberHoles",
+          "type": 6
+        },
+        {
+          "id": "5:1440274582251185851",
+          "name": "winningNumbers",
+          "type": 24
+        },
+        {
+          "id": "6:4952478839050913934",
+          "name": "lastingNumber",
+          "type": 6
+        },
+        {
+          "id": "7:1816850983170984713",
+          "name": "lastingPeriod",
+          "type": 9
+        },
+        {
+          "id": "8:2848204522093473624",
+          "name": "startingDate",
+          "type": 10
+        },
+        {
+          "id": "9:3485055448530788744",
+          "name": "endDate",
+          "type": 10
+        },
+        {
+          "id": "10:7527426910035983512",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "11:9193132095175493718",
+          "name": "updatedAt",
+          "type": 10
         }
       ],
       "relations": []
     },
     {
-      "id": "5:6685464445707830496",
-      "lastPropertyId": "6:2898450460488718427",
-      "name": "StampModel",
+      "id": "3:3012900800852066697",
+      "lastPropertyId": "14:1165729295383189103",
+      "name": "RewardModel",
       "properties": [
         {
-          "id": "1:1894107812119558610",
+          "id": "1:5150389418624380097",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "3:1883586170591108454",
+          "id": "2:4064391079261861944",
           "name": "type",
           "type": 9
         },
         {
-          "id": "4:6837325332857488867",
-          "name": "name",
-          "type": 9
-        },
-        {
-          "id": "5:882232257323069456",
-          "name": "numberHoles",
+          "id": "3:2986004899823721230",
+          "name": "stampNumber",
           "type": 6
         },
         {
-          "id": "6:2898450460488718427",
-          "name": "winningNumbers",
-          "type": 24
+          "id": "4:5247338008956317061",
+          "name": "discountValue",
+          "type": 6
+        },
+        {
+          "id": "5:1418412527454630620",
+          "name": "discountValueType",
+          "type": 9
+        },
+        {
+          "id": "6:8949179679844281677",
+          "name": "item",
+          "type": 9
+        },
+        {
+          "id": "7:5238213391604292930",
+          "name": "imagePath",
+          "type": 9
+        },
+        {
+          "id": "8:6192561775398996570",
+          "name": "description",
+          "type": 9
+        },
+        {
+          "id": "9:8765499207399769269",
+          "name": "rewardCost",
+          "type": 6
+        },
+        {
+          "id": "10:6928759165017539537",
+          "name": "minimumPurchase",
+          "type": 6
+        },
+        {
+          "id": "11:2859249684924034469",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "12:2605144509052512069",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "13:1974151542789393545",
+          "name": "spendProgramId",
+          "indexId": "4:2963466069058881996",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "SpendModel"
+        },
+        {
+          "id": "14:1165729295383189103",
+          "name": "returnProgramId",
+          "indexId": "5:7661441503771101191",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "ReturnModel"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:6581289349773652606",
+      "lastPropertyId": "12:1297590559322689021",
+      "name": "SpendModel",
+      "properties": [
+        {
+          "id": "1:4927317179946854576",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7140211232023038728",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "3:3002983200715798307",
+          "name": "name",
+          "indexId": "6:4298365782765950991",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "4:1211679929624497774",
+          "name": "points",
+          "type": 8
+        },
+        {
+          "id": "5:4885474907870954284",
+          "name": "minimumSpent",
+          "type": 8
+        },
+        {
+          "id": "6:4803115434500795169",
+          "name": "currencyCode",
+          "type": 9
+        },
+        {
+          "id": "7:1019168761634338807",
+          "name": "lastingNumber",
+          "type": 6
+        },
+        {
+          "id": "8:2878776337406935823",
+          "name": "lastingPeriod",
+          "type": 9
+        },
+        {
+          "id": "9:1537731386392984746",
+          "name": "startingDate",
+          "type": 10
+        },
+        {
+          "id": "10:5772034534268627829",
+          "name": "endDate",
+          "type": 10
+        },
+        {
+          "id": "11:3388537713656770261",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "12:1297590559322689021",
+          "name": "updatedAt",
+          "type": 10
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "5:6685464445707830496",
-  "lastIndexId": "13:3006479290774145872",
-  "lastRelationId": "3:5371440725444001829",
+  "lastEntityId": "4:6581289349773652606",
+  "lastIndexId": "6:4298365782765950991",
+  "lastRelationId": "2:8379675187063647004",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [
-    1173935753394898722
-  ],
-  "retiredIndexUids": [
-    5939902998660536462,
-    6691712950610642240,
-    8670166263391842496,
-    78064764068026973,
-    5064043649769193035,
-    2627159397715658803
-  ],
-  "retiredPropertyUids": [
-    5774164378543038065,
-    6716148227055326269,
-    1743111344690139695,
-    165063373242491864,
-    544434251751493668,
-    7118891231732692149,
-    3007625745844823324,
-    2241679788063526819,
-    5157720441148261386,
-    7190404437975898656,
-    5038353275190053216,
-    2340145866410014569
-  ],
-  "retiredRelationUids": [
-    8726568091037055140
-  ],
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
   "version": 1
 }

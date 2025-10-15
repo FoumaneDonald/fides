@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
-import 'package:fides/data/models/points_model.dart';
-import 'package:fides/data/models/stamp_model.dart';
+import 'package:fides/data/models/spend_model.dart';
+import 'package:fides/data/models/return_model.dart';
 import 'package:objectbox/objectbox.dart';
 
 import '../../domain/entities/customer_entity.dart';
-import '../../domain/entities/points_entity.dart';
-import '../../domain/entities/stamp_entity.dart';
+import '../../domain/entities/spendEntity/spend_entity.dart';
+import '../../domain/entities/returnEntity/return_entity.dart';
 
 @Entity()
 class CustomerModel {
@@ -18,8 +18,8 @@ class CustomerModel {
   @Unique()
   String? email;
 
-  final pointsPrograms = ToMany<PointsModel>();
-  final stampPrograms = ToMany<StampModel>();
+  final spendPrograms = ToMany<SpendModel>();
+  final returnPrograms = ToMany<ReturnModel>();
 
   CustomerModel({
     required this.id,
@@ -52,10 +52,10 @@ class CustomerModel {
     );
 
     entity.loyaltyPrograms.map((program) {
-      if (program is PointsEntity) {
-        model.pointsPrograms.add(PointsModel.fromEntity(program));
-      } else if (program is StampEntity) {
-        model.stampPrograms.add(StampModel.fromEntity(program));
+      if (program is SpendEntity) {
+        model.spendPrograms.add(SpendModel.fromEntity(program));
+      } else if (program is ReturnEntity) {
+        model.returnPrograms.add(ReturnModel.fromEntity(program));
       }
     });
 

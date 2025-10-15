@@ -1,4 +1,4 @@
-import 'package:fides/features/loyaltyProgram/ui/page/about_program.dart';
+import 'package:fides/features/loyaltyProgram/ui/page/create_program.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +7,7 @@ import '../../domain/entities/loyalty_program_entity.dart';
 import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
 import '../../features/homePage/ui/pages/home.dart';
 import '../../features/loyaltyProgram/ui/page/program_details.dart';
-import '../../features/loyaltyProgram/ui/page/program_reward.dart';
+import '../../features/loyaltyProgram/ui/page/create_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
 import '../../features/subscribeClient/ui/pages/create_customer.dart';
@@ -48,7 +48,7 @@ class Routes {
                   GoRoute(
                     name: AppRoute.aboutProgram.name,
                     path: AppRoute.aboutProgram.path,
-                    builder: (context, state) => AboutProgram(),
+                    builder: (context, state) => CreateProgram(),
                   ),
                 ],
               ),
@@ -64,7 +64,7 @@ class Routes {
       GoRoute(
         name: AppRoute.programReward.name,
         path: AppRoute.programReward.path,
-        builder: (context, state) => ProgramReward(),
+        builder: (context, state) => CreateReward(),
       ),
       GoRoute(
         parentNavigatorKey: _rootNavigatorKey,

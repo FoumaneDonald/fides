@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 
 import '../../../core/widgets/fides_text_input.dart';
 
-class BuildPointsInputs extends StatelessWidget {
-  const BuildPointsInputs({
+class BuildSpendFields extends StatelessWidget {
+  const BuildSpendFields({
     super.key,
     required String currencyCode,
     required FocusNode pointsFocus,

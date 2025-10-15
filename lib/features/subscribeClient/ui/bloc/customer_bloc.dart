@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../../domain/entities/customer_entity.dart';
@@ -9,9 +9,9 @@ import '../../../../domain/repositories/customer_repository.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 
+part 'customer_bloc.mapper.dart';
 part 'customer_event.dart';
 part 'customer_state.dart';
-part 'customer_bloc.freezed.dart';
 
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   final LoyaltyProgramRepository _loyaltyProgramRepository;

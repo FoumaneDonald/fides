@@ -4,71 +4,138 @@ import 'package:hugeicons/hugeicons.dart';
 import '../../../../config/theme/app_theme.dart';
 
 abstract class IconSet {
-  Widget home({IconData? icon, Color? color, double? size});
-  Widget program({IconData? icon, Color? color, double? size});
-  Widget stamp({IconData? icon, Color? color, double? size});
-  Widget points({IconData? icon, Color? color, double? size});
-  Widget menu({IconData? icon, Color? color, double? size});
-  Widget add({IconData? icon, Color? color, double? size});
-  Widget addUser({IconData? icon, Color? color, double? size});
-  Widget arrowLeft({IconData? icon, Color? color, double? size});
-  Widget reward({IconData? icon, Color? color, double? size});
+  Widget home({Color? color, double size = 24});
+  Widget program({Color? color, double size = 24});
+  Widget stamp({Color? color, double size = 24});
+  Widget points({Color? color, double size = 24});
+  Widget menu({Color? color, double size = 24});
+  Widget addCircle({Color? color, double size = 24});
+  Widget add({Color? color, double size = 24});
+  Widget addUser({Color? color, double size = 24});
+  Widget arrowLeft({Color? color, double size = 24});
+  Widget reward({Color? color, double size = 24});
+  Widget star({Color? color, double size = 24});
+  Widget arrowRight({Color? color, double size = 24});
+  Widget questionCircle({Color? color, double size = 24});
+  Widget gift({Color? color, double size = 24});
+  Widget remove({Color? color, double size = 24});
+  Widget calendar({Color? color, double size = 24});
+  Widget trash({Color? color, double size = 24});
+  Widget addImage({Color? color, double size = 24});
+  Widget cancel({Color? color, double size = 24});
 }
 
-class MaterialIconSet extends IconSet {
-  @override
-  Widget home({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.home, size: size,);
-
-  @override
-  Widget program({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.credit_card_rounded, size: size,);
-
-  @override
-  Widget stamp({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.circle_outlined, size: size,);
-
-  @override
-  Widget points({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.token, size: size,);
-
-  @override
-  Widget menu({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.menu, size: size,);
-
-  @override
-  Widget add({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.add_circle, size: size,);
-
-  @override
-  Widget addUser({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.add_reaction_rounded, size: size,);
-
-  @override
-  Widget arrowLeft({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.arrow_back_ios, size: size,);
-
-  @override
-  Widget reward({IconData? icon, Color? color, double? size}) => Icon(icon ?? Icons.card_giftcard, size: size,);
-}
+// class MaterialIconSet extends IconSet {
+//   @override
+//   Widget home({Color? color, double size = 24}) => Icon(Icons.home, size: size);
+//
+//   @override
+//   Widget program({Color? color, double size = 24}) => Icon(Icons.credit_card_rounded, size: size);
+//
+//   @override
+//   Widget stamp({Color? color, double size = 24}) => Icon(Icons.circle_outlined, size: size);
+//
+//   @override
+//   Widget points({Color? color, double size = 24}) => Icon(Icons.token, size: size);
+//
+//   @override
+//   Widget menu({Color? color, double size = 24}) => Icon(Icons.menu, size: size);
+//
+//   @override
+//   Widget add({Color? color, double size = 24}) => Icon(Icons.add, size: size);
+//
+//   @override
+//   Widget addCircle({Color? color, double size = 24}) => Icon(Icons.add_circle_outline_rounded, size: size);
+//
+//   @override
+//   Widget addUser({Color? color, double size = 24}) => Icon(Icons.add_reaction_rounded, size: size);
+//
+//   @override
+//   Widget arrowLeft({Color? color, double size = 24}) => Icon(Icons.arrow_back_ios, size: size);
+//
+//   @override
+//   Widget reward({Color? color, double size = 24}) => Icon(Icons.card_giftcard, size: size);
+//
+//   @override
+//   Widget star({Color? color, double size = 24}) => Icon(Icons.star_outline_outlined, size: size);
+//
+//   @override
+//   Widget arrowRight({Color? color, double size = 24}) => Icon(Icons.arrow_right_alt_rounded, size: size);
+//
+//   @override
+//   Widget questionCircle({Color? color, double size = 24}) => Icon(Icons.help_outline_rounded, size: size);
+//
+//   @override
+//   Widget gift({Color? color, double size = 24}) => Icon(Icons.card_giftcard_rounded, size: size);
+//
+//   @override
+//   Widget remove({Color? color, double size = 24}) => Icon(Icons.remove, size: size);
+//
+//   @override
+//   Widget calendar({Color? color, double size = 24}) => Icon(Icons.calendar_month_rounded, size: size);
+//
+//   @override
+//   Widget trash({Color? color, double size = 24}) => Icon(Icons.delete_outline_rounded, size: size);
+//
+//   @override
+//   Widget addImage({Color? color, double size = 24}) => Icon(Icons.delete_outline_rounded, size: size);
+// }
 
 class HugeIconsSet extends IconSet {
   @override
-  Widget home({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedHome01, color: color!, size: size ?? 24.0,);
+  Widget home({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedHome01, size: size, color: color);
 
   @override
-  Widget program({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedLoyaltyCard, color: color!, size: size ?? 24.0,);
+  Widget program({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedLoyaltyCard, size: size, color: color);
 
   @override
-  Widget stamp({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedStamp01, color: color!, size: size ?? 24.0,);
+  Widget stamp({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedStamp01, size: size, color: color);
 
   @override
-  Widget points({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedTokenCircle, color: color!, size: size ?? 24.0,);
+  Widget points({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedTokenCircle, size: size, color: color);
 
   @override
-  Widget menu({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedMenuTwoLine, color: color!, size: size ?? 24.0,);
+  Widget menu({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedMenuTwoLine, size: size, color: color);
 
   @override
-  Widget add({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedAddCircle, color: color!, size: size ?? 24.0,);
+  Widget add({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedPlusSign, size: size, color: color);
 
   @override
-  Widget addUser({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedUserAdd01, color: color!, size: size ?? 24.0,);
+  Widget addCircle({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedAddCircle, size: size, color: color);
 
   @override
-  Widget arrowLeft({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedArrowLeft02, color: color!, size: size ?? 24.0,);
+  Widget addUser({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedUserAdd01, size: size, color: color);
 
   @override
-  Widget reward({IconData? icon, Color? color, double? size}) => HugeIcon(icon: icon ?? HugeIcons.strokeRoundedGift, color: color!, size: size ?? 24.0,);
+  Widget arrowLeft({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedArrowLeft02, size: size, color: color);
+
+  @override
+  Widget reward({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedGift, size: size, color: color);
+
+  @override
+  Widget star({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedStarCircle, size: size, color: color);
+
+  @override
+  Widget arrowRight({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedArrowRight02, size: size, color: color);
+
+  @override
+  Widget questionCircle({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedHelpCircle, size: size, color: color);
+
+  @override
+  Widget gift({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedGiftCard02, size: size, color: color);
+
+  @override
+  Widget remove({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedRemove01, size: size, color: color);
+
+  @override
+  Widget calendar({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedCalendar01, size: size, color: color);
+
+  @override
+  Widget trash({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedDelete01, size: size, color: color);
+
+  @override
+  Widget addImage({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedImageAdd02, size: size, color: color);
+
+  @override
+  Widget cancel({Color? color, double size = 24}) => HugeIcon(icon: HugeIcons.strokeRoundedCancel01, size: size, color: color);
 }

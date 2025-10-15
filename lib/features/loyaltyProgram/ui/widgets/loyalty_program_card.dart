@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-import '../../../../services/helpers/program_type_enum.dart';
 
 class LoyaltyProgramCardSelection extends StatelessWidget {
   final String _programName;
   final String _programDescription;
-  final String _programImage;
+  final Widget _programIcon;
   final Function()? _onPressed;
 
   const LoyaltyProgramCardSelection({
     super.key,
     required String programName,
     required String programDescription,
-    required String programImage,
+    required Widget programIcon,
     Function()? onPressed,
   })  : _programName = programName,
         _programDescription = programDescription,
-        _programImage = programImage,
+        _programIcon = programIcon,
         _onPressed = onPressed;
 
   @override
@@ -26,67 +23,41 @@ class LoyaltyProgramCardSelection extends StatelessWidget {
       child: InkWell(
         onTap: _onPressed,
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            spacing: 16,
             children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * .14,
-                      height: MediaQuery.of(context).size.height * .06,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset(
-                          _programImage,
-                          semanticsLabel: 'Program icon',
-                          width: 16,
-                          height: 24,
-                          colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.surfaceDim, BlendMode.srcIn),
-                        ),
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                      borderRadius: BorderRadius.all(Radius.circular(99)),
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _programName,
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          _programDescription,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                    child: _programIcon,
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_right_rounded,
+                  ),
+                ],
               ),
-              SizedBox(
-                width: 16,
+              Column(
+                spacing: 4,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _programName,
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    _programDescription,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
               ),
-              Icon(
-                Icons.keyboard_arrow_right_rounded,
-              )
             ],
           ),
         ),

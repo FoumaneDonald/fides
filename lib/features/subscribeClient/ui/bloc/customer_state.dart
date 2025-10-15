@@ -21,17 +21,21 @@ enum ProgramStatus {
   final String message;
 }
 
-@freezed
-abstract class CustomerState with _$CustomerState {
-  const CustomerState._();
+@MappableClass()
+final class CustomerState with CustomerStateMappable {
+  final CustomerStatus? status;
+  final ProgramStatus? programStatus;
+  final String? message;
+  final List<LoyaltyProgramEntity>? listOfPrograms;
+  final CustomerEntity? customerEntity;
 
-  const factory CustomerState({
-    CustomerStatus? status,
-    ProgramStatus? programStatus,
-    String? message,
-    List<LoyaltyProgramEntity>? listOfPrograms,
-    CustomerEntity? customerEntity,
-  }) = _CustomerState;
+  const CustomerState({
+    this.status,
+    this.programStatus,
+    this.message,
+    this.listOfPrograms,
+    this.customerEntity,
+  });
 
   factory CustomerState.initial() => CustomerState(
         status: CustomerStatus.initial,

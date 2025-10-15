@@ -1,3 +1,4 @@
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:flutter/material.dart';
 
 import 'loader.dart';
@@ -7,7 +8,7 @@ class PrimaryButton extends StatelessWidget {
   final bool loading;
   final bool isActive;
   final String text;
-  final IconData? icon;
+  final Widget? icon;
 
   const PrimaryButton({super.key, this.onPressed, required this.text, this.loading = false, this.isActive = false, this.icon});
 
@@ -21,7 +22,7 @@ class PrimaryButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(text),
-                Icon(icon ?? Icons.keyboard_arrow_right_rounded),
+                icon ?? AppIcon.arrowRight(),
               ],
             ),
           );

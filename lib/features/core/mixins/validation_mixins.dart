@@ -59,6 +59,14 @@ mixin ValidationMixins{
     return null;
   }
 
+  String? maxReturns50 ( String? value ){
+    final numValue = int.tryParse(value!);
+    if(numValue! > 50){
+      return 'Not more than 50 returns';
+    }
+    return null;
+  }
+
   String? validateDropdown<T>( T? value ){
     if( value == null){
       return 'Field required';

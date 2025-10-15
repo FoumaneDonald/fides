@@ -1,32 +1,35 @@
-import 'package:equatable/equatable.dart';
-import 'package:fides/domain/entities/points_entity.dart';
-import 'package:fides/domain/entities/stamp_entity.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:fides/domain/entities/spendEntity/spend_entity.dart';
+import 'package:fides/domain/entities/returnEntity/return_entity.dart';
 
 import '../../data/models/customer_model.dart';
 import 'loyalty_program_entity.dart';
 
-part 'customer_entity.freezed.dart';
+part 'customer_entity.mapper.dart';
 
-@freezed
-abstract class CustomerEntity with _$CustomerEntity {
-  const CustomerEntity._();
+@MappableClass()
+class CustomerEntity with CustomerEntityMappable {
+  final int? id;
+  final String name;
+  final String? phone;
+  final String? email;
+  final List<LoyaltyProgramEntity> loyaltyPrograms;
 
-  const factory CustomerEntity({
-    int? id,
-    @Default('') String name,
-    String? phone,
-    String? email,
-    @Default([]) List<LoyaltyProgramEntity> loyaltyPrograms,
-  }) = _CustomerEntity;
+  const CustomerEntity({
+    this.id,
+    required this.name,
+    this.phone,
+    this.email,
+    required this.loyaltyPrograms,
+  });
 
   factory CustomerEntity.empty() => CustomerEntity(name: '', loyaltyPrograms: const []);
 
   /// Convert [CustomerModel] to [CustomerEntity]
   factory CustomerEntity.fromModel(CustomerModel model) {
     final List<LoyaltyProgramEntity> programs = [
-      ...StampEntity.fromModelList(model.stampPrograms),
-      ...PointsEntity.fromModelList(model.pointsPrograms),
+      ...ReturnEntity.fromModelList(model.returnPrograms),
+      ...SpendEntity.fromModelList(model.spendPrograms),
     ];
 
     return CustomerEntity(

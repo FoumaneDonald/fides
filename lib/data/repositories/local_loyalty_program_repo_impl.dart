@@ -1,15 +1,15 @@
 import 'package:result_dart/result_dart.dart';
 
 import '../../domain/entities/loyalty_program_entity.dart';
-import '../../domain/entities/points_entity.dart';
+import '../../domain/entities/spendEntity/spend_entity.dart';
 import '../../domain/entities/reward_entity.dart';
-import '../../domain/entities/stamp_entity.dart';
+import '../../domain/entities/returnEntity/return_entity.dart';
 import '../../domain/repositories/loyalty_program_repository.dart';
 import '../../services/helpers/program_type_enum.dart';
-import '../models/points_model.dart';
+import '../models/spend_model.dart';
 import '../models/reward_model.dart';
 import '../../services/loyalty_program_dao.dart';
-import '../models/stamp_model.dart';
+import '../models/return_model.dart';
 
 class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
   final LoyaltyProgramDao _loyaltyProgramDao;
@@ -22,27 +22,35 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
   Map<ProgramType, List<LoyaltyProgramEntity>> get existingPrograms => _existingPrograms;
 
   @override
-  Future<Result<PointsEntity>> createPointsProgram({required PointsEntity pointsEntity}) async {
-    final pointsModel = PointsModel.fromEntity(pointsEntity);
+  Future<Result<SpendEntity>> createSpendProgram({required SpendEntity spendEntity}) async {
+    try {
+      final pointsModel = SpendModel.fromEntity(spendEntity);
 
-    final result = _loyaltyProgramDao.createPointsProgram(pointsModel);
+      final result = _loyaltyProgramDao.createPointsProgram(pointsModel);
 
-    return result.fold(
-      (program) => Success(PointsEntity.fromModel(program)),
-      (failure) => Failure(failure),
-    );
+      return result.fold(
+        (program) => Success(SpendEntity.fromModel(program)),
+        (failure) => Failure(failure),
+      );
+    } on Exception catch (error) {
+      return Failure(error);
+    }
   }
 
   @override
-  Future<Result<StampEntity>> createStampProgram({required StampEntity stampEntity}) async {
-    final StampModel stampModel = StampModel.fromEntity(stampEntity);
+  Future<Result<ReturnEntity>> createReturnProgram({required ReturnEntity returnEntity}) async {
+    try {
+      final ReturnModel returnModel = ReturnModel.fromEntity(returnEntity);
 
-    final result = _loyaltyProgramDao.createStampProgram(stampModel);
+      final result = _loyaltyProgramDao.createReturnProgram(returnModel);
 
-    return result.fold(
-      (program) => Success(StampEntity.fromModel(program)),
-      (failure) => Failure(failure),
-    );
+      return result.fold(
+        (program) => Success(ReturnEntity.fromModel(program)),
+        (failure) => Failure(failure),
+      );
+    } on Exception catch (error) {
+      return Failure(error);
+    }
   }
 
   @override
@@ -56,10 +64,10 @@ class LocalLoyaltyProgramRepoImpl implements LoyaltyProgramRepository {
               (entry) => MapEntry(
                 entry.key,
                 entry.value.map((model) {
-                  if (model is StampModel) {
-                    return StampEntity.fromModel(model);
-                  } else if (model is PointsModel) {
-                    return PointsEntity.fromModel(model);
+                  if (model is ReturnModel) {
+                    return ReturnEntity.fromModel(model);
+                  } else if (model is SpendModel) {
+                    return SpendEntity.fromModel(model);
                   } else {
                     throw Exception('Unknown model type: ${model.runtimeType}');
                   }

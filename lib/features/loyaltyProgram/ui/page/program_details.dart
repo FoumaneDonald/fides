@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hugeicons/hugeicons.dart';
 
 import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/entities/points_entity.dart';
-import '../../../../domain/entities/stamp_entity.dart';
+import '../../../../domain/entities/spendEntity/spend_entity.dart';
+import '../../../../domain/entities/returnEntity/return_entity.dart';
 import '../../../core/utilities/app_icon.dart';
 
 class ProgramDetails extends StatelessWidget {
@@ -16,7 +13,6 @@ class ProgramDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(program);
     return Scaffold(
       body: SafeArea(
         child: CustomScrollView(
@@ -26,9 +22,7 @@ class ProgramDetails extends StatelessWidget {
               floating: true,
               leading: IconButton(
                 onPressed: () => context.pop(),
-                icon: AppIcon.arrowLeft(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+                icon: AppIcon.arrowLeft(),
               ),
             ),
             SliverToBoxAdapter(
@@ -44,7 +38,7 @@ class ProgramDetails extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      child: AppIcon.stamp(icon: program.type.icon, color: Theme.of(context).colorScheme.onPrimary),
+                      child: AppIcon.stamp(),
                     ),
                     Expanded(
                       child: Text(
@@ -67,24 +61,24 @@ class ProgramDetails extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(program.type.label),
-                    if (program is StampEntity) ...{
+                    if (program is ReturnEntity) ...{
                       Wrap(
                         spacing: 8,
                         children: List.generate(
-                          (program as StampEntity).numberHoles,
+                          (program as ReturnEntity).numberHoles,
                           (index) {
-                            bool isReward = (program as StampEntity).winningNumbers.contains(index + 1);
+                            bool isReward = (program as ReturnEntity).winningNumbers.contains(index + 1);
                             return CircleAvatar(
                               radius: 32,
                               backgroundColor: isReward ? Theme.of(context).colorScheme.primaryFixed : Colors.grey.shade300,
-                              child: isReward ? AppIcon.reward(color: Theme.of(context).colorScheme.primary) : Text('${index + 1}'),
+                              child: isReward ? AppIcon.reward() : Text('${index + 1}'),
                             );
                           },
                         ),
                       ),
-                    } else if (program is PointsEntity) ...{
+                    } else if (program is SpendEntity) ...{
                       Text(
-                        (program as PointsEntity).points.toString(),
+                        (program as SpendEntity).points.toString(),
                         style: TextStyle(
                           fontSize: 40,
                         ),

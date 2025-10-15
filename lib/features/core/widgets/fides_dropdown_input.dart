@@ -36,10 +36,7 @@ class FidesDropdownInput<T> extends StatelessWidget {
       children: [
         Text(
           inputLabel,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 4),
         DropdownButtonFormField<T>(

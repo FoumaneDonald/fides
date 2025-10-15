@@ -1,7 +1,7 @@
 import 'package:result_dart/result_dart.dart';
 
-import '../data/models/points_model.dart';
-import '../data/models/stamp_model.dart';
+import '../data/models/spend_model.dart';
+import '../data/models/return_model.dart';
 import '../objectbox.g.dart';
 import 'helpers/program_type_enum.dart';
 import 'object_box.dart';
@@ -12,9 +12,9 @@ class LoyaltyProgramDao {
 
   LoyaltyProgramDao(this._objectBox);
 
-  Box<PointsModel> get _pointsProgramBox => _objectBox.store.box<PointsModel>();
+  Box<SpendModel> get _spendProgramBox => _objectBox.store.box<SpendModel>();
 
-  Box<StampModel> get _stampProgramBox => _objectBox.store.box<StampModel>();
+  Box<ReturnModel> get _returnProgramBox => _objectBox.store.box<ReturnModel>();
 
   ///TODO: C(done)RUD
 
@@ -76,38 +76,38 @@ class LoyaltyProgramDao {
   }
 
   /// Creates a new points program.
-  Result<PointsModel> createPointsProgram(PointsModel model) {
-    return createProgram<PointsModel>(
+  Result<SpendModel> createPointsProgram(SpendModel model) {
+    return createProgram<SpendModel>(
       programModel: model,
-      putToBox: (program) => _pointsProgramBox.put(program),
+      putToBox: (program) => _spendProgramBox.put(program),
     );
   }
 
-  /// Creates a new stamp program
-  Result<StampModel> createStampProgram(StampModel model) {
-    return createProgram<StampModel>(
+  /// Creates a new return program
+  Result<ReturnModel> createReturnProgram(ReturnModel model) {
+    return createProgram<ReturnModel>(
       programModel: model,
-      putToBox: (program) => _stampProgramBox.put(program),
+      putToBox: (program) => _returnProgramBox.put(program),
     );
   }
 
   Result<Map<ProgramType, List<Object>>> getAllLoyaltyProgram() {
     try {
-      QueryBuilder<StampModel> stampBuilder = _stampProgramBox.query();
-      stampBuilder.backlink(RewardModel_.stampProgram);
+      QueryBuilder<ReturnModel> stampBuilder = _returnProgramBox.query();
+      stampBuilder.backlink(RewardModel_.returnProgram);
 
-      QueryBuilder<PointsModel> pointsBuilder = _pointsProgramBox.query();
-      pointsBuilder.backlink(RewardModel_.pointsProgram);
+      QueryBuilder<SpendModel> pointsBuilder = _spendProgramBox.query();
+      pointsBuilder.backlink(RewardModel_.spendProgram);
 
-      Query<StampModel> queryStamp = stampBuilder.build();
-      Query<PointsModel> queryPoints = pointsBuilder.build();
+      Query<ReturnModel> queryStamp = stampBuilder.build();
+      Query<SpendModel> queryPoints = pointsBuilder.build();
 
-      List<StampModel> stampPrograms = queryStamp.find();
-      List<PointsModel> pointsPrograms = queryPoints.find();
+      List<ReturnModel> returnPrograms = queryStamp.find();
+      List<SpendModel> spendPrograms = queryPoints.find();
 
       return Success({
-        ProgramType.stamp: stampPrograms,
-        ProgramType.points: pointsPrograms,
+        ProgramType.returning: returnPrograms,
+        ProgramType.spend: spendPrograms,
       });
     } catch (error, stackTrace) {
       print('$error, $stackTrace');

@@ -1,35 +1,43 @@
 import 'package:objectbox/objectbox.dart';
 
 import '../../domain/entities/reward_entity.dart';
-import 'points_model.dart';
-import 'stamp_model.dart';
+import 'spend_model.dart';
+import 'return_model.dart';
 
 @Entity()
 class RewardModel {
   @Id()
   int id = 0;
-  String? type;
+  String type;
   int? stampNumber;
   int? discountValue;
   String? discountValueType;
-  String? item;
-  String? description;
+  String item;
+  String imagePath;
+  String description;
   int? rewardCost;
   int? minimumPurchase;
+  @Property(type: PropertyType.date)
+  DateTime? createdAt = DateTime.now();
+  @Property(type: PropertyType.date)
+  DateTime? updatedAt;
 
-  final pointsProgram = ToOne<PointsModel>();
-  final stampProgram = ToOne<StampModel>();
+  final spendProgram = ToOne<SpendModel>();
+  final returnProgram = ToOne<ReturnModel>();
 
   RewardModel({
     required this.id,
-    this.type,
+    required this.type,
     this.stampNumber,
     this.discountValue,
     this.discountValueType,
-    this.item,
-    this.description,
+    required this.item,
+    required this.imagePath,
+    required this.description,
     this.rewardCost,
     this.minimumPurchase,
+    this.createdAt,
+    this.updatedAt,
   });
 
   RewardModel copyWith({
@@ -39,9 +47,12 @@ class RewardModel {
     int? discountValue,
     String? discountValueType,
     String? item,
+    String? imagePath,
     String? description,
     int? rewardCost,
     int? minimumPurchase,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return RewardModel(
       id: id ?? this.id,
@@ -50,9 +61,12 @@ class RewardModel {
       discountValue: discountValue ?? this.discountValue,
       discountValueType: discountValueType ?? this.discountValueType,
       item: item ?? this.item,
+      imagePath: imagePath ?? this.imagePath,
       description: description ?? this.description,
       rewardCost: rewardCost ?? this.rewardCost,
       minimumPurchase: minimumPurchase ?? this.minimumPurchase,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
@@ -65,6 +79,7 @@ class RewardModel {
       discountValue: entity.discountValue,
       discountValueType: entity.discountType?.label,
       item: entity.item,
+      imagePath: entity.imagePath,
       description: entity.description,
       rewardCost: entity.rewardCost,
       minimumPurchase: entity.minimumPurchase,

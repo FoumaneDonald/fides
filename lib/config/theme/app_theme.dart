@@ -7,7 +7,6 @@ import 'input_theme.dart';
 
 final _buttonStyle = WidgetStateProperty.all<TextStyle>(
   const TextStyle(
-    fontFamily: 'Livvic',
     fontSize: 16,
     fontWeight: FontWeight.w600,
     height: 1.3,
@@ -17,7 +16,7 @@ final _buttonStyle = WidgetStateProperty.all<TextStyle>(
 abstract final class AppTheme {
   // The FlexColorScheme defined light mode ThemeData.
   static ThemeData light = FlexThemeData.light(
-    fontFamily: 'Livvic',
+    fontFamily: 'WorkSans',
     // User defined custom colors made with FlexSchemeColor() API.
     colors: const FlexSchemeColor(
       primary: Color(0xFF006A64),
@@ -94,7 +93,7 @@ abstract final class AppTheme {
 
   // The FlexColorScheme defined dark mode ThemeData.
   static ThemeData dark = FlexThemeData.dark(
-    fontFamily: 'Livvic',
+    fontFamily: 'WorkSans',
     // User defined custom colors made with FlexSchemeColor() API.
     colors: const FlexSchemeColor(
       primary: Color(0xFF81D5CD),

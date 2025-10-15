@@ -1,39 +1,38 @@
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../core/mixins/validation_mixins.dart';
 import '../../../core/widgets/fides_text_input.dart';
-import '../../../core/widgets/stamp_number.dart';
+import '../../../core/widgets/return_number.dart';
 
-class BuildStampInputs extends StatelessWidget {
-  const BuildStampInputs({
+class BuildReturnFields extends StatelessWidget with ValidationMixins {
+  const BuildReturnFields({
     super.key,
-    required FocusNode stampNumberFocus,
+    required FocusNode returnNumberFocus,
     required TextEditingController stampNumberController,
     required List holes,
     required List<int> selectedNumbers,
-    required String? Function(String?)? validator,
-    required Function()? remove,
-    required Function()? add,
-    required Function(int) onTap,
-  })  : _stampNumberFocus = stampNumberFocus,
-        _stampNumberController = stampNumberController,
+    Function()? remove,
+    Function()? add,
+    required Function(int) toggleReturnNumber,
+  })  : _returnNumberFocus = returnNumberFocus,
+        _returnNumberController = stampNumberController,
         _holes = holes,
         _selectedNumbers = selectedNumbers,
-        _validator = validator,
         _remove = remove,
         _add = add,
-        _onTap = onTap;
+        _toggleReturnNumber = toggleReturnNumber;
 
-  final FocusNode _stampNumberFocus;
+  final FocusNode _returnNumberFocus;
 
-  final TextEditingController _stampNumberController;
+  final TextEditingController _returnNumberController;
 
   final List _holes;
   final List<int> _selectedNumbers;
-  final String? Function(String?)? _validator;
   final Function()? _remove;
   final Function()? _add;
-  final Function(int) _onTap;
+  final Function(int) _toggleReturnNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +41,9 @@ class BuildStampInputs extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FidesTextInput(
-          focusNode: _stampNumberFocus,
-          controller: _stampNumberController,
-          inputLabel: 'Number of stamps needed*',
+          focusNode: _returnNumberFocus,
+          controller: _returnNumberController,
+          inputLabel: 'Number of Returns*',
           hintText: '0',
           textAlign: TextAlign.center,
           textInputType: TextInputType.number,
@@ -52,14 +51,14 @@ class BuildStampInputs extends StatelessWidget {
           inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
           prefixIcon: IconButton(
             onPressed: _remove,
-            icon: Icon(Icons.remove),
+            icon: AppIcon.remove(),
           ),
           suffixIcon: IconButton(
             onPressed: _add,
-            icon: Icon(Icons.add),
+            icon: AppIcon.add(),
           ),
-          validator: _validator,
-          autoValidateMode: AutovalidateMode.onUnfocus,
+          validator: composeValidators<String>([requiredField, maxReturns50]),
+          autoValidateMode: AutovalidateMode.onUserInteraction,
           onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
         ),
         Column(
@@ -67,7 +66,7 @@ class BuildStampInputs extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Choose stamp numbers that unlock a reward*',
+              'Choose which Return number unlock a reward*',
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -82,10 +81,10 @@ class BuildStampInputs extends StatelessWidget {
                 children: _holes.map(
                   (number) {
                     final bool isSelected = _selectedNumbers.contains(number);
-                    return StampNumber(
+                    return ReturnNumber(
                       isSelected: isSelected,
                       number: number,
-                      onTap: _onTap,
+                      onTap: _toggleReturnNumber,
                     );
                   },
                 ).toList(),

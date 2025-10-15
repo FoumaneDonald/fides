@@ -1,37 +1,73 @@
 part of 'loyalty_program_bloc.dart';
 
-enum Status { initial, loading, error, success, ongoing, loaded }
+@MappableClass()
+sealed class LoyaltyProgramState with LoyaltyProgramStateMappable {
+  const LoyaltyProgramState();
+}
 
+/// Initial state
+@MappableClass()
+class LoyaltyProgramInitial extends LoyaltyProgramState with LoyaltyProgramInitialMappable {
+  const LoyaltyProgramInitial();
+}
+
+/// Loading data (programs, rewards, submission, etc.)
+@MappableClass()
+class LoyaltyProgramLoading extends LoyaltyProgramState with LoyaltyProgramLoadingMappable {
+  const LoyaltyProgramLoading();
+}
+
+/// Programs successfully loaded
+@MappableClass()
+class LoyaltyProgramLoaded extends LoyaltyProgramState with LoyaltyProgramLoadedMappable {
+  final Map<ProgramType, List<LoyaltyProgramEntity>> listOfPrograms;
+  final List<LoyaltyProgramEntity> selectedPrograms;
+  final ProgramType? selectedFilterProgram;
+  final bool allFilter;
+
+  const LoyaltyProgramLoaded({
+    required this.listOfPrograms,
+    required this.selectedPrograms,
+    this.selectedFilterProgram,
+    this.allFilter = true,
+  });
+}
+
+enum Status { idle, loading, error, success }
 enum RewardStatus { initial, loading, error, added }
 
-@freezed
-abstract class LoyaltyProgramState with _$LoyaltyProgramState {
-  const LoyaltyProgramState._();
+/// A program is actively being edited
+@MappableClass()
+class LoyaltyProgramEditing extends LoyaltyProgramState with LoyaltyProgramEditingMappable {
+  final ProgramType programType;
+  final LoyaltyProgramEntity program;
+  final int? selectReturnNumber;
+  final bool loading;
+  final Status status;
+  final RewardStatus rewardStatus;
+  final String? message;
 
-  const factory LoyaltyProgramState({
-    Status? status,
-    RewardStatus? rewardStatus,
-    String? message,
-    ProgramType? selectedProgramType,
-    ProgramType? selectedFilterProgram,
-    bool? allFilter,
-    LoyaltyProgramEntity? loyaltyProgramEntity,
-    Map<ProgramType, List<LoyaltyProgramEntity>>? listOfPrograms,
-    List<LoyaltyProgramEntity>? listOfSelectedProgram,
-    int? stampReward,
-  }) = _LoyaltyProgramState;
+  const LoyaltyProgramEditing({
+    required this.programType,
+    required this.program,
+    this.selectReturnNumber,
+    this.loading = false,
+    this.status = Status.idle,
+    this.rewardStatus = RewardStatus.initial,
+    this.message,
+  });
+}
 
-  factory LoyaltyProgramState.initial() => const LoyaltyProgramState(
-    status: Status.initial,
-    rewardStatus: RewardStatus.initial,
-    message: '',
-    selectedProgramType: null,
-    selectedFilterProgram: null,
-    allFilter: true,
-    loyaltyProgramEntity: null,
-    listOfPrograms: {},
-    listOfSelectedProgram: [],
-    stampReward: null,
-  );
+/// Reward-specific state
+@MappableClass()
+class RewardAdded extends LoyaltyProgramState with RewardAddedMappable {
+  final LoyaltyProgramEntity updatedProgram;
+  const RewardAdded(this.updatedProgram);
+}
 
+/// Error state
+@MappableClass()
+class LoyaltyProgramError extends LoyaltyProgramState with LoyaltyProgramErrorMappable {
+  final String message;
+  const LoyaltyProgramError(this.message);
 }

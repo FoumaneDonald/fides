@@ -11,6 +11,7 @@ class RewardEntity extends Equatable {
   final int? discountValue;
   final DiscountType? discountType;
   final String item;
+  final String imagePath;
   final String description;
   final int? rewardCost;
   final int? minimumPurchase;
@@ -22,12 +23,13 @@ class RewardEntity extends Equatable {
     this.discountValue,
     this.discountType,
     required this.item,
+    required this.imagePath,
     required this.description,
     this.rewardCost,
     this.minimumPurchase,
   });
 
-  factory RewardEntity.empty() => RewardEntity(type: RewardType.unknown, item: '', description: '');
+  // factory RewardEntity.empty() => RewardEntity(type: RewardType.unknown, item: '', description: '');
 
   RewardEntity copyWith({
     int? id,
@@ -36,6 +38,7 @@ class RewardEntity extends Equatable {
     int? discountValue,
     DiscountType? discountType,
     String? item,
+    String? imagePath,
     String? description,
     int? rewardCost,
     int? minimumPurchase,
@@ -47,6 +50,7 @@ class RewardEntity extends Equatable {
       discountValue: discountValue ?? this.discountValue,
       discountType: discountType ?? this.discountType,
       item: item ?? this.item,
+      imagePath: imagePath ?? this.imagePath,
       description: description ?? this.description,
       rewardCost: rewardCost ?? this.rewardCost,
       minimumPurchase: minimumPurchase ?? this.minimumPurchase,
@@ -61,8 +65,9 @@ class RewardEntity extends Equatable {
       stampNumber: model.stampNumber,
       discountValue: model.discountValue,
       discountType: DiscountType.from(model.discountValueType),
-      item: model.item!,
-      description: model.description!,
+      item: model.item,
+      imagePath: model.imagePath,
+      description: model.description,
       rewardCost: model.rewardCost,
       minimumPurchase: model.minimumPurchase,
     );
@@ -73,5 +78,5 @@ class RewardEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, type, stampNumber, discountValue, discountType, item, description, rewardCost, minimumPurchase];
+  List<Object?> get props => [id, type, stampNumber, discountValue, discountType, item, imagePath, description, rewardCost, minimumPurchase];
 }

@@ -1,4 +1,5 @@
 import 'package:fides/features/core/mixins/validation_mixins.dart';
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:fides/features/core/utilities/dismiss_keyboard.dart';
 import 'package:fides/features/core/widgets/fides_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -54,11 +55,11 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
       child: BlocConsumer<CustomerBloc, CustomerState>(
         listener: (context, state) {
           if (state.status == CustomerStatus.success) {
-            MindLabSnackBar.success(context, state.message!);
+            FidesSnackBar.success(context, state.message!);
             context.read<HomeBloc>().add(LatestCustomer());
             context.pop();
           } else if (state.status == CustomerStatus.error) {
-            MindLabSnackBar.error(context, state.message!);
+            FidesSnackBar.error(context, state.message!);
           }
         },
         builder: (context, state) {
@@ -182,8 +183,8 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
               padding: EdgeInsets.all(16.0),
               child: PrimaryButton(
                 text: 'Add Customer',
-                icon: Icons.add_rounded,
-                isActive: _nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms?.isNotEmpty ?? false),
+                icon: AppIcon.add(),
+                isActive: _nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms.isNotEmpty ?? false),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
@@ -191,7 +192,7 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                       name: _nameController.text.trim(),
                       phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
                       email: _emailController.text.trim(),
-                      loyaltyPrograms: state.customerEntity!.loyaltyPrograms!,
+                      loyaltyPrograms: state.customerEntity!.loyaltyPrograms,
                     );
 
                     context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
@@ -247,20 +248,21 @@ class SelectableProgramCard extends StatelessWidget {
                           ),
                           child: FractionallySizedBox(
                             widthFactor: 0.5,
-                            child: SvgPicture.asset(
-                              program.type!.iconPath,
-                              semanticsLabel: 'Program icon',
-                              // width: 24,
-                              // height: 24,
-                              colorFilter: ColorFilter.srgbToLinearGamma(),
-                            ),
+                            child: Placeholder(), ///todo: setup correct icon. I forgot what this file is used for
+                            // SvgPicture.asset(
+                            //   program.type.iconPath,
+                            //   semanticsLabel: 'Program icon',
+                            //   // width: 24,
+                            //   // height: 24,
+                            //   colorFilter: ColorFilter.srgbToLinearGamma(),
+                            // ),
                           ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              program.type!.label.toLowerCase(),
+                              program.type.label.toLowerCase(),
                               style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 14,

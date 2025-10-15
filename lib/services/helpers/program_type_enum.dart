@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 enum ProgramType {
-  unknown('Unknown','Unknown', 'Unrecognized program type.', 'assets/icons/interrogation.svg', HugeIcons.strokeRoundedQuestion),
-  stamp('Stamp','Stamp Program', 'A simple program where customers earn a digital stamp for each visit - perfect for rewarding repeat purchases.', 'assets/icons/stamp.svg', HugeIcons.strokeRoundedStamp01),
-  points('Points','Points Program', 'Customers earn points based on how much they spend - great for encouraging larger purchases and repeat visits.', 'assets/icons/token.svg', HugeIcons.strokeRoundedTokenCircle);
+  unknown('Unknown','Unknown', 'Unrecognized program type.', HugeIcons.strokeRoundedHelpCircle),
+  returning('Return','Return Program', 'Reward customers for their regular visit. Each time they come back, they move closer to unlocking a special reward. Perfect for building loyalty through repeat purchases.', HugeIcons.strokeRoundedStamp01),
+  spend('Spend','Spend Program', 'Reward customers for the value they bring. The more they spend, the more points they earn. Ideal for encouraging bigger purchases and lasting connections.', HugeIcons.strokeRoundedTokenCircle);
 
   final String label;
   final String title;
   final String description;
-  final String iconPath;
-  final IconData icon;
+  final List<List<dynamic>> icon;
 
-  const ProgramType(this.label, this.title, this.description, this.iconPath, this.icon);
+  const ProgramType(this.label, this.title, this.description, this.icon);
 
   static ProgramType from(String? value) {
     return ProgramType.values.firstWhere(

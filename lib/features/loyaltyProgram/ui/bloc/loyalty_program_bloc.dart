@@ -1,221 +1,284 @@
 import 'package:bloc/bloc.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:equatable/equatable.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:fides/core/enums/time_units.dart';
 
-import '../../../../domain/entities/reward_entity.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/entities/points_entity.dart';
-import '../../../../domain/entities/stamp_entity.dart';
+import '../../../../domain/entities/returnEntity/return_entity.dart';
+import '../../../../domain/entities/reward_entity.dart';
+import '../../../../domain/entities/spendEntity/spend_entity.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 
+part 'loyalty_program_bloc.mapper.dart';
 part 'loyalty_program_event.dart';
-
 part 'loyalty_program_state.dart';
-
-part 'loyalty_program_bloc.freezed.dart';
 
 class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> {
   final LoyaltyProgramRepository loyaltyProgramRepository;
 
-  LoyaltyProgramBloc({required this.loyaltyProgramRepository}) : super(LoyaltyProgramState.initial()) {
+  LoyaltyProgramBloc({required this.loyaltyProgramRepository}) : super(const LoyaltyProgramInitial()) {
     on<LoadLoyaltyPrograms>(_loadPrograms);
     on<AllPrograms>(_onAllPrograms);
     on<FilterProgram>(_onFilterProgram);
     on<SelectedLoyaltyProgram>(_onSelectedLoyaltyProgram);
     on<NumHolesChanged>(_onNumHolesChanged);
     on<WinningStampChanged>(_onWinningStampChanged);
-    on<StampRewardChanged>(_onStampRewardChanged);
+    on<SelectedReturnRewardChanged>(_onSelectedReturnRewardChanged);
     on<NameChanged>(_onNameChanged);
+    on<LastingDateChanged>(_onLastingDateChanged);
     on<PointsChanged>(_onPointsChanged);
     on<MinimumSpentChanged>(_onMinimumSpentChanged);
     on<CurrencyChanged>(_onCurrencyChanged);
     on<DeleteReward>(_onDeleteReward);
     on<AddReward>(_onAddReward);
     on<SubmitLoyaltyProgram>(_onSubmitLoyaltyProgram);
-    on<ResetForms>(_onResetBloc);
   }
 
-  _loadPrograms(LoadLoyaltyPrograms event, Emitter<LoyaltyProgramState> emit) async {
-    emit(state.copyWith(status: Status.loading));
+  Future<void> _loadPrograms(LoadLoyaltyPrograms event, Emitter<LoyaltyProgramState> emit) async {
+    emit(const LoyaltyProgramLoading());
     final response = await loyaltyProgramRepository.getLoyaltyProgram();
     response.fold(
       (loyaltyPrograms) {
+        // Take all programs from the map and put them into one single list.
         final List<LoyaltyProgramEntity> allPrograms = loyaltyPrograms.values.expand((list) => list).toList();
-        emit(state.copyWith(status: Status.loaded, message: 'Program loaded', listOfPrograms: loyaltyPrograms, listOfSelectedProgram: allPrograms));
+        emit(LoyaltyProgramLoaded(listOfPrograms: loyaltyPrograms, selectedPrograms: allPrograms, allFilter: true));
         // add(AllPrograms());
       },
-      (failure) => emit(state.copyWith(status: Status.error, message: failure.toString())),
+      (failure) => emit(LoyaltyProgramError(failure.toString())),
     );
   }
 
-  _onAllPrograms(AllPrograms event, Emitter<LoyaltyProgramState> emit) {
-    final List<LoyaltyProgramEntity> allPrograms = state.listOfPrograms!.values.expand((list) => list).toList();
-    emit(state.copyWith(status: Status.loaded, listOfSelectedProgram: allPrograms, allFilter: true, selectedFilterProgram: ProgramType.unknown));
+  // Filter event: display all programs
+  void _onAllPrograms(AllPrograms event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramLoaded) {
+      final loaded = state as LoyaltyProgramLoaded;
+      final allPrograms = loaded.listOfPrograms.values.expand((list) => list).toList();
+      emit(LoyaltyProgramLoaded(listOfPrograms: loaded.listOfPrograms, selectedPrograms: allPrograms, allFilter: true, selectedFilterProgram: ProgramType.unknown));
+    }
   }
 
-  _onFilterProgram(FilterProgram event, Emitter<LoyaltyProgramState> emit) {
-    final List<LoyaltyProgramEntity> filteredProgram = state.listOfPrograms![event.program]!;
-    emit(state.copyWith(status: Status.loaded, listOfSelectedProgram: filteredProgram, allFilter: false, selectedFilterProgram: event.program));
+  void _onFilterProgram(FilterProgram event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramLoaded) {
+      final loaded = state as LoyaltyProgramLoaded;
+      final filteredPrograms = loaded.listOfPrograms[event.program] ?? [];
+      emit(LoyaltyProgramLoaded(listOfPrograms: loaded.listOfPrograms, selectedPrograms: filteredPrograms, allFilter: false, selectedFilterProgram: event.program));
+    }
   }
 
-  _onSelectedLoyaltyProgram(SelectedLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
+  Future<void> _onSelectedLoyaltyProgram(SelectedLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
     switch (event.programType) {
-      case ProgramType.stamp:
-        emit(state.copyWith(
-            status: Status.ongoing, selectedProgramType: event.programType, loyaltyProgramEntity: StampEntity(type: event.programType, numberHoles: 5, winningNumbers: [3, 5], rewards: [])));
+      case ProgramType.returning:
+        emit(LoyaltyProgramEditing(
+          programType: event.programType,
+          program: ReturnEntity(name: '', type: event.programType, numberHoles: 5, winningNumbers: [3, 5], rewards: [], lastingNumber: 1, lastingPeriod: TimeUnit.months),
+        ));
         break;
-      case ProgramType.points:
-        emit(state.copyWith(status: Status.ongoing, selectedProgramType: event.programType, loyaltyProgramEntity: PointsEntity(type: event.programType, currencyCode: 'XAF', rewards: [])));
+      case ProgramType.spend:
+        emit(LoyaltyProgramEditing(
+          programType: event.programType,
+          program: SpendEntity(name: '', type: event.programType, currencyCode: 'XAF', rewards: [], lastingNumber: 1, lastingPeriod: TimeUnit.months),
+        ));
         break;
       case ProgramType.unknown:
-        emit(state.copyWith(status: Status.error, message: 'Wrong program'));
+        emit(const LoyaltyProgramError('Wrong program'));
         break;
     }
   }
 
-  _onNameChanged(NameChanged event, Emitter<LoyaltyProgramState> emit) async {
-    emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: state.loyaltyProgramEntity!.copyWith(name: event.name)));
+  Future<void> _onNameChanged(NameChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
+
+      LoyaltyProgramEntity currentProgram = editing.program;
+
+      emit(editing.copyWith(program: currentProgram.cloneWith(name: event.name)));
+    }
   }
 
-  _onNumHolesChanged(NumHolesChanged event, Emitter<LoyaltyProgramState> emit) {
-    if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
-      final StampEntity stampEntity = state.loyaltyProgramEntity as StampEntity;
-      int? selectedStampReward = state.stampReward;
+  Future<void> _onLastingDateChanged(LastingDateChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-      // Get the current winning numbers
-      final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
+      LoyaltyProgramEntity currentProgram = editing.program;
 
-      // Removed a number from winning number list when user reduced the number of holes and the number was in the winning number list
-      if (event.deletedFromHereOn != null) {
-        winningNumbers.removeWhere((number) => number >= event.deletedFromHereOn!);
+      emit(editing.copyWith(program: currentProgram.cloneWith(lastingNumber: event.lastingNumber, lastingPeriod: event.lastingPeriod)));
+    }
+  }
 
-        final rewardsToDelete = stampEntity.rewards.where((reward) => reward.stampNumber != null && reward.stampNumber! >= event.deletedFromHereOn!).toList();
+  void _onNumHolesChanged(NumHolesChanged event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-        for (final reward in rewardsToDelete) {
-          add(DeleteReward(reward));
+      if (editing.programType == ProgramType.returning && editing.program is ReturnEntity) {
+        final ReturnEntity stampEntity = editing.program as ReturnEntity;
+        int? selectedStampReward = editing.selectReturnNumber;
+
+        // Get the current winning numbers
+        final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
+
+        // Removed a number from winning number list when user reduced the number of holes and the number was in the winning number list
+        if (event.deletedFromHereOn != null) {
+          winningNumbers.removeWhere((number) => number >= event.deletedFromHereOn!);
+
+          final rewardsToDelete = stampEntity.rewards.where((reward) => reward.stampNumber != null && reward.stampNumber! >= event.deletedFromHereOn!).toList();
+
+          for (final reward in rewardsToDelete) {
+            add(DeleteReward(reward));
+          }
+
+          // Change the selected winning stamp chip to the first one in the list if there is
+          selectedStampReward = winningNumbers.contains(editing.selectReturnNumber) ? editing.selectReturnNumber : winningNumbers.firstOrNull;
         }
 
-        // Change the selected winning stamp chip to the first one in the list if there is
-        selectedStampReward = winningNumbers.contains(state.stampReward) ? state.stampReward : winningNumbers.firstOrNull;
-      }
-
-      final updatedStampProgram = stampEntity.copyWith(numberHoles: event.numHoles, winningNumbers: winningNumbers);
-      emit(state.copyWith(status: Status.ongoing, message: 'Stamp changed', loyaltyProgramEntity: updatedStampProgram, stampReward: selectedStampReward));
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
-    }
-  }
-
-  _onWinningStampChanged(WinningStampChanged event, Emitter<LoyaltyProgramState> emit) async {
-    if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
-      final StampEntity stampEntity = state.loyaltyProgramEntity as StampEntity;
-      int? selectedStampReward = state.stampReward;
-
-      // get the current winning numbers
-      final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
-
-      // Add a new number or remove already present one
-      if (winningNumbers.contains(event.winningNumber)) {
-        winningNumbers.remove(event.winningNumber);
-
-        // Delete associated reward to the winning number
-        final RewardEntity rewardToDelete = stampEntity.rewards.firstWhere((reward) => reward.stampNumber == event.winningNumber, orElse: () => RewardEntity.empty());
-        add(DeleteReward(rewardToDelete));
-
-        // Change the selected winning stamp chip to the first one in the list if there is
-        selectedStampReward = state.stampReward == event.winningNumber ? winningNumbers.firstOrNull : state.stampReward;
+        final updatedStampProgram = stampEntity.copyWith(numberHoles: event.numHoles, winningNumbers: winningNumbers);
+        emit(editing.copyWith(program: updatedStampProgram, selectReturnNumber: selectedStampReward));
       } else {
-        winningNumbers.add(event.winningNumber);
+        emit(const LoyaltyProgramError('Wrong program'));
       }
-
-      final updatedStampProgram = stampEntity.copyWith(winningNumbers: winningNumbers);
-      emit(state.copyWith(status: Status.ongoing, message: 'Winning number changed', loyaltyProgramEntity: updatedStampProgram, stampReward: selectedStampReward));
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
     }
   }
 
-  _onStampRewardChanged(StampRewardChanged event, Emitter<LoyaltyProgramState> emit) {
-    emit(state.copyWith(
-      status: Status.ongoing,
-      stampReward: event.stampReward,
-    ));
-  }
+  Future<void> _onWinningStampChanged(WinningStampChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-  _onPointsChanged(PointsChanged event, Emitter<LoyaltyProgramState> emit) async {
-    if (state.selectedProgramType == ProgramType.points && state.loyaltyProgramEntity is PointsEntity) {
-      final PointsEntity pointsProgram = state.loyaltyProgramEntity as PointsEntity;
+      if (editing.programType == ProgramType.returning && editing.program is ReturnEntity) {
+        final ReturnEntity stampEntity = editing.program as ReturnEntity;
+        int? selectedStampReward = editing.selectReturnNumber;
 
-      final updatedPointsProgram = pointsProgram.copyWith(points: event.pointValue);
+        // get the current winning numbers
+        final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
 
-      emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedPointsProgram));
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
+        // Add a new number or remove already present one
+        if (winningNumbers.contains(event.winningNumber)) {
+          winningNumbers.remove(event.winningNumber);
+
+          // Delete associated reward to the winning number
+          final RewardEntity rewardToDelete = stampEntity.rewards.firstWhere(
+            (reward) => reward.stampNumber == event.winningNumber
+          );
+          add(DeleteReward(rewardToDelete));
+
+          // Change the selected winning stamp chip to the first one in the list if there is
+          selectedStampReward = editing.selectReturnNumber == event.winningNumber ? winningNumbers.firstOrNull : editing.selectReturnNumber;
+        } else {
+          winningNumbers.add(event.winningNumber);
+        }
+
+        final updatedStampProgram = stampEntity.copyWith(winningNumbers: winningNumbers);
+        emit(editing.copyWith(program: updatedStampProgram, selectReturnNumber: selectedStampReward));
+      } else {
+        emit(const LoyaltyProgramError('Wrong program'));
+      }
     }
   }
 
-  _onMinimumSpentChanged(MinimumSpentChanged event, Emitter<LoyaltyProgramState> emit) async {
-    if (state.selectedProgramType == ProgramType.points && state.loyaltyProgramEntity is PointsEntity) {
-      final PointsEntity pointsProgram = state.loyaltyProgramEntity as PointsEntity;
+  void _onSelectedReturnRewardChanged(SelectedReturnRewardChanged event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-      final updatedPointsProgram = pointsProgram.copyWith(minimumSpent: event.minimumSpent);
-
-      emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedPointsProgram));
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
+      emit(editing.copyWith(selectReturnNumber: event.selectReturnNumber));
     }
   }
 
-  _onCurrencyChanged(CurrencyChanged event, Emitter<LoyaltyProgramState> emit) async {
-    if (state.selectedProgramType == ProgramType.points && state.loyaltyProgramEntity is PointsEntity) {
-      final PointsEntity pointsProgram = state.loyaltyProgramEntity as PointsEntity;
+  Future<void> _onPointsChanged(PointsChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-      final updatedPointsProgram = pointsProgram.copyWith(currencyCode: event.currency);
+      if (editing.programType == ProgramType.spend && editing.program is SpendEntity) {
+        final SpendEntity pointsProgram = editing.program as SpendEntity;
 
-      emit(state.copyWith(status: Status.ongoing, loyaltyProgramEntity: updatedPointsProgram));
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
+        final updatedPointsProgram = pointsProgram.copyWith(points: event.pointValue);
+
+        emit(editing.copyWith(program: updatedPointsProgram));
+      } else {
+        emit(const LoyaltyProgramError('Wrong program'));
+      }
     }
   }
 
-  _onAddReward(AddReward event, Emitter<LoyaltyProgramState> emit) {
-    emit(state.copyWith(rewardStatus: RewardStatus.loading));
-    final List<RewardEntity> updateRewardList = List.from(state.loyaltyProgramEntity!.rewards);
-    updateRewardList.add(event.rewardEntity);
-    emit(state.copyWith(rewardStatus: RewardStatus.added, loyaltyProgramEntity: state.loyaltyProgramEntity!.copyWith(rewards: updateRewardList)));
-  }
+  Future<void> _onMinimumSpentChanged(MinimumSpentChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-  _onDeleteReward(DeleteReward event, Emitter<LoyaltyProgramState> emit) {
-    final List<RewardEntity> rewardList = List.from(state.loyaltyProgramEntity!.rewards);
+      if (editing.programType == ProgramType.spend && editing.program is SpendEntity) {
+        final SpendEntity pointsProgram = editing.program as SpendEntity;
 
-    if (rewardList.contains(event.reward)) {
-      rewardList.remove(event.reward);
-      emit(state.copyWith(loyaltyProgramEntity: state.loyaltyProgramEntity!.copyWith(rewards: rewardList)));
+        final updatedPointsProgram = pointsProgram.copyWith(minimumSpent: event.minimumSpent);
+
+        emit(editing.copyWith(program: updatedPointsProgram));
+      } else {
+        emit(const LoyaltyProgramError('Wrong program'));
+      }
     }
   }
 
-  _onSubmitLoyaltyProgram(SubmitLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
-    emit(state.copyWith(status: Status.loading));
+  Future<void> _onCurrencyChanged(CurrencyChanged event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
 
-    if (state.selectedProgramType == ProgramType.stamp && state.loyaltyProgramEntity is StampEntity) {
-      final response = await loyaltyProgramRepository.createStampProgram(stampEntity: state.loyaltyProgramEntity! as StampEntity);
-      response.fold(
-        (loyaltyProgram) => emit(state.copyWith(status: Status.success)),
-        (failure) => emit(state.copyWith(status: Status.error, message: failure.toString())),
-      );
-    } else if (state.selectedProgramType == ProgramType.points && state.loyaltyProgramEntity is PointsEntity) {
-      final response = await loyaltyProgramRepository.createPointsProgram(pointsEntity: state.loyaltyProgramEntity! as PointsEntity);
-      response.fold(
-        (loyaltyProgram) => emit(state.copyWith(status: Status.success)),
-        (failure) => emit(state.copyWith(status: Status.error, message: failure.toString())),
-      );
-    } else {
-      emit(state.copyWith(status: Status.error, message: 'Wrong program'));
+      if (editing.programType == ProgramType.spend && editing.program is SpendEntity) {
+        final SpendEntity pointsProgram = editing.program as SpendEntity;
+
+        final updatedPointsProgram = pointsProgram.copyWith(currencyCode: event.currency);
+
+        emit(editing.copyWith(program: updatedPointsProgram));
+      } else {
+        emit(const LoyaltyProgramError('Wrong program'));
+      }
     }
   }
 
-  _onResetBloc(ResetForms event, Emitter<LoyaltyProgramState> emit) {
-    emit(LoyaltyProgramState.initial());
+  void _onAddReward(AddReward event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
+
+      emit(editing.copyWith(rewardStatus: RewardStatus.loading));
+
+      LoyaltyProgramEntity currentProgram = editing.program;
+
+      final List<RewardEntity> currentRewards = List.from(currentProgram.rewards);
+      // add the new reward to the current list of rewards
+      currentRewards.add(event.rewardEntity);
+
+      emit(editing.copyWith(rewardStatus: RewardStatus.added, program: currentProgram.cloneWith(rewards: currentRewards)));
+    }
+  }
+
+  void _onDeleteReward(DeleteReward event, Emitter<LoyaltyProgramState> emit) {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
+      final List<RewardEntity> rewardList = List.from(editing.program.rewards);
+
+      if (rewardList.contains(event.reward)) {
+        rewardList.remove(event.reward);
+        emit(editing.copyWith(program: editing.program.cloneWith(rewards: rewardList)));
+      }
+    }
+  }
+
+  Future<void> _onSubmitLoyaltyProgram(SubmitLoyaltyProgram event, Emitter<LoyaltyProgramState> emit) async {
+    if (state is LoyaltyProgramEditing) {
+      final editing = state as LoyaltyProgramEditing;
+
+      emit(editing.copyWith(status: Status.loading));
+
+      if (editing.programType == ProgramType.returning && editing.program is ReturnEntity) {
+        final response = await loyaltyProgramRepository.createReturnProgram(returnEntity: editing.program as ReturnEntity);
+        response.fold(
+          (loyaltyProgram) => emit(editing.copyWith(status: Status.success)),
+          (failure) => emit(LoyaltyProgramError(failure.toString())),
+        );
+      } else if (editing.programType == ProgramType.spend && editing.program is SpendEntity) {
+        final response = await loyaltyProgramRepository.createSpendProgram(spendEntity: editing.program as SpendEntity);
+        response.fold(
+          (loyaltyProgram) => emit(editing.copyWith(status: Status.success)),
+          (failure) => emit(LoyaltyProgramError(failure.toString())),
+        );
+      } else {
+        emit(editing.copyWith(status: Status.error, message: 'Wrong program'));
+      }
+    }
   }
 }

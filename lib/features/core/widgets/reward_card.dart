@@ -1,3 +1,4 @@
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:flutter/material.dart';
 
 import '../../../domain/entities/reward_entity.dart';
@@ -15,22 +16,10 @@ class RewardCard extends StatelessWidget {
     return Card(
       elevation: 0,
       child: ListTile(
-        leading: Container(
-          padding: EdgeInsets.all(8.0),
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-          child: Icon(
-            Icons.circle,
-            color: Colors.black38,
-            size: 24,
-          ),
-        ),
+        leading: AppIcon.gift(),
         trailing: IconButton(
           onPressed: onDelete,
-          icon: Icon(
-            Icons.delete_outline_rounded,
-            size: 24,
-            color: Colors.redAccent,
-          ),
+          icon: AppIcon.trash(color: Theme.of(context).colorScheme.error),
         ),
         title: Text(reward.type.label),
         subtitle: Column(
@@ -52,7 +41,7 @@ class RewardCard extends StatelessWidget {
                       Text(reward.discountType!.label),
                     ],
                   ),
-                if(programType == ProgramType.points)
+                if(programType == ProgramType.spend)
                   Text(reward.rewardCost?.toString() ?? ''),
               ],
             ),

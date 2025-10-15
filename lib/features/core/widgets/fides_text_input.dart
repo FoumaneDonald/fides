@@ -10,6 +10,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final String inputLabel;
   final String? hintText;
   final bool? enable;
+  final bool readOnly;
   final TextAlign? textAlign;
   final String? suffixText;
   final Widget? prefixIcon;
@@ -17,10 +18,10 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final Widget? suffix;
   final Widget? prefix;
   final Widget? helper;
-  final int? maxLine;
+  final int? maxLines;
   final TextInputType? textInputType;
-  final AutovalidateMode? autoValidateMode;
-  final TextCapitalization? textCapitalization;
+  final AutovalidateMode autoValidateMode;
+  final TextCapitalization textCapitalization;
   final List<TextInputFormatter>? inputFormatter;
   final Function(String? value)? onSaved;
   final Function(PointerDownEvent)? onTapOutside;
@@ -36,6 +37,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     required this.inputLabel,
     this.hintText,
     this.enable,
+    this.readOnly = false,
     this.textAlign,
     this.suffixText,
     this.prefixIcon,
@@ -43,10 +45,10 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.suffix,
     this.prefix,
     this.helper,
-    this.maxLine,
+    this.maxLines,
     this.textInputType,
-    this.autoValidateMode,
-    this.textCapitalization,
+    this.autoValidateMode = AutovalidateMode.onUnfocus,
+    this.textCapitalization = TextCapitalization.sentences,
     this.inputFormatter,
     this.onSaved,
     this.onTapOutside,
@@ -63,15 +65,14 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
       children: [
         Text(
           inputLabel,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(context).textTheme.labelLarge,
         ),
         TextFormField(
           focusNode: focusNode,
           textInputAction: textInputAction,
           controller: controller,
+          readOnly: readOnly,
+          maxLines: maxLines,
           decoration: InputDecoration(
             prefix: prefix,
             prefixIcon: prefixIcon,
@@ -85,8 +86,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
           keyboardType: textInputType,
           textAlign: textAlign ?? TextAlign.start,
           autovalidateMode: autoValidateMode,
-          maxLines: maxLine,
-          textCapitalization: textCapitalization ?? TextCapitalization.sentences,
+          textCapitalization: textCapitalization,
           inputFormatters: inputFormatter,
           validator: validator,
           onSaved: onSaved,

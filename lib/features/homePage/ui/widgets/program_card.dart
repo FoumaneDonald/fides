@@ -1,10 +1,11 @@
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/entities/points_entity.dart';
-import '../../../../domain/entities/stamp_entity.dart';
+import '../../../../domain/entities/spendEntity/spend_entity.dart';
+import '../../../../domain/entities/returnEntity/return_entity.dart';
 import '../../../../services/helpers/app_route_enum.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 
@@ -42,13 +43,14 @@ class ProgramCard extends StatelessWidget {
                   ),
                   child: FractionallySizedBox(
                     widthFactor: 0.5,
-                    child: SvgPicture.asset(
-                      program.type.iconPath,
-                      semanticsLabel: 'Program icon',
-                      // width: 24,
-                      // height: 24,
-                      colorFilter: ColorFilter.srgbToLinearGamma(),
-                    ),
+                    child: AppIcon.stamp(), ///todo: setup correct icon. I forgot what this file is used for
+                    // SvgPicture.asset(
+                    //   program.type.iconPath,
+                    //   semanticsLabel: 'Program icon',
+                    //   // width: 24,
+                    //   // height: 24,
+                    //   colorFilter: ColorFilter.srgbToLinearGamma(),
+                    // ),
                   ),
                 ),
                 SizedBox(
@@ -77,12 +79,12 @@ class ProgramCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (program is StampEntity) ...{
-                    Text("Number of holes: ${(program as StampEntity).numberHoles.toString()}"),
-                    Text("Winning numbers: ${(program as StampEntity).winningNumbers.join(', ')}"),
+                  if (program is ReturnEntity) ...{
+                    Text("Number of holes: ${(program as ReturnEntity).numberHoles.toString()}"),
+                    Text("Winning numbers: ${(program as ReturnEntity).winningNumbers.join(', ')}"),
                   },
-                  if (program is PointsEntity) ...{
-                    Text("value of a point: ${(program as PointsEntity).points ?? ''}"),
+                  if (program is SpendEntity) ...{
+                    Text("value of a point: ${(program as SpendEntity).points ?? ''}"),
                   },
                 ],
               ),
