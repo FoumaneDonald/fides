@@ -20,7 +20,7 @@ class ReturnNumber extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
         padding: EdgeInsets.zero,
-        minimumSize: const Size(64, 64),
+        minimumSize: const Size(56, 56),
         backgroundColor: isSelected ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent,
         side: BorderSide(
           color: isSelected ? Theme.of(context).colorScheme.primary : Theme.of(context).colorScheme.onPrimaryContainer,

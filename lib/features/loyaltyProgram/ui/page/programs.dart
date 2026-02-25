@@ -12,8 +12,20 @@ import '../../../core/widgets/loader.dart';
 import '../../../homePage/ui/widgets/program_card.dart';
 import '../bloc/loyalty_program_bloc.dart';
 
-class Programs extends StatelessWidget {
+class Programs extends StatefulWidget {
   const Programs({super.key});
+
+  @override
+  State<Programs> createState() => _ProgramsState();
+}
+
+class _ProgramsState extends State<Programs> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<LoyaltyProgramBloc>().add(LoadLoyaltyPrograms());
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -3,7 +3,7 @@ import 'package:uuid/uuid.dart';
 
 import '../data/models/customer_model.dart';
 import '../objectbox.g.dart';
-import 'object_box.dart';
+import '../config/object_box.dart';
 
 class CustomerDao {
   // Inject the ObjectBox

@@ -4,7 +4,7 @@ import '../data/models/spend_model.dart';
 import '../data/models/return_model.dart';
 import '../objectbox.g.dart';
 import 'helpers/program_type_enum.dart';
-import 'object_box.dart';
+import '../config/object_box.dart';
 
 class LoyaltyProgramDao {
   // Inject the ObjectBox

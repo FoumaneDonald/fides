@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class RequiredFieldText extends StatelessWidget {
   const RequiredFieldText({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text('Required fields are marked with an asterisk (*)');
+    return Text('Required fields (*)', style: Theme.of(context).textTheme.bodyMedium);
   }
 }

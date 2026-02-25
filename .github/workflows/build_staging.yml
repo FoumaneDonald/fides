@@ -15,30 +15,38 @@ permissions:
   pull-requests: write
 
 jobs:
-  version_and_release:
-    runs-on: ubuntu-latest
-    outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
-    steps:
-      - uses: googleapis/release-please-action@v4
-        id: release
-        with:
-          token: ${{ secrets.PAT }}
-          release-type: dart
-          target-branch: stage
-
   build:
-    # Depends on the previous job
-    needs: version_and_release
-    # Only run this job if release-please actually created a new release
-    if: ${{ needs.version_and_release.outputs.release_created == 'true' }}
     runs-on: ubuntu-latest
 
     steps:
       # Clones the project on the machine
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install jq (for parsing JSON)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Get latest release tag from GitHub API
+        id: get_latest_tag
+        run: |
+          # Use curl with authentication to query the GitHub API for the latest PUBLISHED release.
+          # The -sL flags make it silent and follow redirects.
+          LATEST_TAG=$(curl -sL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
+          
+          # CRITICAL ERROR HANDLING:
+          # Check if the tag is empty or the literal string "null" (which jq outputs on error).
+          # This prevents the 'tag: null' error in the upload step.
+          if [[ -z "$LATEST_TAG" || "$LATEST_TAG" == "null" ]]; then
+            echo "Error: Could not find the latest published release tag via the GitHub API."
+            echo "Please ensure a non-prerelease, non-draft release exists in the repository."
+            exit 1
+          fi
+          
+          echo "Found latest release tag: $LATEST_TAG"
+          echo "TAG_NAME=$LATEST_TAG" >> $GITHUB_ENV
 
       - name: Set up Java
         uses: actions/setup-java@v3
@@ -51,7 +59,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-          flutter-version: '3.29.3'
+          flutter-version: '3.35.5'
           cache: true
 
       # Fetches proj dependencies from pub
@@ -74,10 +82,6 @@ jobs:
 #        with:
 #          environment: staging
 #          version: ${{ needs.version_and_release.outputs.tag_name }}
-
-      - name: Set Tag from Branch Name
-        id: tag
-        run: echo "TAG_NAME=staging-${{ github.run_number }}" >> $GITHUB_ENV
 
       - name: Upload APK to GitHub Releases
         uses: ncipollo/release-action@v1

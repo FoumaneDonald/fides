@@ -13,7 +13,8 @@ class FidesAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title, style: Theme.of(context).textTheme.titleMedium,),
+      automaticallyImplyLeading: false,
+      title: Text(title, style: Theme.of(context).textTheme.titleSmall,),
       leading: leading,
       actions: actions,
     );

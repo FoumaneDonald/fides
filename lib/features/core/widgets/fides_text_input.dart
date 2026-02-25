@@ -9,6 +9,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final TextEditingController controller;
   final String inputLabel;
   final String? hintText;
+  final String? labelText;
   final bool? enable;
   final bool readOnly;
   final TextAlign? textAlign;
@@ -40,6 +41,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.readOnly = false,
     this.textAlign,
     this.suffixText,
+    this.labelText,
     this.prefixIcon,
     this.suffixIcon,
     this.suffix,
@@ -65,7 +67,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
       children: [
         Text(
           inputLabel,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         TextFormField(
           focusNode: focusNode,
@@ -79,6 +81,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
             suffixIcon: suffixIcon,
             hintText: hintText,
             suffixText: suffixText,
+            labelText: labelText,
             suffix: suffix,
             helper: helper,
           ),

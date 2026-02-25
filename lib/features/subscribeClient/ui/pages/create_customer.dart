@@ -181,11 +181,10 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
             ),
             bottomNavigationBar: Padding(
               padding: EdgeInsets.all(16.0),
-              child: PrimaryButton(
+              child: AppButton.primary(
                 text: 'Add Customer',
                 icon: AppIcon.add(),
-                isActive: _nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms.isNotEmpty ?? false),
-                onPressed: () async {
+                onPressed: (_nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms.isNotEmpty ?? false)) ? () async {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     final newCustomer = CustomerEntity(
@@ -198,7 +197,7 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                     context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
                     // context.goNamed(AppRoute.programReward.name);
                   }
-                },
+                } : null,
               ),
             ),
           );

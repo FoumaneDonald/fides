@@ -37,14 +37,13 @@ class BuildReturnFields extends StatelessWidget with ValidationMixins {
   @override
   Widget build(BuildContext context) {
     return Column(
-      spacing: 16,
+      spacing: 24,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FidesTextInput(
           focusNode: _returnNumberFocus,
           controller: _returnNumberController,
           inputLabel: 'Number of Returns*',
-          hintText: '0',
           textAlign: TextAlign.center,
           textInputType: TextInputType.number,
           textInputAction: TextInputAction.next,
@@ -67,17 +66,14 @@ class BuildReturnFields extends StatelessWidget with ValidationMixins {
           children: [
             Text(
               'Choose which Return number unlock a reward*',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.bodySmall,
             ),
             if (_holes.isEmpty) ...{
               Text('Try adding one by tapping on the + button'),
             } else ...{
               Wrap(
-                spacing: 10,
-                runSpacing: 12,
+                spacing: 8,
+                runSpacing: 8,
                 children: _holes.map(
                   (number) {
                     final bool isSelected = _selectedNumbers.contains(number);

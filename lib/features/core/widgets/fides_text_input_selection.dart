@@ -10,6 +10,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
   final String inputLabel;
   final String? hintText;
   final String? suffixText;
+  final String? helperText;
   final Widget? prefix;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
@@ -17,6 +18,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
   final Widget? helper;
   final int? maxLine;
   final TextInputType? textInputType;
+  final TextInputAction? textInputAction;
   final AutovalidateMode? autoValidateMode;
   final TextCapitalization? textCapitalization;
   final List<TextInputFormatter>? inputFormatter;
@@ -40,6 +42,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
     required this.inputLabel,
     this.hintText,
     this.suffixText,
+    this.helperText,
     this.prefix,
     this.prefixIcon,
     this.suffixIcon,
@@ -47,6 +50,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
     this.helper,
     this.maxLine,
     this.textInputType,
+    this.textInputAction,
     this.autoValidateMode,
     this.textCapitalization,
     this.inputFormatter,
@@ -70,7 +74,7 @@ class FidesTextInputSelection<T> extends StatelessWidget {
       children: [
         Text(
           inputLabel,
-          style: Theme.of(context).textTheme.labelLarge,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 4),
         TextFormField(
@@ -104,11 +108,13 @@ class FidesTextInputSelection<T> extends StatelessWidget {
             ),
             hintText: hintText,
             suffixText: suffixText,
+            helperText: helperText,
             prefix: prefix,
             suffix: suffix,
             helper: helper,
           ),
           keyboardType: textInputType,
+          textInputAction: textInputAction,
           autovalidateMode: autoValidateMode,
           maxLines: maxLine,
           textCapitalization: textCapitalization ?? TextCapitalization.sentences,

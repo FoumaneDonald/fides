@@ -102,7 +102,7 @@ class LoyaltyProgramBloc extends Bloc<LoyaltyProgramEvent, LoyaltyProgramState> 
 
       LoyaltyProgramEntity currentProgram = editing.program;
 
-      emit(editing.copyWith(program: currentProgram.cloneWith(lastingNumber: event.lastingNumber, lastingPeriod: event.lastingPeriod)));
+      emit(editing.copyWith(program: currentProgram.cloneWith(lastingNumber: event.lastingNumber ?? editing.program.lastingNumber, lastingPeriod: event.lastingPeriod ?? editing.program.lastingPeriod)));
     }
   }
 

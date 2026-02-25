@@ -12,6 +12,8 @@ class SelectImageField extends StatefulWidget {
   final FormFieldSetter<File?>? onSaved;
   final FormFieldValidator<File?>? validator;
   final File? initialValue;
+  final ValueChanged<File?>? onChanged;
+
 
   const SelectImageField({
     super.key,
@@ -19,6 +21,7 @@ class SelectImageField extends StatefulWidget {
     this.onSaved,
     this.validator,
     this.initialValue,
+    this.onChanged,
   });
 
   @override
@@ -41,6 +44,7 @@ class _SelectImageFieldState extends State<SelectImageField> {
       if (pickedFile != null) {
         setState(() => _tempImage = File(pickedFile.path));
         state.didChange(_tempImage);
+        widget.onChanged?.call(_tempImage);
       }
     } catch (e) {
       print(e);
@@ -49,6 +53,7 @@ class _SelectImageFieldState extends State<SelectImageField> {
   void deleteImage(FormFieldState<File?> state) {
     setState(() => _tempImage = null);
     state.didChange(null);
+    widget.onChanged?.call(null);
   }
 
   @override
@@ -94,6 +99,7 @@ class _SelectImageFieldState extends State<SelectImageField> {
                                 child: Image.file(
                                   _tempImage!,
                                   fit: BoxFit.contain,
+                                  height: MediaQuery.heightOf(context) * 0.2,
                                 ),
                               ),
                             ),

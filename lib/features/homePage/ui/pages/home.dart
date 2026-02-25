@@ -38,9 +38,7 @@ class HomePage extends StatelessWidget {
                               ActionChip(
                                 avatar: AppIcon.star(),
                                 label: Text('Discover'),
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                               ),
                             ],
                           ),
@@ -51,8 +49,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           Text('Create a program based on how you want to reward your customers, for coming back often or for how much they spend.'),
-                          PrimaryButton(
-                            isActive: true,
+                          AppButton.primary(
                             onPressed: () => context.pushNamed(AppRoute.selectLoyaltyProgram.name),
                             text: 'Create a program',
                             icon: AppIcon.add(),

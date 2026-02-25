@@ -1,5 +1,6 @@
 import 'package:currency_picker/currency_picker.dart';
 import 'package:fides/domain/entities/spendEntity/spend_entity.dart';
+import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:fides/features/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +53,6 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
   SpendEntity? spendEntity;
   ReturnEntity? returnEntity;
   DateTime? finalDate;
-  late TimeUnit _selectedLastingTimePeriod;
 
   /// Initialize state and bind UI inputs with BLoC state
   @override
@@ -66,11 +66,10 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
       _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
 
       _lastingNumberController.text = state.program.lastingNumber.toString();
-      _selectedLastingTimePeriod = state.program.lastingPeriod;
       _lastingNumberController.addListener(() {
         if (_lastingNumberController.text.isNotEmpty) {
           final int toInt = int.parse(_lastingNumberController.text);
-          context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingNumber: toInt, lastingPeriod: _selectedLastingTimePeriod));
+          context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingNumber: toInt));
         }
       });
 
@@ -148,11 +147,6 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
     context.read<LoyaltyProgramBloc>().add(WinningStampChanged(number));
   }
 
-  void _lastingTimePeriodChanged(TimeUnit period) {
-    final int toInt = int.parse(_lastingNumberController.text);
-    context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingNumber: toInt, lastingPeriod: period));
-  }
-
   bool _isButtonActive(LoyaltyProgramEditing state) {
     bool condition = false;
     bool isNameNotEmpty = _nameController.text.isNotEmpty;
@@ -165,7 +159,9 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
           program.winningNumbers.every(
             (number) => program.rewards.any((reward) => reward.stampNumber == number),
           ) &&
-          isNameNotEmpty && isPointsNotEmpty &&isMinimumSpentNotEmpty;
+          isNameNotEmpty &&
+          isPointsNotEmpty &&
+          isMinimumSpentNotEmpty;
     } else if (state.programType == ProgramType.spend) {
       condition = state.program.rewards.isNotEmpty && isNameNotEmpty && isPointsNotEmpty && isMinimumSpentNotEmpty;
     } else {
@@ -196,9 +192,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
       builder: (context, state) {
         if (state is LoyaltyProgramEditing) {
           return Scaffold(
-            resizeToAvoidBottomInset: false,
             appBar: FidesAppBar(
-              leading: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.arrow_back_rounded)),
               title: 'Set up your ${state.programType.label.toLowerCase()} program',
             ),
             body: SafeArea(
@@ -206,112 +200,114 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                 child: Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
                   child: Column(
-                    spacing: 8,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    spacing: 40,
                     children: [
-                      RequiredFieldText(),
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          spacing: 40,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Column(
-                              spacing: 16,
+                      Column(
+                        spacing: 8,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RequiredFieldText(),
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              spacing: 40,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                FidesTextInput(
-                                  focusNode: _nameFocus,
-                                  controller: _nameController,
-                                  textInputType: TextInputType.text,
-                                  textInputAction: TextInputAction.next,
-                                  inputLabel: 'Program name*',
-                                  hintText: 'Book worm',
-                                  validator: requiredField,
-                                  autoValidateMode: AutovalidateMode.onUnfocus,
-                                  onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(state.programType == ProgramType.returning ? _returnNumberFocus : _pointsFocus),
-                                ),
-                                switch (state.programType) {
-                                  ProgramType.spend => BuildSpendFields(
-                                      currencyCode: (state.program as SpendEntity).currencyCode,
-                                      pointsFocus: _pointsFocus,
-                                      minimumPurchaseFocus: _minimumPurchaseFocus,
-                                      pointsController: _pointsController,
-                                      minimumSpentController: _minimumSpentController,
+                                Column(
+                                  spacing: 24,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FidesTextInput(
+                                      focusNode: _nameFocus,
+                                      controller: _nameController,
+                                      textInputType: TextInputType.text,
+                                      textInputAction: TextInputAction.next,
+                                      inputLabel: 'Program name*',
+                                      validator: requiredField,
+                                      autoValidateMode: AutovalidateMode.onUserInteraction,
+                                      onFieldSubmitted: (_) => FocusScope.of(context).requestFocus(state.programType == ProgramType.returning ? _returnNumberFocus : _pointsFocus),
+                                    ),
+                                    switch (state.programType) {
+                                      ProgramType.spend => BuildSpendFields(
+                                          currencyCode: (state.program as SpendEntity).currencyCode,
+                                          pointsFocus: _pointsFocus,
+                                          minimumPurchaseFocus: _minimumPurchaseFocus,
+                                          pointsController: _pointsController,
+                                          minimumSpentController: _minimumSpentController,
+                                          validator: composeValidators<String>([requiredField]),
+                                          onPressed: () {
+                                            showCurrencyPicker(
+                                              context: context,
+                                              favorite: ['XAF'],
+                                              onSelect: (Currency currency) => context.read<LoyaltyProgramBloc>().add(CurrencyChanged(currency.code)),
+                                            );
+                                          },
+                                        ),
+                                      ProgramType.returning => BuildReturnFields(
+                                          returnNumberFocus: _returnNumberFocus,
+                                          stampNumberController: _returnNumberController,
+                                          holes: _returns,
+                                          selectedNumbers: (state.program as ReturnEntity).winningNumbers,
+                                          remove: () => _addRemoveReturnsNumber(-1),
+                                          add: () => _addRemoveReturnsNumber(1),
+                                          toggleReturnNumber: (number) => _toggleWinningStamps(number),
+                                        ),
+                                      ProgramType.unknown => Placeholder(),
+                                    },
+                                    FidesTextInputSelection<TimeUnit>(
+                                      focusNode: _lastingNumberFocus,
+                                      controller: _lastingNumberController,
+                                      inputLabel: 'How long should the program last*',
+                                      helperText: 'How long will the program be active',
+                                      prefix: Text('${state.program.lastingPeriod.label} '),
+                                      textInputType: TextInputType.number,
+                                      inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
                                       validator: composeValidators<String>([requiredField]),
-                                      onPressed: () {
-                                        showCurrencyPicker(
-                                          context: context,
-                                          favorite: ['XAF'],
-                                          onSelect: (Currency currency) => context.read<LoyaltyProgramBloc>().add(CurrencyChanged(currency.code)),
-                                        );
-                                      },
+                                      dropDownList: TimeUnit.values.where((unit) => unit != TimeUnit.unknown).toList(),
+                                      selectedValue: state.program.lastingPeriod,
+                                      onChangedDropdown: (TimeUnit? value) => context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingPeriod: value)),
+                                      onFieldSubmitted: (_) => _lastingNumberFocus.unfocus(),
+                                      itemBuilder: (unit) => Text(unit.label),
                                     ),
-                                  ProgramType.returning => BuildReturnFields(
-                                      returnNumberFocus: _returnNumberFocus,
-                                      stampNumberController: _returnNumberController,
-                                      holes: _returns,
-                                      selectedNumbers: (state.program as ReturnEntity).winningNumbers,
-                                      remove: () => _addRemoveReturnsNumber(-1),
-                                      add: () => _addRemoveReturnsNumber(1),
-                                      toggleReturnNumber: (number) => _toggleWinningStamps(number),
+                                    FidesTextInput(
+                                      focusNode: _noteFocus,
+                                      controller: _noteController,
+                                      inputLabel: 'Add a note',
+                                      maxLines: 4,
+                                      textInputAction: TextInputAction.send,
                                     ),
-                                  ProgramType.unknown => Placeholder(),
-                                },
-                                FidesTextInputSelection<TimeUnit>(
-                                  focusNode: _lastingNumberFocus,
-                                  controller: _lastingNumberController,
-                                  inputLabel: 'How long should the program last*',
-                                  helper: Text('How long will the program be active'),
-                                  prefix: Text('${_selectedLastingTimePeriod.label} '),
-                                  textInputType: TextInputType.number,
-                                  inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
-                                  validator: composeValidators<String>([requiredField]),
-                                  dropDownList: TimeUnit.values.where((unit) => unit != TimeUnit.unknown).toList(),
-                                  selectedValue: _selectedLastingTimePeriod,
-                                  onChangedDropdown: (TimeUnit? value) => _lastingTimePeriodChanged(value!),
-                                  onFieldSubmitted: (_) => _lastingNumberFocus.unfocus(),
-                                  itemBuilder: (unit) => Text(unit.label),
+                                  ],
                                 ),
-                                FidesTextInput(
-                                  focusNode: _noteFocus,
-                                  controller: _noteController,
-                                  inputLabel: 'Add a note',
-                                  maxLines: 4,
-                                  textInputAction: TextInputAction.send,
+                                AddRewardSection(
+                                  programType: state.programType,
+                                  rewards: state.program.rewards,
+                                  winningNumbers: state.programType == ProgramType.spend ? null : (state.program as ReturnEntity).winningNumbers
+                                    ?..sort(),
+                                  isReturnNumberSelected: (number) => (state.selectReturnNumber ?? -1) == number,
+                                  selectReturnNumber: state.selectReturnNumber,
+                                  onSelectedWinningNumber: (number) => context.read<LoyaltyProgramBloc>().add(SelectedReturnRewardChanged(number)),
+                                  onDeleteReward: (reward) => context.read<LoyaltyProgramBloc>().add(DeleteReward(reward)),
                                 ),
                               ],
                             ),
-                            AddRewardSection(
-                              programType: state.programType,
-                              rewards: state.program.rewards,
-                              winningNumbers: state.programType == ProgramType.spend ? null : (state.program as ReturnEntity).winningNumbers
-                                ?..sort(),
-                              isReturnNumberSelected: (number) => (state.selectReturnNumber ?? -1) == number,
-                              selectReturnNumber: state.selectReturnNumber,
-                              onSelectedWinningNumber: (number) => context.read<LoyaltyProgramBloc>().add(SelectedReturnRewardChanged(number)),
-                              onDeleteReward: (reward) => context.read<LoyaltyProgramBloc>().add(DeleteReward(reward)),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
+                      ),
+                      AppButton.dual(
+                        loading: state.loading,
+                        onPrimaryPressed: _isButtonActive(state) ? () {
+                          if (_formKey.currentState!.validate()) {
+                            context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
+                          }
+                        } : null,
+                        onSecondaryPressed: () => context.pop(),
+                        primaryText: 'Create program',
+                        icon: AppIcon.arrowRight(),
+                        onSecondaryIcon: AppIcon.cancel(),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-            bottomNavigationBar: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: PrimaryButton(
-                loading: state.loading,
-                text: 'Create program',
-                // For each winning number check that some reward matches it.
-                isActive: _isButtonActive(state),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
-                  }
-                },
               ),
             ),
           );

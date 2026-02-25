@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           lazy: false,
-          create: (context) => sl<LoyaltyProgramBloc>()..add(LoadLoyaltyPrograms()),
+          create: (context) => sl<LoyaltyProgramBloc>(),
         ),
       ],
       child: MaterialApp.router(

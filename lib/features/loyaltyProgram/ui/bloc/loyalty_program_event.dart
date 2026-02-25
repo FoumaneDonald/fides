@@ -71,12 +71,12 @@ final class NameChanged extends LoyaltyProgramEvent {
 }
 
 final class LastingDateChanged extends LoyaltyProgramEvent {
-  final int lastingNumber;
-  final TimeUnit lastingPeriod;
+  final int? lastingNumber;
+  final TimeUnit? lastingPeriod;
 
   const LastingDateChanged({
-    required this.lastingNumber,
-    required this.lastingPeriod,
+    this.lastingNumber,
+    this.lastingPeriod,
   });
 
   @override

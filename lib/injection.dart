@@ -1,5 +1,5 @@
 import 'package:fides/services/customer_dao.dart';
-import 'package:fides/services/object_box.dart';
+import 'package:fides/config/object_box.dart';
 import 'package:fides/services/loyalty_program_dao.dart';
 import 'package:fides/services/simple_bloc_observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
