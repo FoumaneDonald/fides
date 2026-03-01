@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 
 import '../../domain/entities/loyalty_program_entity.dart';
 import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
-import '../../features/homePage/ui/pages/home.dart';
-import '../../features/loyaltyProgram/ui/page/program_details.dart';
+import '../../features/homePage/ui/home.dart';
+import '../../features/loyaltyProgram/ui/program_details.dart';
 import '../../features/setup_program/ui/create_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
-import '../../features/subscribeClient/ui/pages/create_customer.dart';
+import '../../features/subscribeClient/ui/create_customer.dart';
 import '../../services/helpers/app_route_enum.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');

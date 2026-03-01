@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../services/helpers/app_route_enum.dart';
-import '../../../core/utilities/app_icon.dart';
-import '../../../core/widgets/fides_app_bar.dart';
-import '../../../core/widgets/primary_button.dart';
+import '../../../services/helpers/app_route_enum.dart';
+import '../../core/utilities/app_icon.dart';
+import '../../core/widgets/fides_app_bar.dart';
+import '../../core/widgets/primary_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

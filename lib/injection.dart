@@ -11,10 +11,10 @@ import 'data/repositories/customer_repo_impl.dart';
 import 'data/repositories/local_loyalty_program_repo_impl.dart';
 import 'domain/repositories/customer_repository.dart';
 import 'domain/repositories/loyalty_program_repository.dart';
-import 'features/homePage/ui/bloc/home_bloc.dart';
-import 'features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import 'features/homePage/bloc/home_bloc.dart';
+import 'features/loyaltyProgram/bloc/loyalty_program_bloc.dart';
 import 'features/setup_program/bloc/setup_program_bloc.dart';
-import 'features/subscribeClient/ui/bloc/customer_bloc.dart';
+import 'features/subscribeClient/bloc/customer_bloc.dart';
 
 final sl = GetIt.instance;
 

@@ -3,7 +3,7 @@ import 'package:fides/domain/entities/loyalty_program_entity.dart';
 import 'package:flutter/material.dart';
 
 import '../../features/setup_program/ui/create_program.dart';
-import '../../features/loyaltyProgram/ui/page/program_details.dart';
+import '../../features/loyaltyProgram/ui/program_details.dart';
 import '../../features/setup_program/ui/create_reward.dart';
 import '../../features/loyaltyProgram/ui/page/programs.dart';
 import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';

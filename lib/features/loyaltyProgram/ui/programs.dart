@@ -5,11 +5,11 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../services/helpers/program_type_enum.dart';
-import '../../../core/widgets/fides_snack_bar.dart';
+import '../../core/widgets/fides_snack_bar.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../services/helpers/app_route_enum.dart';
-import '../../../core/widgets/loader.dart';
-import '../../../homePage/ui/widgets/program_card.dart';
+import '../../core/widgets/loader.dart';
+import '../../homePage/ui/widgets/program_card.dart';
 import '../bloc/loyalty_program_bloc.dart';
 
 class Programs extends StatefulWidget {

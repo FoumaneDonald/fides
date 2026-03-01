@@ -9,19 +9,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
-import '../../../../domain/entities/customer_entity.dart';
-import '../../../../domain/entities/loyalty_card_entity.dart';
-import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/repositories/loyalty_program_repository.dart';
-import '../../../../injection.dart';
-import '../../../core/widgets/fides_dropdown_input.dart';
-import '../../../core/widgets/fides_multi_select_dropdown.dart';
-import '../../../core/widgets/fides_phone_input.dart';
-import '../../../core/widgets/fides_text_input.dart';
-import '../../../core/widgets/primary_button.dart';
-import '../../../core/widgets/required_field_text.dart';
-import '../../../homePage/ui/bloc/home_bloc.dart';
-import '../../../homePage/ui/widgets/program_card.dart';
+import '../../../domain/entities/customer_entity.dart';
+import '../../../domain/entities/loyalty_card_entity.dart';
+import '../../../domain/entities/loyalty_program_entity.dart';
+import '../../../domain/repositories/loyalty_program_repository.dart';
+import '../../../injection.dart';
+import '../../core/widgets/fides_dropdown_input.dart';
+import '../../core/widgets/fides_multi_select_dropdown.dart';
+import '../../core/widgets/fides_phone_input.dart';
+import '../../core/widgets/fides_text_input.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/widgets/required_field_text.dart';
+import '../../homePage/bloc/home_bloc.dart';
+import '../../homePage/ui/widgets/program_card.dart';
 import '../bloc/customer_bloc.dart';
 
 class CreateCustomer extends StatefulWidget {

@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../services/helpers/app_route_enum.dart';
-import '../../../../services/helpers/program_type_enum.dart';
-import '../../../core/widgets/fides_app_bar.dart';
-import '../../../setup_program/bloc/setup_program_bloc.dart';
+import '../../../services/helpers/app_route_enum.dart';
+import '../../../services/helpers/program_type_enum.dart';
+import '../../core/widgets/fides_app_bar.dart';
+import '../../setup_program/bloc/setup_program_bloc.dart';
 import '../bloc/loyalty_program_bloc.dart';
-import '../widgets/loyalty_program_card.dart';
+import 'widgets/loyalty_program_card.dart';
 
 class SelectLoyaltyProgram extends StatelessWidget {
   const SelectLoyaltyProgram({super.key});

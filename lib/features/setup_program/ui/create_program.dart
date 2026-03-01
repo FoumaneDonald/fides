@@ -17,7 +17,7 @@ import '../../core/widgets/fides_snack_bar.dart';
 import '../../core/widgets/fides_text_input.dart';
 import '../../core/widgets/fides_text_input_selection.dart';
 import '../../core/widgets/required_field_text.dart';
-import '../../loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import '../../loyaltyProgram/bloc/loyalty_program_bloc.dart';
 import '../bloc/setup_program_bloc.dart';
 import '../widgets/add_reward_section.dart';
 import '../widgets/build_return_fields.dart';
