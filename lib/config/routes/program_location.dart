@@ -2,11 +2,11 @@ import 'package:beamer/beamer.dart';
 import 'package:fides/domain/entities/loyalty_program_entity.dart';
 import 'package:flutter/material.dart';
 
+import '../../features/loyaltyProgram/ui/programs.dart';
+import '../../features/loyaltyProgram/ui/select_loyalty_program.dart';
 import '../../features/setup_program/ui/create_program.dart';
 import '../../features/loyaltyProgram/ui/program_details.dart';
 import '../../features/setup_program/ui/create_reward.dart';
-import '../../features/loyaltyProgram/ui/page/programs.dart';
-import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
 import '../../services/helpers/app_route_enum.dart';
 
 class ProgramLocation extends BeamLocation<BeamState> {
