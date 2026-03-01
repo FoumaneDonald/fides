@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../../../domain/entities/customer_entity.dart';
+import '../../../../domain/entities/loyalty_card_entity.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
 import '../../../../injection.dart';
@@ -146,17 +147,18 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
                                     return Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        FidesMultiSelectBottomSheet<LoyaltyProgramEntity>(
+                                        FidesMultiSelectBottomSheet(
                                           focusNode: _programsFocusNode,
                                           inputLabel: 'Add to program*',
                                           options: state.programStatus == ProgramStatus.loading ? [] : state.listOfPrograms!,
-                                          selectedValues: state.customerEntity!.loyaltyPrograms ?? [],
+                                          selectedValues: state.customerEntity!.cards,
                                           errorText: field.errorText,
                                           hasError: field.hasError,
                                           onSelectionChanged: (selected) {
-                                            field.didChange(selected.isEmpty ? null : selected.first);
-                                            context.read<CustomerBloc>().add(OnSelectProgram(selected));
-                                            _programsFocusNode.unfocus();
+                                            throw UnimplementedError();
+                                            // field.didChange(selected.isEmpty ? null : selected.first);
+                                            // context.read<CustomerBloc>().add(OnSelectProgram(selected));
+                                            // _programsFocusNode.unfocus();
                                           },
                                           itemChipsLabelBuilder: (program) {
                                             return Text(program.name!); // This is for chips in the dropdown.
@@ -184,19 +186,20 @@ class _CreateCustomerState extends State<CreateCustomer> with ValidationMixins {
               child: AppButton.primary(
                 text: 'Add Customer',
                 icon: AppIcon.add(),
-                onPressed: (_nameController.text.isNotEmpty && (state.customerEntity?.loyaltyPrograms.isNotEmpty ?? false)) ? () async {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    final newCustomer = CustomerEntity(
-                      name: _nameController.text.trim(),
-                      phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
-                      email: _emailController.text.trim(),
-                      loyaltyPrograms: state.customerEntity!.loyaltyPrograms,
-                    );
-
-                    context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
-                    // context.goNamed(AppRoute.programReward.name);
-                  }
+                onPressed: (_nameController.text.isNotEmpty && (state.customerEntity?.cards.isNotEmpty ?? false)) ? () async {
+                  throw UnimplementedError();
+                  // if (_formKey.currentState!.validate()) {
+                  //   _formKey.currentState!.save();
+                  //   final newCustomer = CustomerEntity(
+                  //     name: _nameController.text.trim(),
+                  //     phone: _phoneController.value.nsn.isNotEmpty ? _phoneController.value.international + _phoneController.value.nsn : null,
+                  //     email: _emailController.text.trim(),
+                  //     cards: state.customerEntity!.cards,
+                  //   );
+                  //
+                  //   context.read<CustomerBloc>().add(SubscribeCustomer(newCustomer));
+                  // context.goNamed(AppRoute.programReward.name);
+                  // }
                 } : null,
               ),
             ),
@@ -269,7 +272,7 @@ class SelectableProgramCard extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              program.name!,
+                              program.name,
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,

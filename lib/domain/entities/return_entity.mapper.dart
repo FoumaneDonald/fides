@@ -14,6 +14,7 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
   static ReturnEntityMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ReturnEntityMapper._());
+      RewardEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -21,10 +22,11 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
   @override
   final String id = 'ReturnEntity';
 
-  static int? _$id(ReturnEntity v) => v.id;
-  static const Field<ReturnEntity, int> _f$id = Field('id', _$id, opt: true);
-  static ProgramType _$type(ReturnEntity v) => v.type;
-  static const Field<ReturnEntity, ProgramType> _f$type = Field('type', _$type);
+  static String _$programId(ReturnEntity v) => v.programId;
+  static const Field<ReturnEntity, String> _f$programId = Field(
+    'programId',
+    _$programId,
+  );
   static String _$name(ReturnEntity v) => v.name;
   static const Field<ReturnEntity, String> _f$name = Field('name', _$name);
   static int _$numberHoles(ReturnEntity v) => v.numberHoles;
@@ -85,8 +87,7 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
 
   @override
   final MappableFields<ReturnEntity> fields = const {
-    #id: _f$id,
-    #type: _f$type,
+    #programId: _f$programId,
     #name: _f$name,
     #numberHoles: _f$numberHoles,
     #winningNumbers: _f$winningNumbers,
@@ -102,8 +103,7 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
 
   static ReturnEntity _instantiate(DecodingData data) {
     return ReturnEntity(
-      id: data.dec(_f$id),
-      type: data.dec(_f$type),
+      programId: data.dec(_f$programId),
       name: data.dec(_f$name),
       numberHoles: data.dec(_f$numberHoles),
       winningNumbers: data.dec(_f$winningNumbers),
@@ -180,11 +180,14 @@ extension ReturnEntityValueCopy<$R, $Out>
 abstract class ReturnEntityCopyWith<$R, $In extends ReturnEntity, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get winningNumbers;
-  ListCopyWith<$R, RewardEntity, ObjectCopyWith<$R, RewardEntity, RewardEntity>>
+  ListCopyWith<
+    $R,
+    RewardEntity,
+    RewardEntityCopyWith<$R, RewardEntity, RewardEntity>
+  >
   get rewards;
   $R call({
-    int? id,
-    ProgramType? type,
+    String? programId,
     String? name,
     int? numberHoles,
     List<int>? winningNumbers,
@@ -215,16 +218,19 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
         (v) => call(winningNumbers: v),
       );
   @override
-  ListCopyWith<$R, RewardEntity, ObjectCopyWith<$R, RewardEntity, RewardEntity>>
+  ListCopyWith<
+    $R,
+    RewardEntity,
+    RewardEntityCopyWith<$R, RewardEntity, RewardEntity>
+  >
   get rewards => ListCopyWith(
     $value.rewards,
-    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v, t) => v.copyWith.$chain(t),
     (v) => call(rewards: v),
   );
   @override
   $R call({
-    Object? id = $none,
-    ProgramType? type,
+    String? programId,
     String? name,
     int? numberHoles,
     List<int>? winningNumbers,
@@ -237,8 +243,7 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
     Object? updatedAt = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (id != $none) #id: id,
-      if (type != null) #type: type,
+      if (programId != null) #programId: programId,
       if (name != null) #name: name,
       if (numberHoles != null) #numberHoles: numberHoles,
       if (winningNumbers != null) #winningNumbers: winningNumbers,
@@ -253,8 +258,7 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
   );
   @override
   ReturnEntity $make(CopyWithData data) => ReturnEntity(
-    id: data.get(#id, or: $value.id),
-    type: data.get(#type, or: $value.type),
+    programId: data.get(#programId, or: $value.programId),
     name: data.get(#name, or: $value.name),
     numberHoles: data.get(#numberHoles, or: $value.numberHoles),
     winningNumbers: data.get(#winningNumbers, or: $value.winningNumbers),

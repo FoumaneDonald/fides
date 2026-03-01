@@ -1,22 +1,20 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:fides/domain/entities/reward_entity.dart';
 
-import '../../../core/enums/time_units.dart';
-import '../../../data/models/return_model.dart';
-import '../../../services/helpers/program_type_enum.dart';
-import '../loyalty_program_entity.dart';
+import '../../core/enums/time_units.dart';
+import '../../data/models/return_model.dart';
+import '../../services/helpers/program_type_enum.dart';
+import 'loyalty_program_entity.dart';
 
 part 'return_entity.mapper.dart';
 
 @MappableClass()
-class ReturnEntity extends LoyaltyProgramEntity with ReturnEntityMappable {
-  final int? id;
+class ReturnEntity extends LoyaltyProgramEntity<ReturnEntity> with ReturnEntityMappable {
   final int numberHoles;
   final List<int> winningNumbers;
 
   ReturnEntity({
-    this.id,
-    required super.type,
+    required super.programId,
     required super.name,
     required this.numberHoles,
     required this.winningNumbers,
@@ -27,10 +25,10 @@ class ReturnEntity extends LoyaltyProgramEntity with ReturnEntityMappable {
     super.endDate,
     super.createdAt,
     super.updatedAt,
-  });
+  }) : super(type: ProgramType.returning);
 
   @override
-  LoyaltyProgramEntity cloneWith({
+  ReturnEntity cloneWith({
     String? name,
     ProgramType? type,
     List<RewardEntity>? rewards,
@@ -42,7 +40,7 @@ class ReturnEntity extends LoyaltyProgramEntity with ReturnEntityMappable {
     DateTime? updatedAt,
   }) {
     return ReturnEntity(
-      type: type ?? this.type,
+      programId: programId,
       name: name ?? this.name,
       numberHoles: numberHoles,
       winningNumbers: winningNumbers,
@@ -54,30 +52,6 @@ class ReturnEntity extends LoyaltyProgramEntity with ReturnEntityMappable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
-  }
-
-  ///Convert Model to Entity
-  factory ReturnEntity.fromModel(ReturnModel model) {
-    final List<RewardEntity> rewards = RewardEntity.fromModelList(model.rewards);
-
-    return ReturnEntity(
-      id: model.id ?? 0,
-      type: ProgramType.from(model.type),
-      name: model.name,
-      numberHoles: model.numberHoles,
-      winningNumbers: model.winningNumbers,
-      rewards: rewards,
-      lastingNumber: model.lastingNumber,
-      lastingPeriod: TimeUnit.fromString(model.lastingPeriod),
-      startingDate: model.startingDate,
-      endDate: model.endDate,
-      createdAt: model.createdAt,
-      updatedAt: model.updatedAt,
-    );
-  }
-
-  static List<ReturnEntity> fromModelList(List<ReturnModel> models) {
-    return models.map((model) => ReturnEntity.fromModel(model)).toList();
   }
 
   @override

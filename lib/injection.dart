@@ -4,6 +4,7 @@ import 'package:fides/services/loyalty_program_dao.dart';
 import 'package:fides/services/simple_bloc_observer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:uuid/uuid.dart';
 
 import 'config/app_config.dart';
 import 'data/repositories/customer_repo_impl.dart';
@@ -12,6 +13,7 @@ import 'domain/repositories/customer_repository.dart';
 import 'domain/repositories/loyalty_program_repository.dart';
 import 'features/homePage/ui/bloc/home_bloc.dart';
 import 'features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import 'features/setup_program/bloc/setup_program_bloc.dart';
 import 'features/subscribeClient/ui/bloc/customer_bloc.dart';
 
 final sl = GetIt.instance;
@@ -19,29 +21,37 @@ final sl = GetIt.instance;
 Future<void> init() async {
   await _initExternal();
   _initLoyaltyProgram();
+  _initSetupProgram();
   _initCustomer();
   _initHome();
 }
 
 Future<void> _initExternal() async {
   final appConfig = await AppConfig.load();
-  sl.registerLazySingleton(() => appConfig);
-  Bloc.observer = SimpleBlocObserver();
   final objectBox = await ObjectBox.create(sl<AppConfig>().localDatabaseName);
+  Bloc.observer = SimpleBlocObserver();
+
+
+  sl.registerLazySingleton(() => appConfig);
+  sl.registerFactory<Uuid>(() => Uuid());
   sl.registerLazySingleton<ObjectBox>(() => objectBox);
 }
 
-_initHome() {
+void _initHome() {
   sl.registerLazySingleton(() => HomeBloc(sl<CustomerRepository>()));
 }
 
-_initLoyaltyProgram() {
+void _initLoyaltyProgram() {
   sl.registerLazySingleton<LoyaltyProgramDao>(() => LoyaltyProgramDao(sl()));
   sl.registerLazySingleton<LoyaltyProgramRepository>(() => LocalLoyaltyProgramRepoImpl(sl()));
   sl.registerFactory<LoyaltyProgramBloc>(() => LoyaltyProgramBloc(loyaltyProgramRepository: sl()));
 }
 
-_initCustomer() {
+void _initSetupProgram() {
+  sl.registerFactory<SetupProgramBloc>(() => SetupProgramBloc(sl<LoyaltyProgramRepository>(), sl<Uuid>()));
+}
+
+void _initCustomer() {
   sl.registerLazySingleton<CustomerDao>(() => CustomerDao(sl()));
   sl.registerLazySingleton<CustomerRepository>(() => CustomerRepoImpl(sl<CustomerDao>()));
   sl.registerFactory(

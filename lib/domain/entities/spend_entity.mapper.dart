@@ -14,6 +14,7 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
   static SpendEntityMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SpendEntityMapper._());
+      RewardEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -21,10 +22,11 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
   @override
   final String id = 'SpendEntity';
 
-  static int? _$id(SpendEntity v) => v.id;
-  static const Field<SpendEntity, int> _f$id = Field('id', _$id, opt: true);
-  static ProgramType _$type(SpendEntity v) => v.type;
-  static const Field<SpendEntity, ProgramType> _f$type = Field('type', _$type);
+  static String _$programId(SpendEntity v) => v.programId;
+  static const Field<SpendEntity, String> _f$programId = Field(
+    'programId',
+    _$programId,
+  );
   static String _$name(SpendEntity v) => v.name;
   static const Field<SpendEntity, String> _f$name = Field('name', _$name);
   static double? _$points(SpendEntity v) => v.points;
@@ -92,8 +94,7 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
 
   @override
   final MappableFields<SpendEntity> fields = const {
-    #id: _f$id,
-    #type: _f$type,
+    #programId: _f$programId,
     #name: _f$name,
     #points: _f$points,
     #minimumSpent: _f$minimumSpent,
@@ -110,8 +111,7 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
 
   static SpendEntity _instantiate(DecodingData data) {
     return SpendEntity(
-      id: data.dec(_f$id),
-      type: data.dec(_f$type),
+      programId: data.dec(_f$programId),
       name: data.dec(_f$name),
       points: data.dec(_f$points),
       minimumSpent: data.dec(_f$minimumSpent),
@@ -186,11 +186,14 @@ extension SpendEntityValueCopy<$R, $Out>
 
 abstract class SpendEntityCopyWith<$R, $In extends SpendEntity, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, RewardEntity, ObjectCopyWith<$R, RewardEntity, RewardEntity>>
+  ListCopyWith<
+    $R,
+    RewardEntity,
+    RewardEntityCopyWith<$R, RewardEntity, RewardEntity>
+  >
   get rewards;
   $R call({
-    int? id,
-    ProgramType? type,
+    String? programId,
     String? name,
     double? points,
     double? minimumSpent,
@@ -215,16 +218,19 @@ class _SpendEntityCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SpendEntity> $mapper =
       SpendEntityMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, RewardEntity, ObjectCopyWith<$R, RewardEntity, RewardEntity>>
+  ListCopyWith<
+    $R,
+    RewardEntity,
+    RewardEntityCopyWith<$R, RewardEntity, RewardEntity>
+  >
   get rewards => ListCopyWith(
     $value.rewards,
-    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v, t) => v.copyWith.$chain(t),
     (v) => call(rewards: v),
   );
   @override
   $R call({
-    Object? id = $none,
-    ProgramType? type,
+    String? programId,
     String? name,
     Object? points = $none,
     Object? minimumSpent = $none,
@@ -238,8 +244,7 @@ class _SpendEntityCopyWithImpl<$R, $Out>
     Object? updatedAt = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (id != $none) #id: id,
-      if (type != null) #type: type,
+      if (programId != null) #programId: programId,
       if (name != null) #name: name,
       if (points != $none) #points: points,
       if (minimumSpent != $none) #minimumSpent: minimumSpent,
@@ -255,8 +260,7 @@ class _SpendEntityCopyWithImpl<$R, $Out>
   );
   @override
   SpendEntity $make(CopyWithData data) => SpendEntity(
-    id: data.get(#id, or: $value.id),
-    type: data.get(#type, or: $value.type),
+    programId: data.get(#programId, or: $value.programId),
     name: data.get(#name, or: $value.name),
     points: data.get(#points, or: $value.points),
     minimumSpent: data.get(#minimumSpent, or: $value.minimumSpent),

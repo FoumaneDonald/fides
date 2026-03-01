@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../core/utilities/app_icon.dart';
+import '../../core/utilities/app_icon.dart';
 
 class SelectImageField extends StatefulWidget {
   final String label;

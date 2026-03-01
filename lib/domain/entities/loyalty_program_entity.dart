@@ -4,7 +4,8 @@ import 'package:fides/domain/entities/reward_entity.dart';
 import '../../core/enums/time_units.dart';
 import '../../services/helpers/program_type_enum.dart';
 
-abstract class LoyaltyProgramEntity extends Equatable {
+abstract class LoyaltyProgramEntity<T> extends Equatable {
+  final String programId;
   final String name;
   final ProgramType type;
   final List<RewardEntity> rewards;
@@ -16,6 +17,7 @@ abstract class LoyaltyProgramEntity extends Equatable {
   final DateTime? updatedAt;
 
   const LoyaltyProgramEntity({
+    required this.programId,
     required this.name,
     required this.type,
     required this.rewards,
@@ -27,7 +29,7 @@ abstract class LoyaltyProgramEntity extends Equatable {
     this.updatedAt,
   });
 
-  LoyaltyProgramEntity cloneWith({
+  T cloneWith({
     String? name,
     ProgramType? type,
     List<RewardEntity>? rewards,
@@ -40,5 +42,5 @@ abstract class LoyaltyProgramEntity extends Equatable {
   });
 
   @override
-  List<Object?> get props => [type, name, rewards, lastingNumber, lastingPeriod, startingDate, endDate, createdAt, updatedAt];
+  List<Object?> get props => [programId, type, name, rewards, lastingNumber, lastingPeriod, startingDate, endDate, createdAt, updatedAt];
 }

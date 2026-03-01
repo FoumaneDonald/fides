@@ -40,9 +40,10 @@ class CustomerStateMapper extends ClassMapperBase<CustomerState> {
     _$message,
     opt: true,
   );
-  static List<LoyaltyProgramEntity>? _$listOfPrograms(CustomerState v) =>
-      v.listOfPrograms;
-  static const Field<CustomerState, List<LoyaltyProgramEntity>>
+  static List<LoyaltyProgramEntity<dynamic>>? _$listOfPrograms(
+    CustomerState v,
+  ) => v.listOfPrograms;
+  static const Field<CustomerState, List<LoyaltyProgramEntity<dynamic>>>
   _f$listOfPrograms = Field('listOfPrograms', _$listOfPrograms, opt: true);
   static CustomerEntity? _$customerEntity(CustomerState v) => v.customerEntity;
   static const Field<CustomerState, CustomerEntity> _f$customerEntity = Field(
@@ -134,8 +135,12 @@ abstract class CustomerStateCopyWith<$R, $In extends CustomerState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    LoyaltyProgramEntity,
-    ObjectCopyWith<$R, LoyaltyProgramEntity, LoyaltyProgramEntity>
+    LoyaltyProgramEntity<dynamic>,
+    ObjectCopyWith<
+      $R,
+      LoyaltyProgramEntity<dynamic>,
+      LoyaltyProgramEntity<dynamic>
+    >
   >?
   get listOfPrograms;
   CustomerEntityCopyWith<$R, CustomerEntity, CustomerEntity>?
@@ -144,7 +149,7 @@ abstract class CustomerStateCopyWith<$R, $In extends CustomerState, $Out>
     CustomerStatus? status,
     ProgramStatus? programStatus,
     String? message,
-    List<LoyaltyProgramEntity>? listOfPrograms,
+    List<LoyaltyProgramEntity<dynamic>>? listOfPrograms,
     CustomerEntity? customerEntity,
   });
   CustomerStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -161,8 +166,12 @@ class _CustomerStateCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    LoyaltyProgramEntity,
-    ObjectCopyWith<$R, LoyaltyProgramEntity, LoyaltyProgramEntity>
+    LoyaltyProgramEntity<dynamic>,
+    ObjectCopyWith<
+      $R,
+      LoyaltyProgramEntity<dynamic>,
+      LoyaltyProgramEntity<dynamic>
+    >
   >?
   get listOfPrograms => $value.listOfPrograms != null
       ? ListCopyWith(

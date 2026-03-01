@@ -42,6 +42,6 @@ final class CustomerState with CustomerStateMappable {
         programStatus: ProgramStatus.loading,
         message: CustomerStatus.initial.message,
         listOfPrograms: const [],
-        customerEntity: const CustomerEntity(name: '', loyaltyPrograms: []),
+        customerEntity: CustomerEntity.empty(),
       );
 }

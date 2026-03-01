@@ -7,20 +7,20 @@ import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../../../../domain/entities/reward_entity.dart';
-import '../../../../services/helpers/discount_type_enum.dart';
-import '../../../../services/helpers/program_type_enum.dart';
-import '../../../../services/helpers/reward_type_enum.dart';
-import '../../../core/mixins/validation_mixins.dart';
-import '../../../core/utilities/dismiss_keyboard.dart';
-import '../../../core/widgets/fides_dropdown_input.dart';
-import '../../../core/widgets/fides_snack_bar.dart';
-import '../../../core/widgets/fides_text_input.dart';
-import '../../../core/widgets/fides_text_input_selection.dart';
-import '../../../core/widgets/loader.dart';
-import '../../../core/widgets/primary_button.dart';
-import '../../../core/widgets/required_field_text.dart';
-import '../bloc/loyalty_program_bloc.dart';
+import '../../../domain/entities/reward_entity.dart';
+import '../../../services/helpers/discount_type_enum.dart';
+import '../../../services/helpers/program_type_enum.dart';
+import '../../../services/helpers/reward_type_enum.dart';
+import '../../core/mixins/validation_mixins.dart';
+import '../../core/utilities/dismiss_keyboard.dart';
+import '../../core/widgets/fides_dropdown_input.dart';
+import '../../core/widgets/fides_snack_bar.dart';
+import '../../core/widgets/fides_text_input.dart';
+import '../../core/widgets/fides_text_input_selection.dart';
+import '../../core/widgets/loader.dart';
+import '../../core/widgets/primary_button.dart';
+import '../../core/widgets/required_field_text.dart';
+import '../bloc/setup_program_bloc.dart';
 import '../widgets/select_image_field.dart';
 
 class CreateReward extends StatefulWidget {
@@ -60,7 +60,7 @@ class _CreateRewardState extends State<CreateReward> with ValidationMixins {
       controller.addListener(() => setState(() {}));
     }
 
-    final state = context.read<LoyaltyProgramBloc>().state;
+    final state = context.read<SetupProgramBloc>().state;
     if (state is LoyaltyProgramEditing) {
       // In case of return program, display the select return winning number
       _winningStampController.text = state.selectReturnNumber?.toString() ?? '';
@@ -126,7 +126,7 @@ class _CreateRewardState extends State<CreateReward> with ValidationMixins {
             child: Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-                child: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
+                child: BlocConsumer<SetupProgramBloc, SetupProgramState>(
                   listener: (context, state) {
                     if (state is LoyaltyProgramEditing) {
                       if (state.rewardStatus == RewardStatus.added) {
@@ -240,23 +240,26 @@ class _CreateRewardState extends State<CreateReward> with ValidationMixins {
                           AppButton.primary(
                             loading: state.rewardStatus == RewardStatus.loading,
                             text: 'Add reward',
-                            onPressed: _isButtonActive(state) ? () async {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                final rewardEntity = RewardEntity(
-                                  type: selectedRewardType,
-                                  stampNumber: state.programType == ProgramType.returning ? int.tryParse(_winningStampController.text.trim()) : null,
-                                  discountValue: selectedRewardType == RewardType.discount ? int.tryParse(_discountAmountController.text.trim()) : null,
-                                  discountType: selectedRewardType == RewardType.discount ? selectedDiscountType : null,
-                                  item: _itemController.text.trim(),
-                                  imagePath: _selectedImage!.path,
-                                  description: _descriptionController.text.trim(),
-                                  rewardCost: state.programType == ProgramType.spend ? int.parse(_pointCostController.text.trim()) : null,
-                                );
+                            onPressed: _isButtonActive(state)
+                                ? () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      _formKey.currentState!.save();
 
-                                if (context.mounted) context.read<LoyaltyProgramBloc>().add(AddReward(rewardEntity));
-                              }
-                            } : null,
+                                      if (context.mounted) {
+                                        context.read<SetupProgramBloc>().add(AddReward(
+                                              type: selectedRewardType,
+                                              unlockThreshold: int.parse(_winningStampController.text.trim()),
+                                              discountValue: selectedRewardType == RewardType.discount ? int.tryParse(_discountAmountController.text.trim()) : null,
+                                              discountType: selectedRewardType == RewardType.discount ? selectedDiscountType : null,
+                                              item: _itemController.text.trim(),
+                                              imagePath: _selectedImage!.path,
+                                              description: _descriptionController.text.trim(),
+                                              minimumPurchase: state.programType == ProgramType.spend ? int.parse(_pointCostController.text.trim()) : null,
+                                            ));
+                                      }
+                                    }
+                                  }
+                                : null,
                           ),
                         ],
                       );

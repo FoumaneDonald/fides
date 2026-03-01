@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../core/widgets/fides_text_input.dart';
+import '../../core/widgets/fides_text_input.dart';
 
 class BuildSpendFields extends StatelessWidget {
   const BuildSpendFields({

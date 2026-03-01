@@ -1,23 +1,22 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:fides/domain/entities/reward_entity.dart';
 
-import '../../../core/enums/time_units.dart';
-import '../../../data/models/spend_model.dart';
-import '../../../services/helpers/program_type_enum.dart';
-import '../loyalty_program_entity.dart';
+import '../../core/enums/time_units.dart';
+import '../../data/models/loyalty_program.dart';
+import '../../data/models/spend_model.dart';
+import '../../services/helpers/program_type_enum.dart';
+import 'loyalty_program_entity.dart';
 
 part 'spend_entity.mapper.dart';
 
 @MappableClass()
-class SpendEntity extends LoyaltyProgramEntity with SpendEntityMappable {
-  final int? id;
+class SpendEntity extends LoyaltyProgramEntity<SpendEntity> with SpendEntityMappable {
   final double? points;
   final double? minimumSpent;
   final String currencyCode;
 
   SpendEntity({
-    this.id,
-    required super.type,
+    required super.programId,
     required super.name,
     this.points,
     this.minimumSpent,
@@ -29,7 +28,7 @@ class SpendEntity extends LoyaltyProgramEntity with SpendEntityMappable {
     super.endDate,
     super.createdAt,
     super.updatedAt,
-  });
+  }) : super(type: ProgramType.spend);
 
   @override
   SpendEntity cloneWith({
@@ -44,8 +43,8 @@ class SpendEntity extends LoyaltyProgramEntity with SpendEntityMappable {
     DateTime? updatedAt,
   }) {
     return SpendEntity(
+      programId: programId,
       name: name ?? this.name,
-      type: type ?? this.type,
       currencyCode: currencyCode,
       rewards: rewards ?? this.rewards,
       lastingNumber: lastingNumber ?? this.lastingNumber,
@@ -55,29 +54,6 @@ class SpendEntity extends LoyaltyProgramEntity with SpendEntityMappable {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
-  }
-
-  ///Convert Model to Entity
-  factory SpendEntity.fromModel(SpendModel model) {
-    return SpendEntity(
-      id: model.id ?? 0,
-      type: ProgramType.from(model.type),
-      name: model.name,
-      points: model.points,
-      minimumSpent: model.minimumSpent,
-      currencyCode: model.currencyCode,
-      rewards: RewardEntity.fromModelList(model.rewards),
-      lastingNumber: model.lastingNumber,
-      lastingPeriod: TimeUnit.fromString(model.lastingPeriod),
-      startingDate: model.startingDate,
-      endDate: model.endDate,
-      createdAt: model.createdAt,
-      updatedAt: model.updatedAt,
-    );
-  }
-
-  static List<SpendEntity> fromModelList(List<SpendModel> models) {
-    return models.map((model) => SpendEntity.fromModel(model)).toList();
   }
 
   @override

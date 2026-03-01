@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/entities/spendEntity/spend_entity.dart';
-import '../../../../domain/entities/returnEntity/return_entity.dart';
+import '../../../../domain/entities/spend_entity.dart';
+import '../../../../domain/entities/return_entity.dart';
 import '../../../core/utilities/app_icon.dart';
 
 class ProgramDetails extends StatelessWidget {

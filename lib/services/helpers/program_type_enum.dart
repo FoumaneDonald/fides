@@ -13,7 +13,7 @@ enum ProgramType {
 
   const ProgramType(this.label, this.title, this.description, this.icon);
 
-  static ProgramType from(String? value) {
+  static ProgramType fromString(String? value) {
     return ProgramType.values.firstWhere(
       (e) => e.label.toLowerCase() == value?.toLowerCase(),
       orElse: () => ProgramType.unknown,

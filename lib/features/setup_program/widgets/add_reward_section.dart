@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../domain/entities/reward_entity.dart';
-import '../../../../services/helpers/app_route_enum.dart';
-import '../../../../services/helpers/program_type_enum.dart';
-import '../../../core/utilities/app_icon.dart';
-import '../../../core/widgets/reward_card.dart';
+import '../../../domain/entities/reward_entity.dart';
+import '../../../services/helpers/app_route_enum.dart';
+import '../../../services/helpers/program_type_enum.dart';
+import '../../core/utilities/app_icon.dart';
+import '../../core/widgets/reward_card.dart';
 
 class AddRewardSection extends StatelessWidget {
   const AddRewardSection({
@@ -109,7 +109,7 @@ class AddRewardSection extends StatelessWidget {
                     ),
                     Column(
                       spacing: 8,
-                      children: _rewards.where((reward) => reward.stampNumber == _selectReturnNumber).map((reward) {
+                      children: _rewards.where((reward) => reward.unlockThreshold == _selectReturnNumber).map((reward) {
                         return RewardCard(
                           reward: reward,
                           programType: _programType,

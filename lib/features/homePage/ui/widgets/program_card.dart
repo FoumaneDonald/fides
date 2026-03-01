@@ -4,8 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../domain/entities/loyalty_program_entity.dart';
-import '../../../../domain/entities/spendEntity/spend_entity.dart';
-import '../../../../domain/entities/returnEntity/return_entity.dart';
+import '../../../../domain/entities/spend_entity.dart';
+import '../../../../domain/entities/return_entity.dart';
 import '../../../../services/helpers/app_route_enum.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 

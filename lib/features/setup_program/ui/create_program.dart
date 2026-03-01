@@ -1,5 +1,5 @@
 import 'package:currency_picker/currency_picker.dart';
-import 'package:fides/domain/entities/spendEntity/spend_entity.dart';
+import 'package:fides/domain/entities/spend_entity.dart';
 import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:fides/features/core/widgets/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +7,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/enums/time_units.dart';
-import '../../../../domain/entities/returnEntity/return_entity.dart';
-import '../../../../services/helpers/app_route_enum.dart';
-import '../../../../services/helpers/program_type_enum.dart';
-import '../../../core/mixins/validation_mixins.dart';
-import '../../../core/widgets/fides_app_bar.dart';
-import '../../../core/widgets/fides_snack_bar.dart';
-import '../../../core/widgets/fides_text_input.dart';
-import '../../../core/widgets/fides_text_input_selection.dart';
-import '../../../core/widgets/required_field_text.dart';
-import '../bloc/loyalty_program_bloc.dart';
+import '../../../core/enums/time_units.dart';
+import '../../../domain/entities/return_entity.dart';
+import '../../../services/helpers/app_route_enum.dart';
+import '../../../services/helpers/program_type_enum.dart';
+import '../../core/mixins/validation_mixins.dart';
+import '../../core/widgets/fides_app_bar.dart';
+import '../../core/widgets/fides_snack_bar.dart';
+import '../../core/widgets/fides_text_input.dart';
+import '../../core/widgets/fides_text_input_selection.dart';
+import '../../core/widgets/required_field_text.dart';
+import '../../loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import '../bloc/setup_program_bloc.dart';
 import '../widgets/add_reward_section.dart';
 import '../widgets/build_return_fields.dart';
 import '../widgets/build_spend_fields.dart';
@@ -58,18 +59,18 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
   @override
   void initState() {
     super.initState();
-    final state = context.read<LoyaltyProgramBloc>().state;
+    final state = context.read<SetupProgramBloc>().state;
 
     if (state is LoyaltyProgramEditing) {
       // Name field binding
       _nameController.text = state.program.name;
-      _nameController.addListener(() => context.read<LoyaltyProgramBloc>().add(NameChanged(_nameController.text)));
+      _nameController.addListener(() => context.read<SetupProgramBloc>().add(NameChanged(_nameController.text)));
 
       _lastingNumberController.text = state.program.lastingNumber.toString();
       _lastingNumberController.addListener(() {
         if (_lastingNumberController.text.isNotEmpty) {
           final int toInt = int.parse(_lastingNumberController.text);
-          context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingNumber: toInt));
+          context.read<SetupProgramBloc>().add(LastingDateChanged(lastingNumber: toInt));
         }
       });
 
@@ -87,7 +88,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
           if (valueInt != null) {
             if (valueInt < 0) valueInt = 0;
             if (valueInt > maxValue) valueInt = maxValue;
-            context.read<LoyaltyProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedFromHereOn: valueInt + 1));
+            context.read<SetupProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedFromHereOn: valueInt + 1));
             _updateReturns(valueInt);
           }
         });
@@ -100,7 +101,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
 
         _minimumSpentController.addListener(() {
           if (_minimumSpentController.text.isNotEmpty) {
-            context.read<LoyaltyProgramBloc>().add(MinimumSpentChanged(double.parse(_minimumSpentController.text)));
+            context.read<SetupProgramBloc>().add(MinimumSpentChanged(double.parse(_minimumSpentController.text)));
           }
         });
 
@@ -108,7 +109,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
 
         _pointsController.addListener(() {
           if (_pointsController.text.isNotEmpty) {
-            context.read<LoyaltyProgramBloc>().add(PointsChanged(double.parse(_pointsController.text)));
+            context.read<SetupProgramBloc>().add(PointsChanged(double.parse(_pointsController.text)));
           }
         });
       }
@@ -144,7 +145,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
 
   // Handle stamp selection toggle for rewards
   void _toggleWinningStamps(int number) {
-    context.read<LoyaltyProgramBloc>().add(WinningStampChanged(number));
+    context.read<SetupProgramBloc>().add(WinningStampChanged(number));
   }
 
   bool _isButtonActive(LoyaltyProgramEditing state) {
@@ -157,7 +158,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
       final program = state.program as ReturnEntity;
       condition = program.winningNumbers.isNotEmpty &&
           program.winningNumbers.every(
-            (number) => program.rewards.any((reward) => reward.stampNumber == number),
+            (number) => program.rewards.any((reward) => reward.unlockThreshold == number),
           ) &&
           isNameNotEmpty &&
           isPointsNotEmpty &&
@@ -173,14 +174,14 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
+    return BlocConsumer<SetupProgramBloc, SetupProgramState>(
       listener: (context, state) {
         final route = ModalRoute.of(context);
         final isCurrentRoute = route?.isCurrent ?? false;
 
         if (state is LoyaltyProgramEditing && state.status == Status.error) {
           FidesSnackBar.error(context, state.message!);
-        } else if (state is LoyaltyProgramError) {
+        } else if (state is SetupProgramError) {
           FidesSnackBar.error(context, state.message);
         }
 
@@ -239,7 +240,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                                             showCurrencyPicker(
                                               context: context,
                                               favorite: ['XAF'],
-                                              onSelect: (Currency currency) => context.read<LoyaltyProgramBloc>().add(CurrencyChanged(currency.code)),
+                                              onSelect: (Currency currency) => context.read<SetupProgramBloc>().add(CurrencyChanged(currency.code)),
                                             );
                                           },
                                         ),
@@ -265,7 +266,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                                       validator: composeValidators<String>([requiredField]),
                                       dropDownList: TimeUnit.values.where((unit) => unit != TimeUnit.unknown).toList(),
                                       selectedValue: state.program.lastingPeriod,
-                                      onChangedDropdown: (TimeUnit? value) => context.read<LoyaltyProgramBloc>().add(LastingDateChanged(lastingPeriod: value)),
+                                      onChangedDropdown: (TimeUnit? value) => context.read<SetupProgramBloc>().add(LastingDateChanged(lastingPeriod: value)),
                                       onFieldSubmitted: (_) => _lastingNumberFocus.unfocus(),
                                       itemBuilder: (unit) => Text(unit.label),
                                     ),
@@ -285,8 +286,8 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                                     ?..sort(),
                                   isReturnNumberSelected: (number) => (state.selectReturnNumber ?? -1) == number,
                                   selectReturnNumber: state.selectReturnNumber,
-                                  onSelectedWinningNumber: (number) => context.read<LoyaltyProgramBloc>().add(SelectedReturnRewardChanged(number)),
-                                  onDeleteReward: (reward) => context.read<LoyaltyProgramBloc>().add(DeleteReward(reward)),
+                                  onSelectedWinningNumber: (number) => context.read<SetupProgramBloc>().add(SelectedReturnRewardChanged(number)),
+                                  onDeleteReward: (reward) => context.read<SetupProgramBloc>().add(DeleteReward(reward)),
                                 ),
                               ],
                             ),
@@ -297,7 +298,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                         loading: state.loading,
                         onPrimaryPressed: _isButtonActive(state) ? () {
                           if (_formKey.currentState!.validate()) {
-                            context.read<LoyaltyProgramBloc>().add(SubmitLoyaltyProgram());
+                            context.read<SetupProgramBloc>().add(SubmitLoyaltyProgram());
                           }
                         } : null,
                         onSecondaryPressed: () => context.pop(),

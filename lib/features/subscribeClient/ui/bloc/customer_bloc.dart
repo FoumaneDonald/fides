@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:result_dart/result_dart.dart';
 
 import '../../../../domain/entities/customer_entity.dart';
+import '../../../../domain/entities/loyalty_card_entity.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../domain/repositories/customer_repository.dart';
 import '../../../../domain/repositories/loyalty_program_repository.dart';
@@ -28,7 +29,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     on<SubscribeCustomer>(_onSubscribeCustomer);
   }
 
-  _onInit(Init event, Emitter<CustomerState> emit) async {
+  Future<void> _onInit(Init event, Emitter<CustomerState> emit) async {
     emit(state.copyWith(programStatus: ProgramStatus.loading, message: ProgramStatus.loading.message));
 
     Result<Map<ProgramType, List<LoyaltyProgramEntity>>> response = await _loyaltyProgramRepository.getLoyaltyProgram();
@@ -41,13 +42,14 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     );
   }
 
-  _onSelectProgram(OnSelectProgram event, Emitter<CustomerState> emit) {
-    List<LoyaltyProgramEntity> customerSelectedPrograms = state.customerEntity!.loyaltyPrograms;
-    customerSelectedPrograms = List.from(event.programs);
-    emit(state.copyWith(customerEntity: state.customerEntity!.copyWith(loyaltyPrograms: customerSelectedPrograms)));
+  void _onSelectProgram(OnSelectProgram event, Emitter<CustomerState> emit) {
+    throw UnimplementedError();
+    // List<LoyaltyCardEntity> customerSelectedPrograms = state.customerEntity!.cards;
+    // customerSelectedPrograms = List.from(event.programs);
+    // emit(state.copyWith(customerEntity: state.customerEntity!.copyWith(loyaltyPrograms: customerSelectedPrograms)));
   }
 
-  _onSubscribeCustomer(SubscribeCustomer event, Emitter<CustomerState> emit) async {
+  Future<void> _onSubscribeCustomer(SubscribeCustomer event, Emitter<CustomerState> emit) async {
     emit(state.copyWith(status: CustomerStatus.loading, message: CustomerStatus.loading.message));
 
     final newCustomer = state.customerEntity!.copyWith(

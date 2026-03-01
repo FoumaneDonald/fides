@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../services/helpers/app_route_enum.dart';
 import '../../../../services/helpers/program_type_enum.dart';
 import '../../../core/widgets/fides_app_bar.dart';
+import '../../../setup_program/bloc/setup_program_bloc.dart';
 import '../bloc/loyalty_program_bloc.dart';
 import '../widgets/loyalty_program_card.dart';
 
@@ -40,7 +41,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
                       programDescription: ProgramType.returning.description,
                       programIcon: AppIcon.stamp(),
                       onPressed: () {
-                        context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.returning));
+                        context.read<SetupProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.returning));
                         context.pushNamed(AppRoute.aboutProgram.name);
                       },
                     ),
@@ -49,7 +50,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
                       programDescription: ProgramType.spend.description,
                       programIcon: AppIcon.points(),
                       onPressed: () {
-                        context.read<LoyaltyProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.spend));
+                        context.read<SetupProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.spend));
                         context.pushNamed(AppRoute.aboutProgram.name);
                       },
                     ),

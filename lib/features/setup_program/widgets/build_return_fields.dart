@@ -2,9 +2,9 @@ import 'package:fides/features/core/utilities/app_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../core/mixins/validation_mixins.dart';
-import '../../../core/widgets/fides_text_input.dart';
-import '../../../core/widgets/return_number.dart';
+import '../../core/mixins/validation_mixins.dart';
+import '../../core/widgets/fides_text_input.dart';
+import '../../core/widgets/return_number.dart';
 
 class BuildReturnFields extends StatelessWidget with ValidationMixins {
   const BuildReturnFields({

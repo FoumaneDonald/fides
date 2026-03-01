@@ -1,19 +1,14 @@
 part of 'loyalty_program_bloc.dart';
 
-@MappableClass()
-sealed class LoyaltyProgramState with LoyaltyProgramStateMappable {
+sealed class LoyaltyProgramState {
   const LoyaltyProgramState();
 }
 
-/// Initial state
-@MappableClass()
-class LoyaltyProgramInitial extends LoyaltyProgramState with LoyaltyProgramInitialMappable {
+class LoyaltyProgramInitial extends LoyaltyProgramState {
   const LoyaltyProgramInitial();
 }
 
-/// Loading data (programs, rewards, submission, etc.)
-@MappableClass()
-class LoyaltyProgramLoading extends LoyaltyProgramState with LoyaltyProgramLoadingMappable {
+class LoyaltyProgramLoading extends LoyaltyProgramState {
   const LoyaltyProgramLoading();
 }
 
@@ -33,41 +28,7 @@ class LoyaltyProgramLoaded extends LoyaltyProgramState with LoyaltyProgramLoaded
   });
 }
 
-enum Status { idle, loading, error, success }
-enum RewardStatus { initial, loading, error, added }
-
-/// A program is actively being edited
-@MappableClass()
-class LoyaltyProgramEditing extends LoyaltyProgramState with LoyaltyProgramEditingMappable {
-  final ProgramType programType;
-  final LoyaltyProgramEntity program;
-  final int? selectReturnNumber;
-  final bool loading;
-  final Status status;
-  final RewardStatus rewardStatus;
-  final String? message;
-
-  const LoyaltyProgramEditing({
-    required this.programType,
-    required this.program,
-    this.selectReturnNumber,
-    this.loading = false,
-    this.status = Status.idle,
-    this.rewardStatus = RewardStatus.initial,
-    this.message,
-  });
-}
-
-/// Reward-specific state
-@MappableClass()
-class RewardAdded extends LoyaltyProgramState with RewardAddedMappable {
-  final LoyaltyProgramEntity updatedProgram;
-  const RewardAdded(this.updatedProgram);
-}
-
-/// Error state
-@MappableClass()
-class LoyaltyProgramError extends LoyaltyProgramState with LoyaltyProgramErrorMappable {
+class LoyaltyProgramError extends LoyaltyProgramState {
   final String message;
   const LoyaltyProgramError(this.message);
 }
