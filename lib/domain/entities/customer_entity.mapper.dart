@@ -14,6 +14,7 @@ class CustomerEntityMapper extends ClassMapperBase<CustomerEntity> {
   static CustomerEntityMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CustomerEntityMapper._());
+      LoyaltyCardEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -21,8 +22,11 @@ class CustomerEntityMapper extends ClassMapperBase<CustomerEntity> {
   @override
   final String id = 'CustomerEntity';
 
-  static int? _$id(CustomerEntity v) => v.id;
-  static const Field<CustomerEntity, int> _f$id = Field('id', _$id, opt: true);
+  static String _$customerId(CustomerEntity v) => v.customerId;
+  static const Field<CustomerEntity, String> _f$customerId = Field(
+    'customerId',
+    _$customerId,
+  );
   static String _$name(CustomerEntity v) => v.name;
   static const Field<CustomerEntity, String> _f$name = Field('name', _$name);
   static String? _$phone(CustomerEntity v) => v.phone;
@@ -37,27 +41,28 @@ class CustomerEntityMapper extends ClassMapperBase<CustomerEntity> {
     _$email,
     opt: true,
   );
-  static List<LoyaltyProgramEntity> _$loyaltyPrograms(CustomerEntity v) =>
-      v.loyaltyPrograms;
-  static const Field<CustomerEntity, List<LoyaltyProgramEntity>>
-  _f$loyaltyPrograms = Field('loyaltyPrograms', _$loyaltyPrograms);
+  static List<LoyaltyCardEntity> _$cards(CustomerEntity v) => v.cards;
+  static const Field<CustomerEntity, List<LoyaltyCardEntity>> _f$cards = Field(
+    'cards',
+    _$cards,
+  );
 
   @override
   final MappableFields<CustomerEntity> fields = const {
-    #id: _f$id,
+    #customerId: _f$customerId,
     #name: _f$name,
     #phone: _f$phone,
     #email: _f$email,
-    #loyaltyPrograms: _f$loyaltyPrograms,
+    #cards: _f$cards,
   };
 
   static CustomerEntity _instantiate(DecodingData data) {
     return CustomerEntity(
-      id: data.dec(_f$id),
+      customerId: data.dec(_f$customerId),
       name: data.dec(_f$name),
       phone: data.dec(_f$phone),
       email: data.dec(_f$email),
-      loyaltyPrograms: data.dec(_f$loyaltyPrograms),
+      cards: data.dec(_f$cards),
     );
   }
 
@@ -125,16 +130,16 @@ abstract class CustomerEntityCopyWith<$R, $In extends CustomerEntity, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    LoyaltyProgramEntity,
-    ObjectCopyWith<$R, LoyaltyProgramEntity, LoyaltyProgramEntity>
+    LoyaltyCardEntity,
+    LoyaltyCardEntityCopyWith<$R, LoyaltyCardEntity, LoyaltyCardEntity>
   >
-  get loyaltyPrograms;
+  get cards;
   $R call({
-    int? id,
+    String? customerId,
     String? name,
     String? phone,
     String? email,
-    List<LoyaltyProgramEntity>? loyaltyPrograms,
+    List<LoyaltyCardEntity>? cards,
   });
   CustomerEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -152,37 +157,37 @@ class _CustomerEntityCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    LoyaltyProgramEntity,
-    ObjectCopyWith<$R, LoyaltyProgramEntity, LoyaltyProgramEntity>
+    LoyaltyCardEntity,
+    LoyaltyCardEntityCopyWith<$R, LoyaltyCardEntity, LoyaltyCardEntity>
   >
-  get loyaltyPrograms => ListCopyWith(
-    $value.loyaltyPrograms,
-    (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(loyaltyPrograms: v),
+  get cards => ListCopyWith(
+    $value.cards,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(cards: v),
   );
   @override
   $R call({
-    Object? id = $none,
+    String? customerId,
     String? name,
     Object? phone = $none,
     Object? email = $none,
-    List<LoyaltyProgramEntity>? loyaltyPrograms,
+    List<LoyaltyCardEntity>? cards,
   }) => $apply(
     FieldCopyWithData({
-      if (id != $none) #id: id,
+      if (customerId != null) #customerId: customerId,
       if (name != null) #name: name,
       if (phone != $none) #phone: phone,
       if (email != $none) #email: email,
-      if (loyaltyPrograms != null) #loyaltyPrograms: loyaltyPrograms,
+      if (cards != null) #cards: cards,
     }),
   );
   @override
   CustomerEntity $make(CopyWithData data) => CustomerEntity(
-    id: data.get(#id, or: $value.id),
+    customerId: data.get(#customerId, or: $value.customerId),
     name: data.get(#name, or: $value.name),
     phone: data.get(#phone, or: $value.phone),
     email: data.get(#email, or: $value.email),
-    loyaltyPrograms: data.get(#loyaltyPrograms, or: $value.loyaltyPrograms),
+    cards: data.get(#cards, or: $value.cards),
   );
 
   @override

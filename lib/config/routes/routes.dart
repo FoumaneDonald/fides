@@ -1,16 +1,16 @@
-import 'package:fides/features/loyaltyProgram/ui/page/create_program.dart';
+import 'package:fides/features/setup_program/ui/create_program.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../domain/entities/loyalty_program_entity.dart';
 import '../../features/core/widgets/scaffold_with_nested_navigation.dart';
-import '../../features/homePage/ui/pages/home.dart';
-import '../../features/loyaltyProgram/ui/page/program_details.dart';
-import '../../features/loyaltyProgram/ui/page/create_reward.dart';
-import '../../features/loyaltyProgram/ui/page/programs.dart';
-import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
-import '../../features/subscribeClient/ui/pages/create_customer.dart';
+import '../../features/homePage/ui/home.dart';
+import '../../features/loyaltyProgram/ui/program_details.dart';
+import '../../features/loyaltyProgram/ui/programs.dart';
+import '../../features/setup_program/ui/select_loyalty_program.dart';
+import '../../features/setup_program/ui/create_reward.dart';
+import '../../features/subscribeClient/ui/create_customer.dart';
 import '../../services/helpers/app_route_enum.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
@@ -41,23 +41,23 @@ class Routes {
             builder: (context, state) => Programs(),
             routes: [
               GoRoute(
-                name: AppRoute.selectLoyaltyProgram.name,
-                path: AppRoute.selectLoyaltyProgram.path,
-                builder: (context, state) => SelectLoyaltyProgram(),
-                routes: [
-                  GoRoute(
-                    name: AppRoute.aboutProgram.name,
-                    path: AppRoute.aboutProgram.path,
-                    builder: (context, state) => CreateProgram(),
-                  ),
-                ],
-              ),
-              GoRoute(
                 name: AppRoute.programDetails.name,
                 path: AppRoute.programDetails.path,
                 builder: (context, state) => ProgramDetails(program: state.extra as LoyaltyProgramEntity,),
               ),
             ],
+          ),
+        ],
+      ),
+      GoRoute(
+        name: AppRoute.selectLoyaltyProgram.name,
+        path: AppRoute.selectLoyaltyProgram.path,
+        builder: (context, state) => SelectLoyaltyProgram(),
+        routes: [
+          GoRoute(
+            name: AppRoute.createProgram.name,
+            path: AppRoute.createProgram.path,
+            builder: (context, state) => CreateProgram(),
           ),
         ],
       ),

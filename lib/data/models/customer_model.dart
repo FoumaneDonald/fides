@@ -1,69 +1,74 @@
-import 'package:equatable/equatable.dart';
-import 'package:fides/data/models/spend_model.dart';
-import 'package:fides/data/models/return_model.dart';
 import 'package:objectbox/objectbox.dart';
 
+import 'loyalty_card.dart';
 import '../../domain/entities/customer_entity.dart';
-import '../../domain/entities/spendEntity/spend_entity.dart';
-import '../../domain/entities/returnEntity/return_entity.dart';
 
 @Entity()
 class CustomerModel {
   @Id()
   int id = 0;
-  @Unique()
+  String customerId;
   String name;
   @Unique()
   String? phone;
   @Unique()
   String? email;
+  @Property(type: PropertyType.date)
+  DateTime? createdAt = DateTime.now();
+  @Property(type: PropertyType.date)
+  DateTime? updatedAt;
 
-  final spendPrograms = ToMany<SpendModel>();
-  final returnPrograms = ToMany<ReturnModel>();
+  @Backlink("customer")
+  final cards = ToMany<LoyaltyCardModel>();
 
   CustomerModel({
-    required this.id,
+    this.id = 0,
+    required this.customerId,
     required this.name,
     this.phone,
     this.email,
+    this.createdAt,
+    this.updatedAt,
   });
+
 
   CustomerModel copyWith({
     int? id = 0,
+    String? customerId,
     String? name,
     String? phone,
     String? email,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return CustomerModel(
       id: id ?? this.id,
+      customerId: customerId ?? this.customerId,
       name: name ?? this.name,
       phone: phone ?? this.phone,
       email: email ?? this.email,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
     );
   }
+  CustomerEntity toEntity() => CustomerEntity(
+      customerId: customerId,
+      name: name,
+      phone: phone,
+      email: email,
+      cards: cards.map((card) => card.toEntity()).toList()
+  );
 
-  /// Convert [CustomerEntity] to [CustomerModel]
   factory CustomerModel.fromEntity(CustomerEntity entity) {
-    final CustomerModel model = CustomerModel(
-      id: entity.id ?? 0,
+    return CustomerModel(
+      customerId: entity.customerId,
       name: entity.name,
       phone: entity.phone,
       email: entity.email,
     );
-
-    entity.loyaltyPrograms.map((program) {
-      if (program is SpendEntity) {
-        model.spendPrograms.add(SpendModel.fromEntity(program));
-      } else if (program is ReturnEntity) {
-        model.returnPrograms.add(ReturnModel.fromEntity(program));
-      }
-    });
-
-    return model;
   }
 
-  /// Convert list of [CustomerEntity] to List of [CustomerModel]
-  static List<CustomerModel> fromEntityList(List<CustomerEntity> models) {
-    return models.map((model) => CustomerModel.fromEntity(model)).toList();
+  static List<CustomerEntity> fromModelList(List<CustomerModel> models) {
+    return models.map((model) => model.toEntity()).toList();
   }
 }

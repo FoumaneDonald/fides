@@ -5,7 +5,7 @@
   "entities": [
     {
       "id": "1:7015283484083012668",
-      "lastPropertyId": "4:871110795401683576",
+      "lastPropertyId": "7:3358965007151013048",
       "name": "CustomerModel",
       "properties": [
         {
@@ -17,9 +17,7 @@
         {
           "id": "2:560575189651736899",
           "name": "name",
-          "indexId": "1:7789491649031326571",
-          "type": 9,
-          "flags": 2080
+          "type": 9
         },
         {
           "id": "3:8216373017593947271",
@@ -34,88 +32,34 @@
           "indexId": "3:1031450621937900103",
           "type": 9,
           "flags": 2080
-        }
-      ],
-      "relations": [
-        {
-          "id": "1:2813295639591578593",
-          "name": "spendPrograms",
-          "targetId": "4:6581289349773652606"
         },
         {
-          "id": "2:8379675187063647004",
-          "name": "returnPrograms",
-          "targetId": "2:6381600442670235898"
-        }
-      ]
-    },
-    {
-      "id": "2:6381600442670235898",
-      "lastPropertyId": "11:9193132095175493718",
-      "name": "ReturnModel",
-      "properties": [
-        {
-          "id": "1:7555628221072167428",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:7167818898595519913",
-          "name": "type",
+          "id": "5:1032240807990234120",
+          "name": "customerId",
           "type": 9
         },
         {
-          "id": "3:5391885287981564768",
-          "name": "name",
-          "type": 9
-        },
-        {
-          "id": "4:5934419896306581815",
-          "name": "numberHoles",
-          "type": 6
-        },
-        {
-          "id": "5:1440274582251185851",
-          "name": "winningNumbers",
-          "type": 24
-        },
-        {
-          "id": "6:4952478839050913934",
-          "name": "lastingNumber",
-          "type": 6
-        },
-        {
-          "id": "7:1816850983170984713",
-          "name": "lastingPeriod",
-          "type": 9
-        },
-        {
-          "id": "8:2848204522093473624",
-          "name": "startingDate",
-          "type": 10
-        },
-        {
-          "id": "9:3485055448530788744",
-          "name": "endDate",
-          "type": 10
-        },
-        {
-          "id": "10:7527426910035983512",
+          "id": "6:2500854970555908241",
           "name": "createdAt",
           "type": 10
         },
         {
-          "id": "11:9193132095175493718",
+          "id": "7:3358965007151013048",
           "name": "updatedAt",
           "type": 10
         }
       ],
-      "relations": []
+      "relations": [
+        {
+          "id": "4:8532262507740115402",
+          "name": "cards",
+          "targetId": "6:1128430573807638786"
+        }
+      ]
     },
     {
       "id": "3:3012900800852066697",
-      "lastPropertyId": "14:1165729295383189103",
+      "lastPropertyId": "17:1260240145275381807",
       "name": "RewardModel",
       "properties": [
         {
@@ -128,11 +72,6 @@
           "id": "2:4064391079261861944",
           "name": "type",
           "type": 9
-        },
-        {
-          "id": "3:2986004899823721230",
-          "name": "stampNumber",
-          "type": 6
         },
         {
           "id": "4:5247338008956317061",
@@ -160,11 +99,6 @@
           "type": 9
         },
         {
-          "id": "9:8765499207399769269",
-          "name": "rewardCost",
-          "type": 6
-        },
-        {
           "id": "10:6928759165017539537",
           "name": "minimumPurchase",
           "type": 6
@@ -180,105 +114,382 @@
           "type": 10
         },
         {
-          "id": "13:1974151542789393545",
-          "name": "spendProgramId",
-          "indexId": "4:2963466069058881996",
-          "type": 11,
-          "flags": 520,
-          "relationTarget": "SpendModel"
+          "id": "15:252870730817236996",
+          "name": "rewardId",
+          "type": 9
         },
         {
-          "id": "14:1165729295383189103",
-          "name": "returnProgramId",
-          "indexId": "5:7661441503771101191",
+          "id": "16:944318937541600051",
+          "name": "unlockThreshold",
+          "type": 6
+        },
+        {
+          "id": "17:1260240145275381807",
+          "name": "programId",
+          "indexId": "14:1631147677729694300",
           "type": 11,
           "flags": 520,
-          "relationTarget": "ReturnModel"
+          "relationTarget": "LoyaltyProgramModel"
         }
       ],
       "relations": []
     },
     {
-      "id": "4:6581289349773652606",
-      "lastPropertyId": "12:1297590559322689021",
-      "name": "SpendModel",
+      "id": "5:3897399276688137865",
+      "lastPropertyId": "7:6412461495232393496",
+      "name": "BusinessModel",
       "properties": [
         {
-          "id": "1:4927317179946854576",
+          "id": "1:291079531651822980",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:7140211232023038728",
-          "name": "type",
+          "id": "2:1019981857424192165",
+          "name": "businessId",
           "type": 9
         },
         {
-          "id": "3:3002983200715798307",
+          "id": "3:7952267455730690060",
           "name": "name",
-          "indexId": "6:4298365782765950991",
+          "type": 9
+        },
+        {
+          "id": "4:6304726387826065493",
+          "name": "email",
+          "indexId": "7:3781903423534310421",
           "type": 9,
           "flags": 2080
         },
         {
-          "id": "4:1211679929624497774",
-          "name": "points",
-          "type": 8
+          "id": "5:8265011966488712361",
+          "name": "phoneNumber",
+          "indexId": "8:1216573247865276559",
+          "type": 6,
+          "flags": 40
         },
         {
-          "id": "5:4885474907870954284",
-          "name": "minimumSpent",
-          "type": 8
-        },
-        {
-          "id": "6:4803115434500795169",
-          "name": "currencyCode",
-          "type": 9
-        },
-        {
-          "id": "7:1019168761634338807",
-          "name": "lastingNumber",
-          "type": 6
-        },
-        {
-          "id": "8:2878776337406935823",
-          "name": "lastingPeriod",
-          "type": 9
-        },
-        {
-          "id": "9:1537731386392984746",
-          "name": "startingDate",
-          "type": 10
-        },
-        {
-          "id": "10:5772034534268627829",
-          "name": "endDate",
-          "type": 10
-        },
-        {
-          "id": "11:3388537713656770261",
+          "id": "6:5453400334941521442",
           "name": "createdAt",
           "type": 10
         },
         {
-          "id": "12:1297590559322689021",
+          "id": "7:6412461495232393496",
           "name": "updatedAt",
           "type": 10
+        }
+      ],
+      "relations": [
+        {
+          "id": "3:5279937257856767460",
+          "name": "programs",
+          "targetId": "7:7141859683297853253"
+        }
+      ]
+    },
+    {
+      "id": "6:1128430573807638786",
+      "lastPropertyId": "9:4744054421029803409",
+      "name": "LoyaltyCardModel",
+      "properties": [
+        {
+          "id": "1:2077560010699016084",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5161097888220262603",
+          "name": "cardId",
+          "type": 9
+        },
+        {
+          "id": "3:2478831372019741080",
+          "name": "balance",
+          "type": 6
+        },
+        {
+          "id": "4:7566358504432261425",
+          "name": "startDate",
+          "type": 10
+        },
+        {
+          "id": "5:4482051933989439729",
+          "name": "endDate",
+          "type": 10
+        },
+        {
+          "id": "6:8314585660063022326",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "7:6724121934380042615",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "8:6640496456985839943",
+          "name": "customerId",
+          "indexId": "9:4155135489593776726",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "CustomerModel"
+        },
+        {
+          "id": "9:4744054421029803409",
+          "name": "programId",
+          "indexId": "10:5329002810130986383",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "LoyaltyProgramModel"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:7141859683297853253",
+      "lastPropertyId": "17:4326322444351729556",
+      "name": "LoyaltyProgramModel",
+      "properties": [
+        {
+          "id": "1:5178459934506175407",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4937881491319917481",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:3442109799088469934",
+          "name": "type",
+          "type": 9
+        },
+        {
+          "id": "8:9212662218513575123",
+          "name": "maximumReturn",
+          "type": 6
+        },
+        {
+          "id": "9:6225831241547517019",
+          "name": "rewardedReturn",
+          "type": 27
+        },
+        {
+          "id": "10:618395500717577316",
+          "name": "points",
+          "type": 8
+        },
+        {
+          "id": "11:5524123974051104759",
+          "name": "minimumSpent",
+          "type": 8
+        },
+        {
+          "id": "12:7021930184657998897",
+          "name": "currencyCode",
+          "type": 9
+        },
+        {
+          "id": "13:2782029309364641783",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "14:6684876245940069226",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "15:7007637239315298864",
+          "name": "businessId",
+          "indexId": "11:947951756880903875",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "BusinessModel"
+        },
+        {
+          "id": "16:4340804728089453832",
+          "name": "programId",
+          "type": 9
+        },
+        {
+          "id": "17:4326322444351729556",
+          "name": "validityMonth",
+          "type": 6
+        }
+      ],
+      "relations": [
+        {
+          "id": "5:913139061746753328",
+          "name": "rewards",
+          "targetId": "3:3012900800852066697"
+        }
+      ]
+    },
+    {
+      "id": "8:1658966441366068760",
+      "lastPropertyId": "8:2393580631110747852",
+      "name": "RedemptionModel",
+      "properties": [
+        {
+          "id": "1:3262477958960198079",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4006506605453304403",
+          "name": "redemptionId",
+          "type": 9
+        },
+        {
+          "id": "3:1598332083630930217",
+          "name": "pointsSpent",
+          "type": 6
+        },
+        {
+          "id": "4:5633657360890883566",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "5:5277274569032757793",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "6:6248809066615041034",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "7:4656948586308474262",
+          "name": "cardId",
+          "indexId": "12:309244503116457699",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "LoyaltyCardModel"
+        },
+        {
+          "id": "8:2393580631110747852",
+          "name": "rewardId",
+          "indexId": "13:7672561167866931847",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "RewardModel"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "9:6054470002211778077",
+      "lastPropertyId": "8:7632529608640430840",
+      "name": "TransactionModel",
+      "properties": [
+        {
+          "id": "1:1038823601875866275",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3383702226926843217",
+          "name": "transactionId",
+          "type": 9
+        },
+        {
+          "id": "3:2903433110673101197",
+          "name": "amount",
+          "type": 8
+        },
+        {
+          "id": "4:8101735808020954610",
+          "name": "pointsEarned",
+          "type": 6
+        },
+        {
+          "id": "5:6888727673595751947",
+          "name": "date",
+          "type": 10
+        },
+        {
+          "id": "6:8580760817159922770",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "7:140518750688360024",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "8:7632529608640430840",
+          "name": "cardId",
+          "indexId": "15:5707938824827921087",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "LoyaltyCardModel"
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "4:6581289349773652606",
-  "lastIndexId": "6:4298365782765950991",
-  "lastRelationId": "2:8379675187063647004",
+  "lastEntityId": "9:6054470002211778077",
+  "lastIndexId": "15:5707938824827921087",
+  "lastRelationId": "5:913139061746753328",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
-  "retiredRelationUids": [],
+  "retiredEntityUids": [
+    6381600442670235898,
+    6581289349773652606
+  ],
+  "retiredIndexUids": [
+    7789491649031326571,
+    2963466069058881996,
+    7661441503771101191
+  ],
+  "retiredPropertyUids": [
+    2986004899823721230,
+    8765499207399769269,
+    1974151542789393545,
+    1165729295383189103,
+    7555628221072167428,
+    7167818898595519913,
+    5391885287981564768,
+    5934419896306581815,
+    1440274582251185851,
+    4952478839050913934,
+    1816850983170984713,
+    2848204522093473624,
+    3485055448530788744,
+    7527426910035983512,
+    9193132095175493718,
+    4927317179946854576,
+    7140211232023038728,
+    3002983200715798307,
+    1211679929624497774,
+    4885474907870954284,
+    4803115434500795169,
+    1019168761634338807,
+    2878776337406935823,
+    1537731386392984746,
+    5772034534268627829,
+    3388537713656770261,
+    1297590559322689021,
+    1153024153993593724,
+    9050480831357496432,
+    7497053464037254289,
+    3011151782762910479
+  ],
+  "retiredRelationUids": [
+    2813295639591578593,
+    8379675187063647004
+  ],
   "version": 1
 }

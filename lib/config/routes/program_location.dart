@@ -2,11 +2,11 @@ import 'package:beamer/beamer.dart';
 import 'package:fides/domain/entities/loyalty_program_entity.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/loyaltyProgram/ui/page/create_program.dart';
-import '../../features/loyaltyProgram/ui/page/program_details.dart';
-import '../../features/loyaltyProgram/ui/page/create_reward.dart';
-import '../../features/loyaltyProgram/ui/page/programs.dart';
-import '../../features/loyaltyProgram/ui/page/select_loyalty_program.dart';
+import '../../features/loyaltyProgram/ui/programs.dart';
+import '../../features/setup_program/ui/select_loyalty_program.dart';
+import '../../features/setup_program/ui/create_program.dart';
+import '../../features/loyaltyProgram/ui/program_details.dart';
+import '../../features/setup_program/ui/create_reward.dart';
 import '../../services/helpers/app_route_enum.dart';
 
 class ProgramLocation extends BeamLocation<BeamState> {
@@ -15,8 +15,8 @@ class ProgramLocation extends BeamLocation<BeamState> {
         AppRoute.programs.path,
         AppRoute.programs.path + AppRoute.programDetails.path,
         AppRoute.programs.path + AppRoute.selectLoyaltyProgram.path,
-        AppRoute.programs.path + AppRoute.selectLoyaltyProgram.path + AppRoute.aboutProgram.path,
-        AppRoute.programs.path + AppRoute.selectLoyaltyProgram.path + AppRoute.aboutProgram.path + AppRoute.programReward.path,
+        AppRoute.programs.path + AppRoute.selectLoyaltyProgram.path + AppRoute.createProgram.path,
+        AppRoute.programs.path + AppRoute.selectLoyaltyProgram.path + AppRoute.createProgram.path + AppRoute.programReward.path,
       ];
 
   @override
@@ -40,12 +40,12 @@ class ProgramLocation extends BeamLocation<BeamState> {
         child: SelectLoyaltyProgram(),
       ),
       BeamPage(
-        key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.aboutProgram.name),
-        title: AppRoute.aboutProgram.name.toUpperCase(),
+        key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.createProgram.name),
+        title: AppRoute.createProgram.name.toUpperCase(),
         child: CreateProgram(),
       ),
       BeamPage(
-        key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.aboutProgram.name + AppRoute.programReward.name),
+        key: ValueKey(AppRoute.programs.name + AppRoute.selectLoyaltyProgram.name + AppRoute.createProgram.name + AppRoute.programReward.name),
         title: AppRoute.programReward.name.toUpperCase(),
         child: CreateReward(),
       ),

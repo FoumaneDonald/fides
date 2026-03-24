@@ -19,6 +19,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
   final Widget? suffix;
   final Widget? prefix;
   final Widget? helper;
+  final String? helperText;
   final int? maxLines;
   final TextInputType? textInputType;
   final AutovalidateMode autoValidateMode;
@@ -47,6 +48,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
     this.suffix,
     this.prefix,
     this.helper,
+    this.helperText,
     this.maxLines,
     this.textInputType,
     this.autoValidateMode = AutovalidateMode.onUnfocus,
@@ -84,6 +86,7 @@ class FidesTextInput extends StatelessWidget with ValidationMixins {
             labelText: labelText,
             suffix: suffix,
             helper: helper,
+            helperText: helperText,
           ),
           enabled: enable,
           keyboardType: textInputType,

@@ -1,7 +1,7 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
-import '../../features/homePage/ui/pages/home.dart';
+import '../../features/homePage/ui/home.dart';
 import '../../services/helpers/app_route_enum.dart';
 
 class HomeLocation extends BeamLocation<BeamState> {

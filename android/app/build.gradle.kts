@@ -8,8 +8,8 @@ plugins {
 android {
     namespace = "com.eos.fides"
     compileSdk = flutter.compileSdkVersion
-//    ndkVersion = flutter.ndkVersion
-    ndkVersion = "28.1.13356709"
+    ndkVersion = flutter.ndkVersion
+//    ndkVersion = "28.1.13356709"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

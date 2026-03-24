@@ -11,8 +11,9 @@ import 'config/theme/color_scheme.dart';
 import 'config/theme/theme.dart';
 import 'config/theme/util.dart';
 import 'domain/repositories/loyalty_program_repository.dart';
-import 'features/homePage/ui/bloc/home_bloc.dart';
-import 'features/loyaltyProgram/ui/bloc/loyalty_program_bloc.dart';
+import 'features/homePage/bloc/home_bloc.dart';
+import 'features/loyaltyProgram/bloc/loyalty_program_bloc.dart';
+import 'features/setup_program/bloc/setup_program_bloc.dart';
 import 'injection.dart' as di;
 import 'injection.dart';
 import 'l10n/app_localizations.dart';
@@ -44,11 +45,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl<HomeBloc>()..add(LatestCustomer()),
+          //todo call the initial event
+          create: (context) => sl<HomeBloc>(),
         ),
         BlocProvider(
           lazy: false,
           create: (context) => sl<LoyaltyProgramBloc>(),
+        ),
+        BlocProvider(
+          lazy: false,
+          create: (context) => sl<SetupProgramBloc>(),
         ),
       ],
       child: MaterialApp.router(

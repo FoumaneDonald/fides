@@ -13,21 +13,24 @@ class CustomerRepoImpl implements CustomerRepository {
 
   @override
   Future<ResultDart<CustomerEntity, String>> createCustomer({required CustomerEntity customerEntity}) async {
-    final ResultDart<CustomerModel, String> result = await _customerDao.createCustomer(CustomerModel.fromEntity(customerEntity));
+    throw UnimplementedError();
 
-    return result.fold(
-      (customer) => Success(CustomerEntity.fromModel(customer)),
-      (failure) => Failure(failure),
-    );
+    // final ResultDart<CustomerModel, String> result = await _customerDao.createCustomer(CustomerModel.fromEntity(customerEntity));
+    //
+    // return result.fold(
+    //   (customer) => Success(CustomerEntity.fromModel(customer)),
+    //   (failure) => Failure(failure),
+    // );
   }
 
   @override
   Future<Result<List<CustomerEntity>>> fetchLatestCustomer({int limit = 8}) async {
-    final result = await _customerDao.getLatestCustomers(limit);
-
-    return result.fold(
-      (List<CustomerModel> customerList) => Success(CustomerEntity.fromModelList(customerList)),
-      (failure) => Failure(failure),
-    );
+    throw UnimplementedError();
+    // final result = await _customerDao.getLatestCustomers(limit);
+    //
+    // return result.fold(
+    //   (List<CustomerModel> customerList) => Success(CustomerEntity.fromModelList(customerList)),
+    //   (failure) => Failure(failure),
+    // );
   }
 }

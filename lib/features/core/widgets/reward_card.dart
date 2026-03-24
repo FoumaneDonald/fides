@@ -42,7 +42,7 @@ class RewardCard extends StatelessWidget {
                     ],
                   ),
                 if(programType == ProgramType.spend)
-                  Text(reward.rewardCost?.toString() ?? ''),
+                  Text(reward.unlockThreshold.toString() ?? ''),
               ],
             ),
           ],
