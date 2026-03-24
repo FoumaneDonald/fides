@@ -8,11 +8,9 @@ abstract class LoyaltyProgramEntity<T> extends Equatable {
   final String programId;
   final String name;
   final ProgramType type;
+  final int validityMonth;
+  final String? note;
   final List<RewardEntity> rewards;
-  final int lastingNumber;
-  final TimeUnit lastingPeriod;
-  final DateTime? startingDate;
-  final DateTime? endDate;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -20,11 +18,9 @@ abstract class LoyaltyProgramEntity<T> extends Equatable {
     required this.programId,
     required this.name,
     required this.type,
+    required this.validityMonth,
     required this.rewards,
-    required this.lastingNumber,
-    required this.lastingPeriod,
-    this.startingDate,
-    this.endDate,
+    this.note,
     this.createdAt,
     this.updatedAt,
   });
@@ -32,15 +28,13 @@ abstract class LoyaltyProgramEntity<T> extends Equatable {
   T cloneWith({
     String? name,
     ProgramType? type,
+    int? validityMonth,
+    String? note,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    DateTime? startingDate,
-    DateTime? endDate,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
 
   @override
-  List<Object?> get props => [programId, type, name, rewards, lastingNumber, lastingPeriod, startingDate, endDate, createdAt, updatedAt];
+  List<Object?> get props => [programId, type, name, rewards, validityMonth, note, createdAt, updatedAt];
 }

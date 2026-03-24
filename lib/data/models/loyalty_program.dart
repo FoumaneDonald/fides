@@ -15,14 +15,8 @@ class LoyaltyProgramModel {
   String programId;
   String name;
   String type;
-
-  int lastingNumber;
-  String lastingPeriod;
-
-  @Property(type: PropertyType.date)
-  DateTime? startingDate;
-  @Property(type: PropertyType.date)
-  DateTime? endDate;
+  int validityMonth;
+  String? note;
 
   int? maximumReturn;
   List<int>? rewardedReturn;
@@ -35,6 +29,7 @@ class LoyaltyProgramModel {
   @Property(type: PropertyType.date)
   DateTime? updatedAt;
 
+  @Backlink("program")
   final rewards = ToMany<RewardModel>();
   final business = ToOne<BusinessModel>();
 
@@ -43,10 +38,8 @@ class LoyaltyProgramModel {
     required this.programId,
     required this.name,
     required this.type,
-    required this.lastingNumber,
-    required this.lastingPeriod,
-    this.startingDate,
-    this.endDate,
+    required this.validityMonth,
+    this.note,
     this.maximumReturn,
     this.rewardedReturn,
     this.points,
@@ -58,20 +51,16 @@ class LoyaltyProgramModel {
 
   LoyaltyProgramEntity toEntity() {
     final baseRewards = RewardModel.fromModelList(rewards);
-    final period = TimeUnit.fromString(lastingPeriod);
     final programType = ProgramType.fromString(type) ;
 
     if (programType == ProgramType.returning) {
       return ReturnEntity(
         programId: programId,
         name: name,
-        numberHoles: maximumReturn ?? 0,
-        winningNumbers: rewardedReturn ?? [],
+        totalReturns: maximumReturn ?? 0,
+        rewardingReturns: rewardedReturn ?? [],
         rewards: baseRewards,
-        lastingNumber: lastingNumber,
-        lastingPeriod: period,
-        startingDate: startingDate,
-        endDate: endDate,
+        validityMonth: validityMonth,
       );
     } else {
       return SpendEntity(
@@ -81,10 +70,7 @@ class LoyaltyProgramModel {
         minimumSpent: minimumSpent,
         currencyCode: currencyCode!,
         rewards: baseRewards,
-        lastingNumber: lastingNumber,
-        lastingPeriod: period,
-        startingDate: startingDate,
-        endDate: endDate,
+        validityMonth: validityMonth,
       );
     }
   }
@@ -95,22 +81,16 @@ class LoyaltyProgramModel {
         programId: entity.programId,
         name: entity.name,
         type: entity.type.label,
-        lastingNumber: entity.lastingNumber,
-        lastingPeriod: entity.lastingPeriod.name,
-        startingDate: entity.startingDate,
-        endDate: entity.endDate,
-        maximumReturn: entity.numberHoles,
-        rewardedReturn: entity.winningNumbers,
+        validityMonth: entity.validityMonth,
+        maximumReturn: entity.totalReturns,
+        rewardedReturn: entity.rewardingReturns,
       );
     } else if (entity is SpendEntity) {
       return LoyaltyProgramModel(
         programId: entity.programId,
         name: entity.name,
         type: entity.type.label,
-        lastingNumber: entity.lastingNumber,
-        lastingPeriod: entity.lastingPeriod.name,
-        startingDate: entity.startingDate,
-        endDate: entity.endDate,
+        validityMonth: entity.validityMonth,
         points: entity.points,
         minimumSpent: entity.minimumSpent,
         currencyCode: entity.currencyCode,

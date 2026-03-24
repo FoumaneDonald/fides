@@ -96,14 +96,11 @@ class AppButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget buildButtonContent(
-      String? text,
-      Widget? icon,
-    ) {
-      final alignment = text == null ? MainAxisAlignment.center : MainAxisAlignment.spaceBetween;
+    Widget buildButtonContent(String? text, Widget? icon) {
 
       return Row(
-        mainAxisAlignment: alignment,
+        spacing: 16,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (loading) ...{
             const Loader()

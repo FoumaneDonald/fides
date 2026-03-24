@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../core/enums/time_units.dart';
 import '../../../domain/entities/loyalty_program_entity.dart';
 import '../../../domain/entities/return_entity.dart';
 import '../../../domain/entities/reward_entity.dart';
@@ -21,11 +20,11 @@ class SetupProgramBloc extends Bloc<SetupProgramEvent, SetupProgramState> {
 
   SetupProgramBloc(this.loyaltyProgramRepository, this.uuid) : super(SetupProgramInitial()) {
     on<SelectedLoyaltyProgram>(_onSelectedLoyaltyProgram);
-    on<NumHolesChanged>(_onNumHolesChanged);
+    on<TotalReturnsChanged>(_onNumHolesChanged);
     on<WinningStampChanged>(_onWinningStampChanged);
     on<SelectedReturnRewardChanged>(_onSelectedReturnRewardChanged);
     on<NameChanged>(_onNameChanged);
-    on<LastingDateChanged>(_onLastingDateChanged);
+    on<ValidityPeriodChanged>(_onLastingDateChanged);
     on<PointsChanged>(_onPointsChanged);
     on<MinimumSpentChanged>(_onMinimumSpentChanged);
     on<CurrencyChanged>(_onCurrencyChanged);
@@ -39,13 +38,13 @@ class SetupProgramBloc extends Bloc<SetupProgramEvent, SetupProgramState> {
       case ProgramType.returning:
         emit(LoyaltyProgramEditing(
           programType: event.programType,
-          program: ReturnEntity(name: '', numberHoles: 5, winningNumbers: [3, 5], rewards: [], lastingNumber: 1, lastingPeriod: TimeUnit.months, programId: ''),
+          program: ReturnEntity.init(uuid.v4()),
         ));
         break;
       case ProgramType.spend:
         emit(LoyaltyProgramEditing(
           programType: event.programType,
-          program: SpendEntity(name: '', currencyCode: 'XAF', rewards: [], lastingNumber: 1, lastingPeriod: TimeUnit.months, programId: ''),
+          program: SpendEntity.init(uuid.v4()),
         ));
         break;
       case ProgramType.unknown:
@@ -64,48 +63,56 @@ class SetupProgramBloc extends Bloc<SetupProgramEvent, SetupProgramState> {
     }
   }
 
-  Future<void> _onLastingDateChanged(LastingDateChanged event, Emitter<SetupProgramState> emit) async {
+  Future<void> _onLastingDateChanged(ValidityPeriodChanged event, Emitter<SetupProgramState> emit) async {
     if (state is LoyaltyProgramEditing) {
       final editing = state as LoyaltyProgramEditing;
 
       LoyaltyProgramEntity currentProgram = editing.program;
 
-      emit(editing.copyWith(
-          program: currentProgram.cloneWith(lastingNumber: event.lastingNumber ?? editing.program.lastingNumber, lastingPeriod: event.lastingPeriod ?? editing.program.lastingPeriod)));
+      emit(editing.copyWith(program: currentProgram.cloneWith(validityMonth: event.value)));
     }
   }
 
-  void _onNumHolesChanged(NumHolesChanged event, Emitter<SetupProgramState> emit) {
-    if (state is LoyaltyProgramEditing) {
-      final editing = state as LoyaltyProgramEditing;
+  void _onNumHolesChanged(TotalReturnsChanged event, Emitter<SetupProgramState> emit) {
+    final current = state;
+    if (current is! LoyaltyProgramEditing || current.programType != ProgramType.returning || current.program is! ReturnEntity) {
+      return;
+    }
 
-      if (editing.programType == ProgramType.returning && editing.program is ReturnEntity) {
-        final ReturnEntity stampEntity = editing.program as ReturnEntity;
-        int? selectedStampReward = editing.selectReturnNumber;
+    final ReturnEntity returnEntity = current.program as ReturnEntity;
 
-        // Get the current winning numbers
-        final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
+    /*This allows us to detect whether the user reduced the number.*/
+    final oldHoles = returnEntity.totalReturns; // Current number stored in state
+    final newHoles = event.returns; // What the user just entered
 
-        // Removed a number from winning number list when user reduced the number of holes and the number was in the winning number list
-        if (event.deletedFromHereOn != null) {
-          winningNumbers.removeWhere((number) => number >= event.deletedFromHereOn!);
+    // Get the current winning numbers
+    List<int> winningReturns = List.from(returnEntity.rewardingReturns);
+    int? selectedReturn = current.selectReturnNumber;
 
-          final rewardsToDelete = stampEntity.rewards.where((reward) => reward.unlockThreshold >= event.deletedFromHereOn!).toList();
+    // If User Reduced the Number
+    if (newHoles < oldHoles) {
+      final deletedFrom = newHoles + 1;
 
-          for (final reward in rewardsToDelete) {
-            add(DeleteReward(reward));
-          }
+      // It creates a new list that removes all winning numbers that are no longer valid after the user reduced the total number of holes.
+      winningReturns = winningReturns.where((number) => number < deletedFrom).toList();
 
-          // Change the selected winning stamp chip to the first one in the list if there is
-          selectedStampReward = winningNumbers.contains(editing.selectReturnNumber) ? editing.selectReturnNumber : winningNumbers.firstOrNull;
-        }
+      // It finds all rewards that unlock at a return number that no longer exists after reducing the total returns, so they can be deleted.
+      final rewardsToDelete = returnEntity.rewards.where((reward) => reward.unlockThreshold >= deletedFrom).toList();
 
-        final updatedStampProgram = stampEntity.copyWith(numberHoles: event.numHoles, winningNumbers: winningNumbers);
-        emit(editing.copyWith(program: updatedStampProgram, selectReturnNumber: selectedStampReward));
-      } else {
-        emit(const SetupProgramError('Wrong program'));
+      for (final reward in rewardsToDelete) {
+        add(DeleteReward(reward));
+      }
+
+      // If the currently selected winning number was deleted:
+      // Select the first valid one
+      // Or null if none exist
+      if (!winningReturns.contains(selectedReturn)) {
+        selectedReturn = winningReturns.isNotEmpty ? winningReturns.first : null;
       }
     }
+
+    final updateProgram = returnEntity.copyWith(numberHoles: event.returns, winningNumbers: winningReturns);
+    emit(current.copyWith(program: updateProgram, selectReturnNumber: selectedReturn));
   }
 
   Future<void> _onWinningStampChanged(WinningStampChanged event, Emitter<SetupProgramState> emit) async {
@@ -117,7 +124,7 @@ class SetupProgramBloc extends Bloc<SetupProgramEvent, SetupProgramState> {
         int? selectedStampReward = editing.selectReturnNumber;
 
         // get the current winning numbers
-        final List<int> winningNumbers = List.from(stampEntity.winningNumbers);
+        final List<int> winningNumbers = List.from(stampEntity.rewardingReturns);
 
         // Add a new number or remove already present one
         if (winningNumbers.contains(event.winningNumber)) {

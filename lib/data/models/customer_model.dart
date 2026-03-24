@@ -18,6 +18,7 @@ class CustomerModel {
   @Property(type: PropertyType.date)
   DateTime? updatedAt;
 
+  @Backlink("customer")
   final cards = ToMany<LoyaltyCardModel>();
 
   CustomerModel({

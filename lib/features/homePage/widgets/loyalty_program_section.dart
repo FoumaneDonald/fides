@@ -1,5 +1,5 @@
 import 'package:fides/domain/entities/loyalty_program_entity.dart';
-import 'package:fides/features/homePage/ui/widgets/program_card.dart';
+import 'package:fides/features/homePage/widgets/program_card.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';

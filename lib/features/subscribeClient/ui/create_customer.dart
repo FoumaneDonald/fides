@@ -21,7 +21,7 @@ import '../../core/widgets/fides_text_input.dart';
 import '../../core/widgets/primary_button.dart';
 import '../../core/widgets/required_field_text.dart';
 import '../../homePage/bloc/home_bloc.dart';
-import '../../homePage/ui/widgets/program_card.dart';
+import '../../homePage/widgets/program_card.dart';
 import '../bloc/customer_bloc.dart';
 
 class CreateCustomer extends StatefulWidget {

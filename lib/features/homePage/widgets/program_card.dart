@@ -80,8 +80,8 @@ class ProgramCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (program is ReturnEntity) ...{
-                    Text("Number of holes: ${(program as ReturnEntity).numberHoles.toString()}"),
-                    Text("Winning numbers: ${(program as ReturnEntity).winningNumbers.join(', ')}"),
+                    Text("Number of holes: ${(program as ReturnEntity).totalReturns.toString()}"),
+                    Text("Winning numbers: ${(program as ReturnEntity).rewardingReturns.join(', ')}"),
                   },
                   if (program is SpendEntity) ...{
                     Text("value of a point: ${(program as SpendEntity).points ?? ''}"),

@@ -317,7 +317,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
     id: const obx_int.IdUid(7, 7141859683297853253),
     name: 'LoyaltyProgramModel',
-    lastPropertyId: const obx_int.IdUid(16, 4340804728089453832),
+    lastPropertyId: const obx_int.IdUid(17, 4326322444351729556),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
@@ -336,30 +336,6 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(3, 3442109799088469934),
         name: 'type',
         type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(4, 1153024153993593724),
-        name: 'lastingNumber',
-        type: 6,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(5, 9050480831357496432),
-        name: 'lastingPeriod',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 7497053464037254289),
-        name: 'startingDate',
-        type: 10,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 3011151782762910479),
-        name: 'endDate',
-        type: 10,
         flags: 0,
       ),
       obx_int.ModelProperty(
@@ -416,6 +392,12 @@ final _entities = <obx_int.ModelEntity>[
         id: const obx_int.IdUid(16, 4340804728089453832),
         name: 'programId',
         type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(17, 4326322444351729556),
+        name: 'validityMonth',
+        type: 6,
         flags: 0,
       ),
     ],
@@ -628,6 +610,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
       5772034534268627829,
       3388537713656770261,
       1297590559322689021,
+      1153024153993593724,
+      9050480831357496432,
+      7497053464037254289,
+      3011151782762910479,
     ],
     retiredRelationUids: const [2813295639591578593, 8379675187063647004],
     modelVersion: 5,
@@ -1047,7 +1033,6 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectToFB: (LoyaltyProgramModel object, fb.Builder fbb) {
         final nameOffset = fbb.writeString(object.name);
         final typeOffset = fbb.writeString(object.type);
-        final lastingPeriodOffset = fbb.writeString(object.lastingPeriod);
         final rewardedReturnOffset = object.rewardedReturn == null
             ? null
             : fbb.writeListInt64(object.rewardedReturn!);
@@ -1055,14 +1040,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
             ? null
             : fbb.writeString(object.currencyCode!);
         final programIdOffset = fbb.writeString(object.programId);
-        fbb.startTable(17);
+        fbb.startTable(18);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
         fbb.addOffset(2, typeOffset);
-        fbb.addInt64(3, object.lastingNumber);
-        fbb.addOffset(4, lastingPeriodOffset);
-        fbb.addInt64(5, object.startingDate?.millisecondsSinceEpoch);
-        fbb.addInt64(6, object.endDate?.millisecondsSinceEpoch);
         fbb.addInt64(7, object.maximumReturn);
         fbb.addOffset(8, rewardedReturnOffset);
         fbb.addFloat64(9, object.points);
@@ -1072,22 +1053,13 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(13, object.updatedAt?.millisecondsSinceEpoch);
         fbb.addInt64(14, object.business.targetId);
         fbb.addOffset(15, programIdOffset);
+        fbb.addInt64(16, object.validityMonth);
         fbb.finish(fbb.endTable());
         return object.id;
       },
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
-        final startingDateValue = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          14,
-        );
-        final endDateValue = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          16,
-        );
         final createdAtValue = const fb.Int64Reader().vTableGetNullable(
           buffer,
           rootOffset,
@@ -1113,21 +1085,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final typeParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 8, '');
-        final lastingNumberParam = const fb.Int64Reader().vTableGet(
+        final validityMonthParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
-          10,
+          36,
           0,
         );
-        final lastingPeriodParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 12, '');
-        final startingDateParam = startingDateValue == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(startingDateValue);
-        final endDateParam = endDateValue == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(endDateValue);
         final maximumReturnParam = const fb.Int64Reader().vTableGetNullable(
           buffer,
           rootOffset,
@@ -1161,10 +1124,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           programId: programIdParam,
           name: nameParam,
           type: typeParam,
-          lastingNumber: lastingNumberParam,
-          lastingPeriod: lastingPeriodParam,
-          startingDate: startingDateParam,
-          endDate: endDateParam,
+          validityMonth: validityMonthParam,
           maximumReturn: maximumReturnParam,
           rewardedReturn: rewardedReturnParam,
           points: pointsParam,
@@ -1596,71 +1556,56 @@ class LoyaltyProgramModel_ {
     _entities[4].properties[2],
   );
 
-  /// See [LoyaltyProgramModel.lastingNumber].
-  static final lastingNumber = obx.QueryIntegerProperty<LoyaltyProgramModel>(
-    _entities[4].properties[3],
-  );
-
-  /// See [LoyaltyProgramModel.lastingPeriod].
-  static final lastingPeriod = obx.QueryStringProperty<LoyaltyProgramModel>(
-    _entities[4].properties[4],
-  );
-
-  /// See [LoyaltyProgramModel.startingDate].
-  static final startingDate = obx.QueryDateProperty<LoyaltyProgramModel>(
-    _entities[4].properties[5],
-  );
-
-  /// See [LoyaltyProgramModel.endDate].
-  static final endDate = obx.QueryDateProperty<LoyaltyProgramModel>(
-    _entities[4].properties[6],
-  );
-
   /// See [LoyaltyProgramModel.maximumReturn].
   static final maximumReturn = obx.QueryIntegerProperty<LoyaltyProgramModel>(
-    _entities[4].properties[7],
+    _entities[4].properties[3],
   );
 
   /// See [LoyaltyProgramModel.rewardedReturn].
   static final rewardedReturn =
       obx.QueryIntegerVectorProperty<LoyaltyProgramModel>(
-        _entities[4].properties[8],
+        _entities[4].properties[4],
       );
 
   /// See [LoyaltyProgramModel.points].
   static final points = obx.QueryDoubleProperty<LoyaltyProgramModel>(
-    _entities[4].properties[9],
+    _entities[4].properties[5],
   );
 
   /// See [LoyaltyProgramModel.minimumSpent].
   static final minimumSpent = obx.QueryDoubleProperty<LoyaltyProgramModel>(
-    _entities[4].properties[10],
+    _entities[4].properties[6],
   );
 
   /// See [LoyaltyProgramModel.currencyCode].
   static final currencyCode = obx.QueryStringProperty<LoyaltyProgramModel>(
-    _entities[4].properties[11],
+    _entities[4].properties[7],
   );
 
   /// See [LoyaltyProgramModel.createdAt].
   static final createdAt = obx.QueryDateProperty<LoyaltyProgramModel>(
-    _entities[4].properties[12],
+    _entities[4].properties[8],
   );
 
   /// See [LoyaltyProgramModel.updatedAt].
   static final updatedAt = obx.QueryDateProperty<LoyaltyProgramModel>(
-    _entities[4].properties[13],
+    _entities[4].properties[9],
   );
 
   /// See [LoyaltyProgramModel.business].
   static final business =
       obx.QueryRelationToOne<LoyaltyProgramModel, BusinessModel>(
-        _entities[4].properties[14],
+        _entities[4].properties[10],
       );
 
   /// See [LoyaltyProgramModel.programId].
   static final programId = obx.QueryStringProperty<LoyaltyProgramModel>(
-    _entities[4].properties[15],
+    _entities[4].properties[11],
+  );
+
+  /// See [LoyaltyProgramModel.validityMonth].
+  static final validityMonth = obx.QueryIntegerProperty<LoyaltyProgramModel>(
+    _entities[4].properties[12],
   );
 
   /// see [LoyaltyProgramModel.rewards]

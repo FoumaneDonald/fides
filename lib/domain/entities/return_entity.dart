@@ -2,7 +2,6 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:fides/domain/entities/reward_entity.dart';
 
 import '../../core/enums/time_units.dart';
-import '../../data/models/return_model.dart';
 import '../../services/helpers/program_type_enum.dart';
 import 'loyalty_program_entity.dart';
 
@@ -10,19 +9,17 @@ part 'return_entity.mapper.dart';
 
 @MappableClass()
 class ReturnEntity extends LoyaltyProgramEntity<ReturnEntity> with ReturnEntityMappable {
-  final int numberHoles;
-  final List<int> winningNumbers;
+  final int totalReturns;
+  final List<int> rewardingReturns;
 
   ReturnEntity({
     required super.programId,
     required super.name,
-    required this.numberHoles,
-    required this.winningNumbers,
+    required super.validityMonth,
+    required this.totalReturns,
+    required this.rewardingReturns,
     required super.rewards,
-    required super.lastingNumber,
-    required super.lastingPeriod,
-    super.startingDate,
-    super.endDate,
+    super.note,
     super.createdAt,
     super.updatedAt,
   }) : super(type: ProgramType.returning);
@@ -32,28 +29,33 @@ class ReturnEntity extends LoyaltyProgramEntity<ReturnEntity> with ReturnEntityM
     String? name,
     ProgramType? type,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    DateTime? startingDate,
-    DateTime? endDate,
+    int? validityMonth,
+    String? note,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
     return ReturnEntity(
       programId: programId,
       name: name ?? this.name,
-      numberHoles: numberHoles,
-      winningNumbers: winningNumbers,
+      totalReturns: totalReturns,
+      rewardingReturns: rewardingReturns,
       rewards: rewards ?? this.rewards,
-      lastingNumber: lastingNumber ?? this.lastingNumber,
-      lastingPeriod: lastingPeriod ?? this.lastingPeriod,
-      startingDate: startingDate ?? this.startingDate,
-      endDate: endDate ?? this.endDate,
+      validityMonth: validityMonth ?? this.validityMonth,
+      note: note ?? this.note,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
   }
 
+  factory ReturnEntity.init(String id) => ReturnEntity(
+        programId: id,
+        name: '',
+        totalReturns: 5,
+        rewardingReturns: [3, 5],
+        rewards: [],
+        validityMonth: 1,
+      );
+
   @override
-  List<Object?> get props => [name, numberHoles, winningNumbers, ...super.props];
+  List<Object?> get props => [name, totalReturns, rewardingReturns, ...super.props];
 }

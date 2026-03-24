@@ -29,12 +29,12 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
   );
   static String _$name(ReturnEntity v) => v.name;
   static const Field<ReturnEntity, String> _f$name = Field('name', _$name);
-  static int _$numberHoles(ReturnEntity v) => v.numberHoles;
+  static int _$numberHoles(ReturnEntity v) => v.totalReturns;
   static const Field<ReturnEntity, int> _f$numberHoles = Field(
     'numberHoles',
     _$numberHoles,
   );
-  static List<int> _$winningNumbers(ReturnEntity v) => v.winningNumbers;
+  static List<int> _$winningNumbers(ReturnEntity v) => v.rewardingReturns;
   static const Field<ReturnEntity, List<int>> _f$winningNumbers = Field(
     'winningNumbers',
     _$winningNumbers,
@@ -44,27 +44,10 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
     'rewards',
     _$rewards,
   );
-  static int _$lastingNumber(ReturnEntity v) => v.lastingNumber;
-  static const Field<ReturnEntity, int> _f$lastingNumber = Field(
-    'lastingNumber',
-    _$lastingNumber,
-  );
-  static TimeUnit _$lastingPeriod(ReturnEntity v) => v.lastingPeriod;
-  static const Field<ReturnEntity, TimeUnit> _f$lastingPeriod = Field(
-    'lastingPeriod',
-    _$lastingPeriod,
-  );
-  static DateTime? _$startingDate(ReturnEntity v) => v.startingDate;
-  static const Field<ReturnEntity, DateTime> _f$startingDate = Field(
-    'startingDate',
-    _$startingDate,
-    opt: true,
-  );
-  static DateTime? _$endDate(ReturnEntity v) => v.endDate;
-  static const Field<ReturnEntity, DateTime> _f$endDate = Field(
-    'endDate',
-    _$endDate,
-    opt: true,
+  static int _$validityMonth(ReturnEntity v) => v.validityMonth;
+  static const Field<ReturnEntity, int> _f$validityMonth = Field(
+    'validityMonth',
+    _$validityMonth,
   );
   static DateTime? _$createdAt(ReturnEntity v) => v.createdAt;
   static const Field<ReturnEntity, DateTime> _f$createdAt = Field(
@@ -92,10 +75,7 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
     #numberHoles: _f$numberHoles,
     #winningNumbers: _f$winningNumbers,
     #rewards: _f$rewards,
-    #lastingNumber: _f$lastingNumber,
-    #lastingPeriod: _f$lastingPeriod,
-    #startingDate: _f$startingDate,
-    #endDate: _f$endDate,
+    #validityMonth: _f$validityMonth,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
     #props: _f$props,
@@ -105,13 +85,10 @@ class ReturnEntityMapper extends ClassMapperBase<ReturnEntity> {
     return ReturnEntity(
       programId: data.dec(_f$programId),
       name: data.dec(_f$name),
-      numberHoles: data.dec(_f$numberHoles),
-      winningNumbers: data.dec(_f$winningNumbers),
+      totalReturns: data.dec(_f$numberHoles),
+      rewardingReturns: data.dec(_f$winningNumbers),
       rewards: data.dec(_f$rewards),
-      lastingNumber: data.dec(_f$lastingNumber),
-      lastingPeriod: data.dec(_f$lastingPeriod),
-      startingDate: data.dec(_f$startingDate),
-      endDate: data.dec(_f$endDate),
+      validityMonth: data.dec(_f$validityMonth),
       createdAt: data.dec(_f$createdAt),
       updatedAt: data.dec(_f$updatedAt),
     );
@@ -192,10 +169,7 @@ abstract class ReturnEntityCopyWith<$R, $In extends ReturnEntity, $Out>
     int? numberHoles,
     List<int>? winningNumbers,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    DateTime? startingDate,
-    DateTime? endDate,
+    int? validityMonth,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -213,7 +187,7 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<$R, int, ObjectCopyWith<$R, int, int>> get winningNumbers =>
       ListCopyWith(
-        $value.winningNumbers,
+        $value.rewardingReturns,
         (v, t) => ObjectCopyWith(v, $identity, t),
         (v) => call(winningNumbers: v),
       );
@@ -235,10 +209,7 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
     int? numberHoles,
     List<int>? winningNumbers,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    Object? startingDate = $none,
-    Object? endDate = $none,
+    int? validityMonth,
     Object? createdAt = $none,
     Object? updatedAt = $none,
   }) => $apply(
@@ -248,10 +219,7 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
       if (numberHoles != null) #numberHoles: numberHoles,
       if (winningNumbers != null) #winningNumbers: winningNumbers,
       if (rewards != null) #rewards: rewards,
-      if (lastingNumber != null) #lastingNumber: lastingNumber,
-      if (lastingPeriod != null) #lastingPeriod: lastingPeriod,
-      if (startingDate != $none) #startingDate: startingDate,
-      if (endDate != $none) #endDate: endDate,
+      if (validityMonth != null) #validityMonth: validityMonth,
       if (createdAt != $none) #createdAt: createdAt,
       if (updatedAt != $none) #updatedAt: updatedAt,
     }),
@@ -260,13 +228,10 @@ class _ReturnEntityCopyWithImpl<$R, $Out>
   ReturnEntity $make(CopyWithData data) => ReturnEntity(
     programId: data.get(#programId, or: $value.programId),
     name: data.get(#name, or: $value.name),
-    numberHoles: data.get(#numberHoles, or: $value.numberHoles),
-    winningNumbers: data.get(#winningNumbers, or: $value.winningNumbers),
+    totalReturns: data.get(#numberHoles, or: $value.totalReturns),
+    rewardingReturns: data.get(#winningNumbers, or: $value.rewardingReturns),
     rewards: data.get(#rewards, or: $value.rewards),
-    lastingNumber: data.get(#lastingNumber, or: $value.lastingNumber),
-    lastingPeriod: data.get(#lastingPeriod, or: $value.lastingPeriod),
-    startingDate: data.get(#startingDate, or: $value.startingDate),
-    endDate: data.get(#endDate, or: $value.endDate),
+    validityMonth: data.get(#validityMonth, or: $value.validityMonth),
     createdAt: data.get(#createdAt, or: $value.createdAt),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
   );

@@ -51,27 +51,10 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
     'rewards',
     _$rewards,
   );
-  static int _$lastingNumber(SpendEntity v) => v.lastingNumber;
-  static const Field<SpendEntity, int> _f$lastingNumber = Field(
-    'lastingNumber',
-    _$lastingNumber,
-  );
-  static TimeUnit _$lastingPeriod(SpendEntity v) => v.lastingPeriod;
-  static const Field<SpendEntity, TimeUnit> _f$lastingPeriod = Field(
-    'lastingPeriod',
-    _$lastingPeriod,
-  );
-  static DateTime? _$startingDate(SpendEntity v) => v.startingDate;
-  static const Field<SpendEntity, DateTime> _f$startingDate = Field(
-    'startingDate',
-    _$startingDate,
-    opt: true,
-  );
-  static DateTime? _$endDate(SpendEntity v) => v.endDate;
-  static const Field<SpendEntity, DateTime> _f$endDate = Field(
-    'endDate',
-    _$endDate,
-    opt: true,
+  static int _$validityMonth(SpendEntity v) => v.validityMonth;
+  static const Field<SpendEntity, int> _f$validityMonth = Field(
+    'validityMonth',
+    _$validityMonth,
   );
   static DateTime? _$createdAt(SpendEntity v) => v.createdAt;
   static const Field<SpendEntity, DateTime> _f$createdAt = Field(
@@ -100,10 +83,7 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
     #minimumSpent: _f$minimumSpent,
     #currencyCode: _f$currencyCode,
     #rewards: _f$rewards,
-    #lastingNumber: _f$lastingNumber,
-    #lastingPeriod: _f$lastingPeriod,
-    #startingDate: _f$startingDate,
-    #endDate: _f$endDate,
+    #validityMonth: _f$validityMonth,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
     #props: _f$props,
@@ -117,10 +97,7 @@ class SpendEntityMapper extends ClassMapperBase<SpendEntity> {
       minimumSpent: data.dec(_f$minimumSpent),
       currencyCode: data.dec(_f$currencyCode),
       rewards: data.dec(_f$rewards),
-      lastingNumber: data.dec(_f$lastingNumber),
-      lastingPeriod: data.dec(_f$lastingPeriod),
-      startingDate: data.dec(_f$startingDate),
-      endDate: data.dec(_f$endDate),
+      validityMonth: data.dec(_f$validityMonth),
       createdAt: data.dec(_f$createdAt),
       updatedAt: data.dec(_f$updatedAt),
     );
@@ -199,10 +176,7 @@ abstract class SpendEntityCopyWith<$R, $In extends SpendEntity, $Out>
     double? minimumSpent,
     String? currencyCode,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    DateTime? startingDate,
-    DateTime? endDate,
+    int? validityMonth,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -236,10 +210,7 @@ class _SpendEntityCopyWithImpl<$R, $Out>
     Object? minimumSpent = $none,
     String? currencyCode,
     List<RewardEntity>? rewards,
-    int? lastingNumber,
-    TimeUnit? lastingPeriod,
-    Object? startingDate = $none,
-    Object? endDate = $none,
+    int? validityMonth,
     Object? createdAt = $none,
     Object? updatedAt = $none,
   }) => $apply(
@@ -250,10 +221,7 @@ class _SpendEntityCopyWithImpl<$R, $Out>
       if (minimumSpent != $none) #minimumSpent: minimumSpent,
       if (currencyCode != null) #currencyCode: currencyCode,
       if (rewards != null) #rewards: rewards,
-      if (lastingNumber != null) #lastingNumber: lastingNumber,
-      if (lastingPeriod != null) #lastingPeriod: lastingPeriod,
-      if (startingDate != $none) #startingDate: startingDate,
-      if (endDate != $none) #endDate: endDate,
+      if (validityMonth != null) #validityMonth: validityMonth,
       if (createdAt != $none) #createdAt: createdAt,
       if (updatedAt != $none) #updatedAt: updatedAt,
     }),
@@ -266,10 +234,7 @@ class _SpendEntityCopyWithImpl<$R, $Out>
     minimumSpent: data.get(#minimumSpent, or: $value.minimumSpent),
     currencyCode: data.get(#currencyCode, or: $value.currencyCode),
     rewards: data.get(#rewards, or: $value.rewards),
-    lastingNumber: data.get(#lastingNumber, or: $value.lastingNumber),
-    lastingPeriod: data.get(#lastingPeriod, or: $value.lastingPeriod),
-    startingDate: data.get(#startingDate, or: $value.startingDate),
-    endDate: data.get(#endDate, or: $value.endDate),
+    validityMonth: data.get(#validityMonth, or: $value.validityMonth),
     createdAt: data.get(#createdAt, or: $value.createdAt),
     updatedAt: data.get(#updatedAt, or: $value.updatedAt),
   );

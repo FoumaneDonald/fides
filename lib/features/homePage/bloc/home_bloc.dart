@@ -20,7 +20,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LatestCustomer>(_onLatestCustomer);
   }
 
-  _onLatestCustomer(LatestCustomer event, Emitter<HomeState> emit) async {
+  Future<void> _onLatestCustomer(LatestCustomer event, Emitter<HomeState> emit) async {
     emit(state.copyWith(status: HomeStatus.loading, message: HomeStatus.loading.message));
 
     final Result<List<CustomerEntity>> result = await _customerRepository.fetchLatestCustomer();

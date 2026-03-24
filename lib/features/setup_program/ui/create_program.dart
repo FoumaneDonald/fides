@@ -38,14 +38,14 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
   final FocusNode _returnNumberFocus = FocusNode();
   final FocusNode _minimumPurchaseFocus = FocusNode();
   final FocusNode _noteFocus = FocusNode();
-  final FocusNode _lastingNumberFocus = FocusNode();
+  final FocusNode _validityPeriodFocus = FocusNode();
 
   /* Controllers for text fields */
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _returnNumberController = TextEditingController();
+  final TextEditingController _totalReturnsController = TextEditingController();
   final TextEditingController _pointsController = TextEditingController();
   final TextEditingController _minimumSpentController = TextEditingController();
-  final TextEditingController _lastingNumberController = TextEditingController();
+  final TextEditingController _validityPeriodController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
 
   // Tracks number of returns(stamps)
@@ -62,33 +62,34 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
     final state = context.read<SetupProgramBloc>().state;
 
     if (state is LoyaltyProgramEditing) {
-      // Name field binding
+      /* common properties */
       _nameController.text = state.program.name;
       _nameController.addListener(() => context.read<SetupProgramBloc>().add(NameChanged(_nameController.text)));
 
-      _lastingNumberController.text = state.program.lastingNumber.toString();
-      _lastingNumberController.addListener(() {
-        if (_lastingNumberController.text.isNotEmpty) {
-          final int toInt = int.parse(_lastingNumberController.text);
-          context.read<SetupProgramBloc>().add(LastingDateChanged(lastingNumber: toInt));
+      _validityPeriodController.text = state.program.validityMonth.toString();
+      _validityPeriodController.addListener(() {
+        if (_validityPeriodController.text.isNotEmpty) {
+          final int toInt = int.parse(_validityPeriodController.text);
+          context.read<SetupProgramBloc>().add(ValidityPeriodChanged(toInt));
         }
       });
 
-      // If current program is a return one
+      /* We are initialising the initial values of Return class to respective text field controllers */
       if (state.programType == ProgramType.returning && state.program is ReturnEntity) {
         returnEntity = state.program as ReturnEntity;
-        _returnNumberController.text = returnEntity!.numberHoles.toString();
-        // Generate holes/stamps
-        _updateReturns(returnEntity!.numberHoles);
+        _totalReturnsController.text = returnEntity!.totalReturns.toString();
 
-        _returnNumberController.addListener(() {
-          int? valueInt = int.tryParse(_returnNumberController.text.trim());
-          const int maxValue = 50;
+        // Update number of returns based on the total number of returns
+        _updateReturns(returnEntity!.totalReturns);
 
-          if (valueInt != null) {
-            if (valueInt < 0) valueInt = 0;
+        _totalReturnsController.addListener(() {
+          if(_totalReturnsController.text.isNotEmpty) {
+            int valueInt = int.parse(_totalReturnsController.text.trim());
+            const int maxValue = 50;
+
+            if (valueInt.isNegative) valueInt = 0;
             if (valueInt > maxValue) valueInt = maxValue;
-            context.read<SetupProgramBloc>().add(NumHolesChanged(numHoles: valueInt, deletedFromHereOn: valueInt + 1));
+            context.read<SetupProgramBloc>().add(TotalReturnsChanged(valueInt));
             _updateReturns(valueInt);
           }
         });
@@ -123,18 +124,18 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
     _returnNumberFocus.dispose();
     _nameController.dispose();
     _pointsController.dispose();
-    _returnNumberController.dispose();
+    _totalReturnsController.dispose();
     super.dispose();
   }
 
   // Adjust the number of stamp holes (+/-)
   void _addRemoveReturnsNumber(int newNumber) {
-    final currentNumber = int.tryParse(_returnNumberController.text) ?? 0;
+    final currentNumber = int.tryParse(_totalReturnsController.text) ?? 0;
     final updatedNumber = currentNumber + newNumber;
 
     // prevent negative number
     if (updatedNumber > 0) {
-      _returnNumberController.text = (updatedNumber).toString();
+      _totalReturnsController.text = (updatedNumber).toString();
     }
   }
 
@@ -156,8 +157,8 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
 
     if (state.programType == ProgramType.returning) {
       final program = state.program as ReturnEntity;
-      condition = program.winningNumbers.isNotEmpty &&
-          program.winningNumbers.every(
+      condition = program.rewardingReturns.isNotEmpty &&
+          program.rewardingReturns.every(
             (number) => program.rewards.any((reward) => reward.unlockThreshold == number),
           ) &&
           isNameNotEmpty &&
@@ -199,12 +200,12 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     spacing: 40,
                     children: [
                       Column(
-                        spacing: 8,
+                        spacing: 40,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           RequiredFieldText(),
@@ -246,29 +247,25 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                                         ),
                                       ProgramType.returning => BuildReturnFields(
                                           returnNumberFocus: _returnNumberFocus,
-                                          stampNumberController: _returnNumberController,
+                                          stampNumberController: _totalReturnsController,
                                           holes: _returns,
-                                          selectedNumbers: (state.program as ReturnEntity).winningNumbers,
+                                          selectedNumbers: (state.program as ReturnEntity).rewardingReturns,
                                           remove: () => _addRemoveReturnsNumber(-1),
                                           add: () => _addRemoveReturnsNumber(1),
                                           toggleReturnNumber: (number) => _toggleWinningStamps(number),
                                         ),
                                       ProgramType.unknown => Placeholder(),
                                     },
-                                    FidesTextInputSelection<TimeUnit>(
-                                      focusNode: _lastingNumberFocus,
-                                      controller: _lastingNumberController,
+                                    FidesTextInput(
+                                      focusNode: _validityPeriodFocus,
+                                      controller: _validityPeriodController,
                                       inputLabel: 'How long should the program last*',
                                       helperText: 'How long will the program be active',
-                                      prefix: Text('${state.program.lastingPeriod.label} '),
+                                      prefix: Text('${state.program.validityMonth} '),
                                       textInputType: TextInputType.number,
                                       inputFormatter: [FilteringTextInputFormatter.allow(RegExp(r'^[1-9][0-9]*'))],
                                       validator: composeValidators<String>([requiredField]),
-                                      dropDownList: TimeUnit.values.where((unit) => unit != TimeUnit.unknown).toList(),
-                                      selectedValue: state.program.lastingPeriod,
-                                      onChangedDropdown: (TimeUnit? value) => context.read<SetupProgramBloc>().add(LastingDateChanged(lastingPeriod: value)),
-                                      onFieldSubmitted: (_) => _lastingNumberFocus.unfocus(),
-                                      itemBuilder: (unit) => Text(unit.label),
+                                      onFieldSubmitted: (_) => _validityPeriodFocus.unfocus(),
                                     ),
                                     FidesTextInput(
                                       focusNode: _noteFocus,
@@ -282,7 +279,7 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                                 AddRewardSection(
                                   programType: state.programType,
                                   rewards: state.program.rewards,
-                                  winningNumbers: state.programType == ProgramType.spend ? null : (state.program as ReturnEntity).winningNumbers
+                                  winningNumbers: state.programType == ProgramType.spend ? null : (state.program as ReturnEntity).rewardingReturns
                                     ?..sort(),
                                   isReturnNumberSelected: (number) => (state.selectReturnNumber ?? -1) == number,
                                   selectReturnNumber: state.selectReturnNumber,
@@ -294,17 +291,15 @@ class _CreateProgramState extends State<CreateProgram> with ValidationMixins {
                           ),
                         ],
                       ),
-                      AppButton.dual(
+                      AppButton.primary(
                         loading: state.loading,
-                        onPrimaryPressed: _isButtonActive(state) ? () {
+                        onPressed: _isButtonActive(state) ? () {
                           if (_formKey.currentState!.validate()) {
                             context.read<SetupProgramBloc>().add(SubmitLoyaltyProgram());
                           }
                         } : null,
-                        onSecondaryPressed: () => context.pop(),
-                        primaryText: 'Create program',
+                        text: 'Create program',
                         icon: AppIcon.arrowRight(),
-                        onSecondaryIcon: AppIcon.cancel(),
                       ),
                     ],
                   ),

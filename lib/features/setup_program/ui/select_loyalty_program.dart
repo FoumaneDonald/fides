@@ -6,9 +6,8 @@ import 'package:go_router/go_router.dart';
 import '../../../services/helpers/app_route_enum.dart';
 import '../../../services/helpers/program_type_enum.dart';
 import '../../core/widgets/fides_app_bar.dart';
-import '../../setup_program/bloc/setup_program_bloc.dart';
-import '../bloc/loyalty_program_bloc.dart';
-import 'widgets/loyalty_program_card.dart';
+import '../bloc/setup_program_bloc.dart';
+import '../widgets/loyalty_program_card.dart';
 
 class SelectLoyaltyProgram extends StatelessWidget {
   const SelectLoyaltyProgram({super.key});
@@ -20,15 +19,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
         title: 'Choose a program',
       ),
       body: SafeArea(
-        child: BlocConsumer<LoyaltyProgramBloc, LoyaltyProgramState>(
-          listener: (context, state) {
-            // final route = ModalRoute.of(context);
-            // final isCurrentRoute = route?.isCurrent ?? false;
-            //
-            // if (state.status == Status.ongoing && isCurrentRoute) {
-            //   context.pushNamed(AppRoute.aboutProgram.name);
-            // }
-          },
+        child: BlocBuilder<SetupProgramBloc, SetupProgramState>(
           builder: (context, state) {
             return Padding(
               padding: const EdgeInsets.all(8.0),
@@ -42,7 +33,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
                       programIcon: AppIcon.stamp(),
                       onPressed: () {
                         context.read<SetupProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.returning));
-                        context.pushNamed(AppRoute.aboutProgram.name);
+                        context.pushNamed(AppRoute.createProgram.name);
                       },
                     ),
                     LoyaltyProgramCardSelection(
@@ -51,7 +42,7 @@ class SelectLoyaltyProgram extends StatelessWidget {
                       programIcon: AppIcon.points(),
                       onPressed: () {
                         context.read<SetupProgramBloc>().add(SelectedLoyaltyProgram(ProgramType.spend));
-                        context.pushNamed(AppRoute.aboutProgram.name);
+                        context.pushNamed(AppRoute.createProgram.name);
                       },
                     ),
                   ],

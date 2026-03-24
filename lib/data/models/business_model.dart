@@ -8,6 +8,7 @@ class BusinessModel {
   @Id()
   int id = 0;
   String businessId;
+  @Unique()
   String name;
   @Unique()
   String email;
@@ -18,6 +19,7 @@ class BusinessModel {
   @Property(type: PropertyType.date)
   DateTime? updatedAt;
 
+  @Backlink("business")
   final programs = ToMany<LoyaltyProgramModel>();
 
   BusinessModel({

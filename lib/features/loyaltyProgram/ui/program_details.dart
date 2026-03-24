@@ -65,9 +65,9 @@ class ProgramDetails extends StatelessWidget {
                       Wrap(
                         spacing: 8,
                         children: List.generate(
-                          (program as ReturnEntity).numberHoles,
+                          (program as ReturnEntity).totalReturns,
                           (index) {
-                            bool isReward = (program as ReturnEntity).winningNumbers.contains(index + 1);
+                            bool isReward = (program as ReturnEntity).rewardingReturns.contains(index + 1);
                             return CircleAvatar(
                               radius: 32,
                               backgroundColor: isReward ? Theme.of(context).colorScheme.primaryFixed : Colors.grey.shade300,

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hugeicons/hugeicons.dart';
 
 import '../../../../services/helpers/app_route_enum.dart';
-import '../../../core/utilities/app_icon.dart';
+import '../../core/utilities/app_icon.dart';
 
 class LoyalCustomersSection extends StatelessWidget {
   const LoyalCustomersSection({super.key});

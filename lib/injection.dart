@@ -28,11 +28,12 @@ Future<void> init() async {
 
 Future<void> _initExternal() async {
   final appConfig = await AppConfig.load();
+  sl.registerLazySingleton<AppConfig>(() => appConfig);
+
   final objectBox = await ObjectBox.create(sl<AppConfig>().localDatabaseName);
+
   Bloc.observer = SimpleBlocObserver();
 
-
-  sl.registerLazySingleton(() => appConfig);
   sl.registerFactory<Uuid>(() => Uuid());
   sl.registerLazySingleton<ObjectBox>(() => objectBox);
 }

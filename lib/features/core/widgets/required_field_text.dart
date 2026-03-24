@@ -5,6 +5,6 @@ class RequiredFieldText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text('Required fields (*)', style: Theme.of(context).textTheme.bodyMedium);
+    return Text('All fields marked (*) are required', style: Theme.of(context).textTheme.bodyMedium);
   }
 }

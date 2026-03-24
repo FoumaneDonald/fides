@@ -9,7 +9,7 @@ import '../../core/widgets/fides_snack_bar.dart';
 import '../../../../domain/entities/loyalty_program_entity.dart';
 import '../../../../services/helpers/app_route_enum.dart';
 import '../../core/widgets/loader.dart';
-import '../../homePage/ui/widgets/program_card.dart';
+import '../../homePage/widgets/program_card.dart';
 import '../bloc/loyalty_program_bloc.dart';
 
 class Programs extends StatefulWidget {

@@ -27,14 +27,13 @@ final class WinningStampChanged extends SetupProgramEvent {
   List<Object?> get props => [winningNumber];
 }
 
-final class NumHolesChanged extends SetupProgramEvent {
-  final int numHoles;
-  final int? deletedFromHereOn;
+final class TotalReturnsChanged extends SetupProgramEvent {
+  final int returns;
 
-  const NumHolesChanged({required this.numHoles, this.deletedFromHereOn});
+  const TotalReturnsChanged(this.returns);
 
   @override
-  List<Object?> get props => [numHoles, deletedFromHereOn];
+  List<Object?> get props => [returns];
 }
 
 final class SelectedReturnRewardChanged extends SetupProgramEvent {
@@ -57,17 +56,13 @@ final class NameChanged extends SetupProgramEvent {
   List<Object?> get props => [name];
 }
 
-final class LastingDateChanged extends SetupProgramEvent {
-  final int? lastingNumber;
-  final TimeUnit? lastingPeriod;
+final class ValidityPeriodChanged extends SetupProgramEvent {
+  final int value;
 
-  const LastingDateChanged({
-    this.lastingNumber,
-    this.lastingPeriod,
-  });
+  const ValidityPeriodChanged(this.value,);
 
   @override
-  List<Object?> get props => [lastingNumber, lastingPeriod];
+  List<Object?> get props => [value];
 }
 
 final class PointsChanged extends SetupProgramEvent {
